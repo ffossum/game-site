@@ -1,0 +1,19 @@
+.chat-container {
+
+  .chat-messages-container {
+    position: relative;
+    min-height: 30rem;
+
+    .chat-messages {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      max-height: 100%;
+      overflow-y: auto;
+
+      .chat-info-message {
+        color: gray
+      }
+    }
+  }
+}
