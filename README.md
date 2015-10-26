@@ -1,2 +1,2 @@
-# react-redux-router-example
-Example application using react with redux and redux-router
+# game-site
+A website for playing board and card games. Eventually.
