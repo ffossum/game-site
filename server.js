@@ -21,7 +21,7 @@ io.on('connection', socket => {
   var userLoggedIn = false;
 
   socket.on('SEND_MESSAGE', data => {
-    socket.broadcast.emit('new message', data);
+    socket.broadcast.emit('NEW_MESSAGE', data);
   });
 
   socket.on('LOG_IN_REQUEST', username => {
@@ -31,20 +31,14 @@ io.on('connection', socket => {
     }
 
     if (users[username]){
-      socket.emit('username taken');
+      socket.emit('LOG_IN_FAILURE', 'USERNAME_TAKEN');
     } else {
 
       socket.username = username;
       users[username] = username;
 
       userLoggedIn = true;
-      socket.emit('login', {
-        users: users
-      });
-
-      socket.broadcast.emit('user joined', {
-        username: socket.username
-      });
+      socket.emit('LOG_IN_SUCCESS');
     }
   });
 
