@@ -51,12 +51,14 @@ io.on('connection', socket => {
     socket.join(gameId);
 
     var game = {
+      id: gameId,
       players: [socket.username]
     };
 
     games[gameId] = game;
 
-    io.emit('CREATE_GAME_SUCCESS', _.extend({}, game, {id: gameId}));
+    socket.emit('CREATE_GAME_SUCCESS', game);
+    socket.broadcast.emit('GAME_CREATED', game);
   });
 
   socket.on('LOG_OUT', () => {

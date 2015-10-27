@@ -16,6 +16,13 @@ export function createGameSuccess(payload) {
   };
 };
 
+export function gameCreated(payload) {
+  return {
+    type: types.GAME_CREATED,
+    payload
+  };
+}
+
 export function updateGames(payload) {
   return {
     type: types.UPDATE_GAMES,
