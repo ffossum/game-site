@@ -5,9 +5,11 @@ import {reduxReactRouter} from 'redux-router';
 import socketMiddleware from './socketMiddleware';
 import * as socketListeners from './socketListeners';
 import socket from './socket';
+import routes from '../routes';
 
 let storeEnhancers = [
   reduxReactRouter({
+    routes,
     createHistory
   }),
   applyMiddleware(
