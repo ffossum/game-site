@@ -11,4 +11,4 @@ node_modules/
 *.iml
 
 public/static/*
-!public/static/favicon.ico
+!public/static/meeple.png

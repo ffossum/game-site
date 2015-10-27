@@ -8,7 +8,7 @@ var shortid = require('shortid');
 var _ = require('underscore');
 
 app.use(express.static('public'));
-app.use(favicon(path.join(__dirname,'public','static','favicon.ico')));
+app.use(favicon(path.join(__dirname,'public','static','meeple.png')));
 
 app.get('*', (req, res) => {
   res.render('index.jade', {
