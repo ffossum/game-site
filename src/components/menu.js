@@ -7,6 +7,7 @@ class Menu extends React.Component {
   render() {
 
     const links = [
+      {href: '/lobby', text: 'Play'},
       {href: '/about', text: 'About'}
     ];
 
@@ -14,7 +15,7 @@ class Menu extends React.Component {
 
     return (
       <Navbar inverse>
-        <NavBrand><Link to="/">React Redux Example</Link></NavBrand>
+        <NavBrand><Link to="/">Game Site</Link></NavBrand>
         <Nav>
           {
             links.map(link => {

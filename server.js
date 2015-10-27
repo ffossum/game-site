@@ -4,6 +4,8 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var favicon = require('serve-favicon');
 var path = require('path');
+var shortid = require('shortid');
+var _ = require('underscore');
 
 app.use(express.static('public'));
 app.use(favicon(path.join(__dirname,'public','static','favicon.ico')));
@@ -14,11 +16,13 @@ app.get('*', (req, res) => {
   });
 });
 
-// usernames currently connected to the chat
 var users = {};
+var games = {};
 
 io.on('connection', socket => {
-  var userLoggedIn = false;
+  var loggedIn = false;
+
+  socket.emit('UPDATE_GAMES', games);
 
   socket.on('SEND_MESSAGE', data => {
     socket.broadcast.emit('NEW_MESSAGE', data);
@@ -26,7 +30,7 @@ io.on('connection', socket => {
 
   socket.on('LOG_IN_REQUEST', username => {
 
-    if (userLoggedIn) {
+    if (loggedIn) {
       delete users[socket.username];
     }
 
@@ -37,13 +41,26 @@ io.on('connection', socket => {
       socket.username = username;
       users[username] = username;
 
-      userLoggedIn = true;
+      loggedIn = true;
       socket.emit('LOG_IN_SUCCESS');
     }
   });
 
+  socket.on('CREATE_GAME_REQUEST', () => {
+    var gameId = shortid.generate();
+    socket.join(gameId);
+
+    var game = {
+      players: [socket.username]
+    };
+
+    games[gameId] = game;
+
+    io.emit('CREATE_GAME_SUCCESS', _.extend({}, game, {id: gameId}));
+  });
+
   socket.on('LOG_OUT', () => {
-    userLoggedIn = false;
+    loggedIn = false;
     delete users[socket.username];
   });
 

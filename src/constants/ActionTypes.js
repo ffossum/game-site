@@ -5,3 +5,7 @@ export const LOG_OUT = 'LOG_OUT';
 
 export const SEND_MESSAGE = 'SEND_MESSAGE';
 export const NEW_MESSAGE = 'NEW_MESSAGE';
+
+export const UPDATE_GAMES = 'UPDATE_GAMES';
+export const CREATE_GAME_REQUEST = 'CREATE_GAME_REQUEST';
+export const CREATE_GAME_SUCCESS = 'CREATE_GAME_SUCCESS';
