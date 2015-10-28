@@ -1,7 +1,6 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
-import {Link} from 'react-router';
-import _ from 'underscore';
+import GameList from './GameList';
 
 export default class Lobby extends React.Component {
   constructor(props) {
@@ -28,17 +27,7 @@ export default class Lobby extends React.Component {
           disabled={!loggedIn}>
           Create game
         </Button>
-        <ul>
-          {
-            _.map(games, (game, id) => {
-              return (
-                <li key={id}>
-                  <Link to={`/game/${id}`}>{id}</Link>
-                </li>
-              );
-            })
-          }
-        </ul>
+        <GameList games={games} />
       </div>
     );
   }

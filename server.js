@@ -61,6 +61,21 @@ io.on('connection', socket => {
     socket.broadcast.emit('GAME_CREATED', game);
   });
 
+  socket.on('JOIN_GAME_REQUEST', gameId => {
+    var game = games[gameId];
+
+    if (!game) {
+      socket.emit('JOIN_GAME_FAILURE', gameId);
+    }
+
+    game.players = _.union(game.players, [socket.username]);
+
+    io.to(gameId).emit('PLAYER_JOINED', game);
+    socket.join(gameId);
+
+    socket.emit('JOIN_GAME_SUCCESS', game);
+  });
+
   socket.on('LOG_OUT', () => {
     loggedIn = false;
     delete users[socket.username];

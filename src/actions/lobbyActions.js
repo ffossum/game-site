@@ -29,3 +29,27 @@ export function updateGames(payload) {
     payload
   };
 };
+
+export function joinGame(gameId) {
+  return {
+    type: types.JOIN_GAME_REQUEST,
+    payload: gameId,
+    meta: {
+      socket: true
+    }
+  };
+}
+
+export function joinGameSuccess(payload) {
+  return {
+    type: types.JOIN_GAME_SUCCESS,
+    payload
+  };
+}
+
+export function playerJoined(payload) {
+  return {
+    type: types.PLAYER_JOINED,
+    payload
+  };
+}

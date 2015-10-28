@@ -12,7 +12,9 @@ const actions = {
 
   [types.UPDATE_GAMES]: data => lobbyActions.updateGames(data),
   [types.CREATE_GAME_SUCCESS]: data => lobbyActions.createGameSuccess(data),
-  [types.GAME_CREATED]: data => lobbyActions.gameCreated(data)
+  [types.GAME_CREATED]: data => lobbyActions.gameCreated(data),
+  [types.JOIN_GAME_SUCCESS]: data => lobbyActions.joinGameSuccess(data),
+  [types.PLAYER_JOINED]: data => lobbyActions.playerJoined(data)
 };
 
 export function addAll(socket, store) {

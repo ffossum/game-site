@@ -15,6 +15,8 @@ export default function chat(state = initialState, action) {
 
     case types.CREATE_GAME_SUCCESS:
     case types.GAME_CREATED:
+    case types.JOIN_GAME_SUCCESS:
+    case types.PLAYER_JOINED:
       return {
         games: {...state.games,
           [action.payload.id]: _.omit(action.payload, 'id')

@@ -3,7 +3,7 @@ import {Route, IndexRoute} from 'react-router';
 import App from './components/App';
 import FrontPage from './components/FrontPage';
 import Lobby from './containers/LobbyContainer';
-import Game from './components/game/Game';
+import Game from './containers/GameContainer';
 import About from './components/About';
 import Login from './containers/LoginContainer';
 import NotFound from './components/NotFound';
