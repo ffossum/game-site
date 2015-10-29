@@ -1,10 +1,10 @@
 {
-  "name": "react-redux-router-example",
+  "name": "game-site",
   "version": "0.0.0",
-  "description": "Example application using react with redux and redux-router",
+  "description": "A website for playing board and card games. Eventually.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ffossum/react-redux-router-example"
+    "url": "https://github.com/ffossum/game-site"
   },
   "license": "MIT",
   "scripts": {
