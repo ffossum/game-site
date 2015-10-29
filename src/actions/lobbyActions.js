@@ -12,7 +12,10 @@ export function createGame() {
 export function createGameSuccess(payload) {
   return {
     type: types.CREATE_GAME_SUCCESS,
-    payload
+    payload,
+    meta: {
+      goTo: `/game/${payload.id}`
+    }
   };
 };
 

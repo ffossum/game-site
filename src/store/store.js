@@ -3,8 +3,10 @@ import reducer from '../reducers';
 import createHistory from 'history/lib/createBrowserHistory';
 import {reduxReactRouter} from 'redux-router';
 import socketMiddleware from './socketMiddleware';
+import historyMiddleware from './historyMiddleware';
 import * as socketListeners from './socketListeners';
 import socket from './socket';
+import globals from './globals';
 import routes from '../routes';
 
 let storeEnhancers = [
@@ -13,7 +15,8 @@ let storeEnhancers = [
     createHistory
   }),
   applyMiddleware(
-    socketMiddleware(socket)
+    socketMiddleware(socket),
+    historyMiddleware(globals)
   )
 ];
 
@@ -26,9 +29,9 @@ if (__DEVELOPMENT__) {
 }
 
 const finalCreateStore = compose(...storeEnhancers)(createStore);
-
 const store = finalCreateStore(reducer);
-export default store;
+
+globals.history = store.history;
 
 socketListeners.addAll(socket, store);
 
@@ -45,3 +48,5 @@ if (module.hot) {
     newListeners.addAll(socket, store);
   });
 }
+
+export default store;
