@@ -17,12 +17,18 @@ export default function chat(state = initialState, action) {
     case types.CREATE_GAME_SUCCESS:
     case types.GAME_CREATED:
     case types.JOIN_GAME_SUCCESS:
-    case types.PLAYER_JOINED:
       return {
         games: {...state.games,
           [action.payload.id]: _.omit(action.payload, 'id')
         }
       };
+
+    case types.PLAYER_JOINED: {
+      const immutableState = Immutable.fromJS(state);
+
+      return immutableState.updateIn(['games', action.payload.id, 'messages'],
+        messages => messages.push({text: `${action.payload.name} has joined the game.`})).toJS();
+    }
 
     case types.NEW_GAME_MESSAGE:
     case types.SEND_GAME_MESSAGE: {
