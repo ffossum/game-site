@@ -52,7 +52,8 @@ io.on('connection', socket => {
 
     var game = {
       id: gameId,
-      players: [socket.username]
+      players: [socket.username],
+      messages: []
     };
 
     games[gameId] = game;
@@ -74,6 +75,15 @@ io.on('connection', socket => {
     socket.join(gameId);
 
     socket.emit('JOIN_GAME_SUCCESS', game);
+  });
+
+  socket.on('SEND_GAME_MESSAGE', data => {
+    var gameId = data.id;
+    var game = games[gameId];
+    if (game) {
+      game.messages.push(data.msg);
+      socket.broadcast.to(gameId).emit('NEW_GAME_MESSAGE', data);
+    }
   });
 
   socket.on('LOG_OUT', () => {

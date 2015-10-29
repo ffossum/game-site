@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
-import {Button} from 'react-bootstrap';
+import {Button, Panel} from 'react-bootstrap';
+import Chat from '../chat/Chat';
 import _ from 'underscore';
 import PlayerList from './PlayerList';
 
@@ -40,6 +41,13 @@ export default class Game extends React.Component {
           :
           null
         }
+        <Panel>
+          <Chat
+            login={this.props.login}
+            messages={game.messages}
+            sendMessage={_.partial(this.props.sendGameMessage, gameId)}
+            />
+        </Panel>
       </div>
     );
   }

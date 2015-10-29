@@ -56,3 +56,26 @@ export function playerJoined(payload) {
     payload
   };
 }
+
+export function sendGameMessage(gameId, user, text) {
+  return {
+    type: types.SEND_GAME_MESSAGE,
+    payload: {
+      id: gameId,
+      msg: {
+        user,
+        text
+      }
+    },
+    meta: {
+      socket: true
+    }
+  };
+}
+
+export function newGameMessage(payload) {
+  return {
+    type: types.NEW_GAME_MESSAGE,
+    payload
+  };
+}

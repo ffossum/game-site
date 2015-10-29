@@ -14,7 +14,7 @@ export default connect(
   state => {
     return {
       login: state.login,
-      chat: state.chat
+      messages: state.chat.messages
     };
   },
   dispatch => bindActionCreators(actions, dispatch)
