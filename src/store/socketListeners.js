@@ -6,7 +6,7 @@ import {each} from 'underscore';
 
 const actions = {
   [types.LOG_IN_SUCCESS]: () => loginActions.logInSuccess(),
-  [types.USERNAME_TAKEN]: error => loginActions.logInFailure(error),
+  [types.LOG_IN_FAILURE]: error => loginActions.logInFailure(error),
 
   [types.NEW_MESSAGE]: data => chatActions.newMessage(data),
 
