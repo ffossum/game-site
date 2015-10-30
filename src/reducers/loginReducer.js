@@ -1,5 +1,4 @@
 import {LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT} from '../constants/ActionTypes';
-import _ from 'underscore';
 
 const initialState = {
   loggedIn: false
@@ -14,16 +13,16 @@ export default function(state = initialState, action) {
       };
 
     case LOG_IN_SUCCESS:
-      return _.chain(state)
-        .pick('username')
-        .extend({loggedIn: true})
-        .value();
+      return {
+        loggedIn: true,
+        username: state.username
+      };
 
     case LOG_IN_FAILURE:
-      return _.chain(state)
-        .pick('username')
-        .extend({error: action.payload})
-        .value();
+      return {
+        error: action.payload,
+        username: state.username
+      };
 
     case LOG_OUT:
       return initialState;
