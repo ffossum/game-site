@@ -26,30 +26,31 @@ export default class Game extends React.Component {
 
     if (!game) {
       return <h1>Invalid game id</h1>;
-    }
+    } else {
+      const {messages = []} = game;
 
-    return (
-      <div>
-        <PlayerList players={game.players} />
-        {
-          !_.contains(game.players, username) ?
-          <Button
-            onClick={this.joinGame}
-            disabled={!loggedIn}>
-            Join game
-          </Button>
-          :
-          null
-        }
-        <Panel>
-          <Chat
-            login={this.props.login}
-            messages={game.messages}
-            sendMessage={_.partial(this.props.sendGameMessage, gameId)}
-            />
-        </Panel>
-      </div>
-    );
+      return (
+        <div>
+          <PlayerList players={game.players} />
+          {
+            !_.contains(game.players, username) ?
+            <Button
+              onClick={this.joinGame}
+              disabled={!loggedIn}>
+              Join game
+            </Button>
+            :
+            <Panel>
+              <Chat
+                login={this.props.login}
+                messages={messages}
+                sendMessage={_.partial(this.props.sendGameMessage, gameId)}
+                />
+            </Panel>
+          }
+        </div>
+      );
+    }
   }
 };
 

@@ -50,15 +50,18 @@ io.on('connection', socket => {
     socket.join(gameId);
 
     var game = {
-      id: gameId,
-      players: [socket.username],
-      messages: []
+      players: [socket.username]
     };
 
     games[gameId] = game;
 
-    socket.emit('CREATE_GAME_SUCCESS', game);
-    socket.broadcast.emit('GAME_CREATED', game);
+    var response = {
+      id: gameId,
+      game: game
+    };
+
+    socket.emit('CREATE_GAME_SUCCESS', response);
+    socket.broadcast.emit('GAME_CREATED', response);
   });
 
   socket.on('JOIN_GAME_REQUEST', gameId => {
@@ -68,7 +71,10 @@ io.on('connection', socket => {
     if (game) {
       game.players.push(socket.username);
 
-      socket.emit('JOIN_GAME_SUCCESS', game);
+      socket.emit('JOIN_GAME_SUCCESS', {
+        id: gameId,
+        game: game
+      });
       socket.broadcast.to(gameId).emit('PLAYER_JOINED', {
         id: gameId,
         name: socket.username
@@ -83,7 +89,6 @@ io.on('connection', socket => {
     var gameId = data.id;
     var game = games[gameId];
     if (game) {
-      game.messages.push(data.msg);
       socket.broadcast.to(gameId).emit('NEW_GAME_MESSAGE', data);
     }
   });
