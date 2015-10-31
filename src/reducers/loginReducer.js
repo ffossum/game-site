@@ -8,6 +8,7 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case LOG_IN_REQUEST:
       return {
+        loggedIn: state.loggedIn,
         waiting: true,
         username: action.payload
       };
@@ -20,6 +21,7 @@ export default function(state = initialState, action) {
 
     case LOG_IN_FAILURE:
       return {
+        loggedIn: state.loggedIn,
         error: action.payload,
         username: state.username
       };
