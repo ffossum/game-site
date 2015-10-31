@@ -60,6 +60,20 @@ describe('login reducer', () => {
     });
   });
 
+  it('handles logout correctly', () => {
+    const previousState = {
+      loggedIn: true,
+      username: 'Jack'
+    };
+
+    const action = actions.logOut();
+    const state = reducer(previousState, action);
+
+    expect(state).to.deep.equal({
+      loggedIn: false
+    });
+  });
+
   it('passes through unknown action', () => {
     const previousState = {
       loggedIn: true,
