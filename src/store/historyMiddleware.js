@@ -3,6 +3,6 @@ export default globals => store => next => action => {
 
   if (action.meta && action.meta.goTo) {
     const {history} = globals;
-    history.pushState(null, `/game/${action.payload.id}`);
+    history.pushState(null, action.meta.goTo);
   }
 };
