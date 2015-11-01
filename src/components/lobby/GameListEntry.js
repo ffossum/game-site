@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {Panel} from 'react-bootstrap';
 import {Link} from 'react-router';
 
-export default props => {
+const GameListEntry = props => {
   const {game, id} = props;
 
   return (
@@ -14,4 +14,13 @@ export default props => {
       </span>
     </Panel>
   );
+};
+
+export default GameListEntry;
+
+GameListEntry.propTypes = {
+  id: PropTypes.string.isRequired,
+  game: PropTypes.shape({
+    players: PropTypes.array.isRequired
+  }).isRequired
 };
