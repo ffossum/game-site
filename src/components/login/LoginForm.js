@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {Input, Button, Panel} from 'react-bootstrap';
+import {Alert, Input, Button, Panel} from 'react-bootstrap';
 import {text} from '../../constants/Errors';
 import {isEmpty} from 'underscore';
 import Spinner from '../common/Spinner';
@@ -24,7 +24,11 @@ export default class Login extends React.Component {
   render() {
     const {username, loggedIn, waiting, error} = this.props;
     if (loggedIn) {
-      return <div>{`Logged in as ${username}`}</div>;
+      return (
+        <Alert bsStyle='success'>
+          {`Logged in as ${username}`}
+        </Alert>
+      );
     } else {
       return (
         <Panel>
