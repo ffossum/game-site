@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react';
-import {Input, ButtonInput, Panel} from 'react-bootstrap';
+import {Input, Button, Panel} from 'react-bootstrap';
 import {text} from '../../constants/Errors';
 import {isEmpty} from 'underscore';
+import Spinner from '../common/Spinner';
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -39,10 +40,11 @@ export default class Login extends React.Component {
               help={error ? text[error] : null}
               bsStyle={error ? 'error' : null} />
 
-            <ButtonInput
+            <Button
               type="submit"
-              value={waiting ? 'Logging in...' : 'Log in'}
-              disabled={waiting} />
+              disabled={waiting}>
+              {waiting ? <span><Spinner /> Logging in...</span> : 'Log in'}
+            </Button>
           </form>
         </Panel>
       );
