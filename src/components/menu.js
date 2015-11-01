@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import {Navbar, NavBrand, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
+import Icon from './common/Icon';
 
 class Menu extends React.Component {
   render() {
@@ -31,11 +32,11 @@ class Menu extends React.Component {
           {
             loggedIn ?
               <NavDropdown title={username} id="nav-profile-dropdown">
-                <MenuItem onSelect={logOut}>Log out</MenuItem>
+                <MenuItem onSelect={logOut}><Icon type='sign-out'/> Log out</MenuItem>
               </NavDropdown>
               :
               <LinkContainer to="/login">
-                <NavItem>Log in</NavItem>
+                <NavItem><Icon type='sign-in'/> Log in</NavItem>
               </LinkContainer>
           }
         </Nav>
