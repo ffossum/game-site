@@ -1,17 +1,15 @@
 import React from 'react';
-import {Link} from 'react-router';
 import _ from 'underscore';
+import GameListEntry from './GameListEntry';
 
 export default props => (
-  <ul>
+  <div>
     {
       _.map(props.games, (game, id) => {
         return (
-          <li key={id}>
-            <Link to={`/game/${id}`}>{id}</Link>
-          </li>
+          <GameListEntry game={game} id={id} key={id} />
         );
       })
     }
-  </ul>
+  </div>
 );

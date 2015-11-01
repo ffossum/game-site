@@ -11,11 +11,13 @@ export default class Lobby extends React.Component {
     return (
       <div>
         <h1>Lobby</h1>
-        <LinkContainer
-          disabled={!loggedIn}
-          to="/create">
-          <Button>Create game</Button>
-        </LinkContainer>
+        <div className="form-group">
+          <LinkContainer
+            disabled={!loggedIn}
+            to="/create">
+            <Button>Create game</Button>
+          </LinkContainer>
+        </div>
 
         <GameList games={games} />
       </div>
