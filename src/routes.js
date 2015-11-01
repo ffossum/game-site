@@ -3,6 +3,7 @@ import {Route, IndexRoute} from 'react-router';
 import App from './components/App';
 import FrontPage from './components/FrontPage';
 import Lobby from './containers/LobbyContainer';
+import Create from './containers/CreateGameContainer';
 import Game from './containers/GameContainer';
 import About from './components/About';
 import Login from './containers/LoginContainer';
@@ -12,6 +13,7 @@ export default (
   <Route path="/" component={App}>
     <IndexRoute component={FrontPage} />
     <Route path="lobby" component={Lobby} />
+    <Route path="create" component={Create} />
     <Route path="game/:id" component={Game} />
     <Route path="about" component={About} />
     <Route path="login" component={Login} />
