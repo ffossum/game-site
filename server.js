@@ -50,6 +50,7 @@ io.on('connection', socket => {
     socket.join(gameId);
 
     var game = {
+      host: socket.username,
       players: [socket.username]
     };
 

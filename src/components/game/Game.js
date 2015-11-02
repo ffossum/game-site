@@ -31,14 +31,16 @@ export default class Game extends React.Component {
 
       return (
         <div>
-          <PlayerList players={game.players} />
+          <PlayerList game={game} />
           {
             !_.contains(game.players, username) ?
-            <Button
-              onClick={this.joinGame}
-              disabled={!loggedIn}>
-              Join game
-            </Button>
+            <div className="form-group">
+              <Button
+                onClick={this.joinGame}
+                disabled={!loggedIn}>
+                Join game
+              </Button>
+            </div>
             :
             <Panel>
               <Chat
