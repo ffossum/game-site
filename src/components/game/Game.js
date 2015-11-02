@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {Button, Panel} from 'react-bootstrap';
+import {Alert, Button, Panel} from 'react-bootstrap';
 import Chat from '../chat/Chat';
 import _ from 'underscore';
 import PlayerList from './PlayerList';
@@ -32,7 +32,7 @@ export default class Game extends React.Component {
     const game = games[gameId];
 
     if (!game) {
-      return <h1>Invalid game id</h1>;
+      return <Alert bsStyle='danger'>Invalid game id</Alert>;
     } else {
       const {messages = []} = game;
       const inGame = _.contains(game.players, username);
