@@ -57,6 +57,30 @@ export function playerJoined(payload) {
   };
 }
 
+export function leaveGame(gameId) {
+  return {
+    type: types.LEAVE_GAME_REQUEST,
+    payload: gameId,
+    meta: {
+      socket: true
+    }
+  };
+}
+
+export function leaveGameSuccess(payload) {
+  return {
+    type: types.LEAVE_GAME_SUCCESS,
+    payload
+  };
+};
+
+export function playerLeft(payload) {
+  return {
+    type: types.PLAYER_LEFT,
+    payload
+  };
+};
+
 export function sendGameMessage(gameId, user, text) {
   return {
     type: types.SEND_GAME_MESSAGE,

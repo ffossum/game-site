@@ -42,6 +42,26 @@ export default function chat(state = initialState, action) {
         .toJS();
     }
 
+    case types.LEAVE_GAME_SUCCESS: {
+      return {
+        ...state,
+        games: {...state.games,
+          [action.payload.id]: action.payload.game
+        }
+      };
+    }
+
+    case types.PLAYER_LEFT: {
+      const immutableState = Immutable.fromJS(state);
+
+      return immutableState
+        .updateIn(['games', action.payload.id, 'players'],
+          players => players.filter(player => player !== action.payload.name))
+        .updateIn(['games', action.payload.id, 'messages'],
+          messages => messages.push({text: `${action.payload.name} has left the game.`}))
+        .toJS();
+    }
+
     case types.NEW_GAME_MESSAGE:
     case types.SEND_GAME_MESSAGE: {
       const immutableState = Immutable.fromJS(state);

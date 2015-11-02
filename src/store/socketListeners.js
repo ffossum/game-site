@@ -15,6 +15,8 @@ const actions = {
   [types.GAME_CREATED]: data => lobbyActions.gameCreated(data),
   [types.JOIN_GAME_SUCCESS]: data => lobbyActions.joinGameSuccess(data),
   [types.PLAYER_JOINED]: data => lobbyActions.playerJoined(data),
+  [types.LEAVE_GAME_SUCCESS]: data => lobbyActions.leaveGameSuccess(data),
+  [types.PLAYER_LEFT]: data => lobbyActions.playerLeft(data),
 
   [types.NEW_GAME_MESSAGE]: data => lobbyActions.newGameMessage(data)
 };

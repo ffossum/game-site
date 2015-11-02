@@ -5,6 +5,7 @@ var io = require('socket.io')(server);
 var favicon = require('serve-favicon');
 var path = require('path');
 var shortid = require('shortid');
+var _ = require('underscore');
 
 app.use(express.static('public'));
 app.use(favicon(path.join(__dirname,'public','static','meeple.png')));
@@ -83,6 +84,24 @@ io.on('connection', socket => {
 
     } else {
       socket.emit('JOIN_GAME_FAILURE', gameId);
+    }
+  });
+
+  socket.on('LEAVE_GAME_REQUEST', gameId => {
+    socket.leave(gameId);
+    var game = games[gameId];
+
+    if (game) {
+      game.players = _.without(game.players, socket.username);
+
+      socket.emit('LEAVE_GAME_SUCCESS', {
+        id: gameId,
+        game: game
+      });
+      socket.broadcast.to(gameId).emit('PLAYER_LEFT', {
+        id: gameId,
+        name: socket.username
+      });
     }
   });
 

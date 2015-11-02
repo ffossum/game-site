@@ -9,6 +9,7 @@ export default class Game extends React.Component {
     super(props);
 
     this.joinGame = this.joinGame.bind(this);
+    this.leaveGame = this.leaveGame.bind(this);
   }
 
   joinGame() {
@@ -16,6 +17,12 @@ export default class Game extends React.Component {
     const gameId = this.props.params.id;
 
     joinGame(gameId);
+  }
+  leaveGame() {
+    const {leaveGame} = this.props;
+    const gameId = this.props.params.id;
+
+    leaveGame(gameId);
   }
 
   render() {
@@ -28,12 +35,14 @@ export default class Game extends React.Component {
       return <h1>Invalid game id</h1>;
     } else {
       const {messages = []} = game;
+      const inGame = _.contains(game.players, username);
+      const host = game.host === username;
 
       return (
         <div>
           <PlayerList game={game} />
           {
-            !_.contains(game.players, username) ?
+            !inGame ?
             <div className="form-group">
               <Button
                 onClick={this.joinGame}
@@ -42,13 +51,25 @@ export default class Game extends React.Component {
               </Button>
             </div>
             :
-            <Panel>
-              <Chat
-                login={this.props.login}
-                messages={messages}
-                sendMessage={_.partial(this.props.sendGameMessage, gameId)}
-                />
-            </Panel>
+            <div>
+              {
+                !host ?
+                <div className="form-group">
+                  <Button
+                    onClick={this.leaveGame}
+                    disabled={!loggedIn}>
+                    Leave game
+                  </Button>
+                </div> : null
+              }
+              <Panel>
+                <Chat
+                  login={this.props.login}
+                  messages={messages}
+                  sendMessage={_.partial(this.props.sendGameMessage, gameId)}
+                  />
+              </Panel>
+            </div>
           }
         </div>
       );
