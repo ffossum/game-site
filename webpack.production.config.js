@@ -6,7 +6,7 @@ module.exports = {
     './src/main.js'
   ],
   output: {
-    path: path.join(__dirname, 'public/static'),
+    path: path.join(__dirname, 'server', 'public', 'static'),
     filename: 'bundle.js'
   },
   plugins: [

@@ -8,7 +8,7 @@ module.exports = {
     './src/main.js'
   ],
   output: {
-    path: path.join(__dirname, 'public/static'),
+    path: path.join(__dirname, 'server', 'public', 'static'),
     publicPath: 'http://localhost:3000/static',
     filename: 'bundle.js'
   },
