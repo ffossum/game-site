@@ -1,11 +1,12 @@
-var express = require('express');
-var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-var favicon = require('serve-favicon');
-var path = require('path');
-var shortid = require('shortid');
-var _ = require('underscore');
+'use strict';
+const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+const favicon = require('serve-favicon');
+const path = require('path');
+const shortid = require('shortid');
+const _ = require('underscore');
 
 app.use(express.static('public'));
 app.use(favicon(path.join(__dirname,'public','static','meeple.png')));
@@ -16,11 +17,11 @@ app.get('*', (req, res) => {
   });
 });
 
-var users = {};
-var games = {};
+const users = {};
+const games = {};
 
 io.on('connection', socket => {
-  var loggedIn = false;
+  let loggedIn = false;
 
   socket.emit('UPDATE_GAMES', games);
 
@@ -47,17 +48,17 @@ io.on('connection', socket => {
   });
 
   socket.on('CREATE_GAME_REQUEST', () => {
-    var gameId = shortid.generate();
+    const gameId = shortid.generate();
     socket.join(gameId);
 
-    var game = {
+    const game = {
       host: socket.username,
       players: [socket.username]
     };
 
     games[gameId] = game;
 
-    var response = {
+    const response = {
       id: gameId,
       game: game
     };
@@ -68,7 +69,7 @@ io.on('connection', socket => {
 
   socket.on('JOIN_GAME_REQUEST', gameId => {
     socket.join(gameId);
-    var game = games[gameId];
+    const game = games[gameId];
 
     if (game) {
       game.players.push(socket.username);
@@ -89,7 +90,7 @@ io.on('connection', socket => {
 
   socket.on('LEAVE_GAME_REQUEST', gameId => {
     socket.leave(gameId);
-    var game = games[gameId];
+    const game = games[gameId];
 
     if (game) {
       game.players = _.without(game.players, socket.username);
@@ -106,8 +107,8 @@ io.on('connection', socket => {
   });
 
   socket.on('SEND_GAME_MESSAGE', data => {
-    var gameId = data.id;
-    var game = games[gameId];
+    const gameId = data.id;
+    const game = games[gameId];
     if (game) {
       socket.broadcast.to(gameId).emit('NEW_GAME_MESSAGE', data);
     }
