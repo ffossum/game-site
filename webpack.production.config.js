@@ -9,6 +9,10 @@ module.exports = {
     path: path.join(__dirname, 'server', 'public', 'static'),
     filename: 'bundle.js'
   },
+  externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM'
+  },
   plugins: [
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
@@ -26,14 +30,6 @@ module.exports = {
         test: /\.scss$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'style!css!sass'
-      },
-      {
-        test: /\.woff2?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
-      },
-      {
-        test: /\.(ttf|eot|svg)$/,
-        loader: 'file-loader'
       }
     ]
   }

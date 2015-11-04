@@ -25,6 +25,8 @@ html
     #root
 
     if env === 'production'
+      script(src="https://fb.me/react-0.14.2.min.js")
+      script(src="https://fb.me/react-dom-0.14.2.min.js")
       script(src='/static/bundle.js')
     else
       script(src='http://localhost:3000/static/bundle.js')

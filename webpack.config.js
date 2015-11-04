@@ -30,14 +30,6 @@ module.exports = {
         test: /\.scss$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'style!css!sass?sourceMap'
-      },
-      {
-        test: /\.woff2?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
-      },
-      {
-        test: /\.(ttf|eot|svg)$/,
-        loader: 'file-loader'
       }
     ]
   }
