@@ -21,9 +21,10 @@ let storeEnhancers = [
 ];
 
 if (__DEVELOPMENT__) {
-  const {devTools, persistState} = require('redux-devtools');
+  const DevTools = require('../DevTools');
+  const {persistState} = require('redux-devtools');
   storeEnhancers = [...storeEnhancers,
-    devTools(),
+    DevTools.instrument(),
     persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
   ];
 }

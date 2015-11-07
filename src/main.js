@@ -17,11 +17,11 @@ ReactDOM.render((
     {
       () => {
         if (__DEVELOPMENT__) {
-          const {DevTools, DebugPanel, LogMonitor} = require('redux-devtools/lib/react');
+          const DevTools = require('./DevTools');
           return (
-            <DebugPanel top right bottom>
-              <DevTools store={store} monitor={LogMonitor} />
-            </DebugPanel>
+            <Provider store={store}>
+              <DevTools />
+            </Provider>
           );
         }
       }()
