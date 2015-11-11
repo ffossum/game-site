@@ -6,7 +6,11 @@ const values = loveLetterCards.values;
 
 function userMayTakeAction(state, action, cardName) {
   const actingPlayer = state.players[action.acting];
-  return state.toAct === action.acting && _.contains(actingPlayer.hand, cardName);
+  const targetPlayer = state.players[action.target];
+
+  return (state.toAct === action.acting) &&
+    _.contains(actingPlayer.hand, cardName) &&
+    (!targetPlayer || _.last(targetPlayer.discards) !== cards.HANDMAIDEN);
 }
 
 function moveToDiscards(imState, cardName) {
@@ -153,6 +157,17 @@ module.exports = {
     } else if (actingPlayerCardValue < targetPlayerCardValue) {
       imState = eliminatePlayer(imState, action.acting);
     }
+
+    return prepareNextTurn(imState).toJS();
+  },
+
+  useHandmaiden(state, action) {
+    if (!userMayTakeAction(state, action, cards.HANDMAIDEN)) {
+      return state;
+    }
+
+    let imState = Immutable.fromJS(state);
+    imState = moveToDiscards(imState, cards.HANDMAIDEN);
 
     return prepareNextTurn(imState).toJS();
   }
