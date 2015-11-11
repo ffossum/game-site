@@ -5,15 +5,17 @@ describe('love letter - guard', () => {
   it('player must have guard card to perform guard action', () => {
     const previousState = {
       toAct: 'Bob',
-      players: [{
-        name: 'Bob',
-        hand: ['priest', 'handmaiden'],
-        discards: []
-      }, {
-        name: 'Jack',
-        hand: ['priest'],
-        discards: []
-      }],
+      players: {
+        'Bob': {
+          hand: ['priest', 'handmaiden'],
+          discards: []
+        },
+        'Jack': {
+          hand: ['priest'],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack'],
       deck: ['baron', 'prince']
     };
 
@@ -27,18 +29,21 @@ describe('love letter - guard', () => {
     expect(state).to.equal(previousState);
 
   });
+
   it('wrong guess simply passes turn', () => {
     const previousState = {
       toAct: 'Bob',
-      players: [{
-        name: 'Bob',
-        hand: ['guard', 'guard'],
-        discards: []
-      }, {
-        name: 'Jack',
-        hand: ['priest'],
-        discards: []
-      }],
+      players: {
+        'Bob': {
+          hand: ['guard', 'guard'],
+          discards: []
+        },
+        'Jack': {
+          hand: ['priest'],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack'],
       deck: ['baron', 'prince']
     };
 
@@ -52,15 +57,17 @@ describe('love letter - guard', () => {
 
     expect(state).to.deep.equal({
       toAct: 'Jack',
-      players: [{
-        name: 'Bob',
-        hand: ['guard'],
-        discards: ['guard']
-      }, {
-        name: 'Jack',
-        hand: ['priest', 'prince'],
-        discards: []
-      }],
+      players: {
+        'Bob': {
+          hand: ['guard'],
+          discards: ['guard']
+        },
+        'Jack': {
+          hand: ['priest', 'prince'],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack'],
       deck: ['baron']
     });
   });
@@ -68,19 +75,21 @@ describe('love letter - guard', () => {
   it('correct guess eliminates target and passes turn', () => {
     const previousState = {
       toAct: 'Bob',
-      players: [{
-        name: 'Bob',
-        hand: ['guard', 'guard'],
-        discards: []
-      }, {
-        name: 'Jack',
-        hand: ['priest'],
-        discards: []
-      }, {
-        name: 'Jill',
-        hand: ['king'],
-        discards: []
-      }],
+      players: {
+        'Bob': {
+          hand: ['guard', 'guard'],
+          discards: []
+        },
+        'Jack': {
+          hand: ['priest'],
+          discards: []
+        },
+        'Jill': {
+          hand: ['king'],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
       deck: ['baron', 'prince']
     };
 
@@ -94,19 +103,21 @@ describe('love letter - guard', () => {
 
     expect(state).to.deep.equal({
       toAct: 'Jill',
-      players: [{
-        name: 'Bob',
-        hand: ['guard'],
-        discards: ['guard']
-      }, {
-        name: 'Jack',
-        hand: [],
-        discards: ['priest']
-      }, {
-        name: 'Jill',
-        hand: ['king', 'prince'],
-        discards: []
-      }],
+      players: {
+        'Bob': {
+          hand: ['guard'],
+          discards: ['guard']
+        },
+        'Jack': {
+          hand: [],
+          discards: ['priest']
+        },
+        'Jill': {
+          hand: ['king', 'prince'],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
       deck: ['baron']
     });
   });

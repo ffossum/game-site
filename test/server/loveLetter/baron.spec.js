@@ -5,15 +5,17 @@ describe('love letter - baron', () => {
   it('player must have baron card to perform baron action', () => {
     const previousState = {
       toAct: 'Bob',
-      players: [{
-        name: 'Bob',
-        hand: ['priest', 'handmaiden'],
-        discards: []
-      }, {
-        name: 'Jack',
-        hand: ['priest'],
-        discards: []
-      }],
+      players: {
+        'Bob': {
+          hand: ['priest', 'handmaiden'],
+          discards: []
+        },
+        'Jack': {
+          hand: ['priest'],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack'],
       deck: ['baron', 'prince']
     };
 
@@ -32,19 +34,21 @@ describe('love letter - baron', () => {
   it('higher value than target eliminates target', () => {
     const previousState = {
       toAct: 'Bob',
-      players: [{
-        name: 'Bob',
-        hand: ['prince', 'baron'],
-        discards: []
-      }, {
-        name: 'Jack',
-        hand: ['priest'],
-        discards: []
-      }, {
-        name: 'Jill',
-        hand: ['handmaiden'],
-        discards: []
-      }],
+      players: {
+        'Bob': {
+          hand: ['prince', 'baron'],
+          discards: []
+        },
+        'Jack': {
+          hand: ['priest'],
+          discards: []
+        },
+        'Jill': {
+          hand: ['handmaiden'],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
       deck: ['baron', 'prince']
     };
 
@@ -57,19 +61,21 @@ describe('love letter - baron', () => {
 
     expect(state).to.deep.equal({
       toAct: 'Jill',
-      players: [{
-        name: 'Bob',
-        hand: ['prince'],
-        discards: ['baron']
-      }, {
-        name: 'Jack',
-        hand: [],
-        discards: ['priest']
-      }, {
-        name: 'Jill',
-        hand: ['handmaiden', 'prince'],
-        discards: []
-      }],
+      players: {
+        'Bob': {
+          hand: ['prince'],
+          discards: ['baron']
+        },
+        'Jack': {
+          hand: [],
+          discards: ['priest']
+        },
+        'Jill': {
+          hand: ['handmaiden', 'prince'],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
       deck: ['baron']
     });
   });
@@ -77,19 +83,21 @@ describe('love letter - baron', () => {
   it('lower value than target eliminates self', () => {
     const previousState = {
       toAct: 'Bob',
-      players: [{
-        name: 'Bob',
-        hand: ['prince', 'baron'],
-        discards: []
-      }, {
-        name: 'Jack',
-        hand: ['king'],
-        discards: []
-      }, {
-        name: 'Jill',
-        hand: ['handmaiden'],
-        discards: []
-      }],
+      players: {
+        'Bob': {
+          hand: ['prince', 'baron'],
+          discards: []
+        },
+        'Jack': {
+          hand: ['king'],
+          discards: []
+        },
+        'Jill': {
+          hand: ['handmaiden'],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
       deck: ['baron', 'prince']
     };
 
@@ -102,19 +110,21 @@ describe('love letter - baron', () => {
 
     expect(state).to.deep.equal({
       toAct: 'Jack',
-      players: [{
-        name: 'Bob',
-        hand: [],
-        discards: ['baron', 'prince']
-      }, {
-        name: 'Jack',
-        hand: ['king', 'prince'],
-        discards: []
-      }, {
-        name: 'Jill',
-        hand: ['handmaiden'],
-        discards: []
-      }],
+      players: {
+        'Bob': {
+          hand: [],
+          discards: ['baron', 'prince']
+        },
+        'Jack': {
+          hand: ['king', 'prince'],
+          discards: []
+        },
+        'Jill': {
+          hand: ['handmaiden'],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
       deck: ['baron']
     });
   });
@@ -122,19 +132,21 @@ describe('love letter - baron', () => {
   it('identical card values eliminates noone', () => {
     const previousState = {
       toAct: 'Bob',
-      players: [{
-        name: 'Bob',
-        hand: ['prince', 'baron'],
-        discards: []
-      }, {
-        name: 'Jack',
-        hand: ['prince'],
-        discards: []
-      }, {
-        name: 'Jill',
-        hand: ['handmaiden'],
-        discards: []
-      }],
+      players: {
+        'Bob': {
+          hand: ['prince', 'baron'],
+          discards: []
+        },
+        'Jack': {
+          hand: ['prince'],
+          discards: []
+        },
+        'Jill': {
+          hand: ['handmaiden'],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
       deck: ['baron', 'priest']
     };
 
@@ -147,19 +159,21 @@ describe('love letter - baron', () => {
 
     expect(state).to.deep.equal({
       toAct: 'Jack',
-      players: [{
-        name: 'Bob',
-        hand: ['prince'],
-        discards: ['baron']
-      }, {
-        name: 'Jack',
-        hand: ['prince', 'priest'],
-        discards: []
-      }, {
-        name: 'Jill',
-        hand: ['handmaiden'],
-        discards: []
-      }],
+      players: {
+        'Bob': {
+          hand: ['prince'],
+          discards: ['baron']
+        },
+        'Jack': {
+          hand: ['prince', 'priest'],
+          discards: []
+        },
+        'Jill': {
+          hand: ['handmaiden'],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
       deck: ['baron']
     });
   });

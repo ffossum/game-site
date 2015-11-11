@@ -3,49 +3,55 @@ const Immutable = require('immutable');
 const cards = require('./loveLetterCards');
 
 function userMayTakeAction(state, action, cardName) {
-  const actingPlayer = _.findWhere(state.players, {name: state.toAct});
+  const actingPlayer = state.players[action.acting];
   return state.toAct === action.acting && _.contains(actingPlayer.hand, cardName);
 }
 
 function moveToDiscards(imState, cardName) {
-  const players = imState.get('players');
-  const actingPlayer = players.find(player => player.get('name') === imState.get('toAct'));
-  const actingPlayerIndex = players.indexOf(actingPlayer);
+  const actingPlayerName = imState.get('toAct');
+  const actingPlayer = imState.get('players').get(actingPlayerName);
   const cardIndex = actingPlayer.get('hand').indexOf(cardName);
 
   return imState
-    .deleteIn(['players', actingPlayerIndex, 'hand', cardIndex])
-    .updateIn(['players', actingPlayerIndex, 'discards'], discards => discards.push(cardName));
+    .deleteIn(['players', actingPlayerName, 'hand', cardIndex])
+    .updateIn(['players', actingPlayerName, 'discards'], discards => discards.push(cardName));
 }
 
-function getNextPlayerToAct(imState) {
-  const alivePlayers = imState.get('players').filter(player => player.get('hand').size > 0);
-  const actingPlayerIndex = alivePlayers.findIndex(player => player.get('name') === imState.get('toAct'));
-  const nextAlivePlayerIndex = (actingPlayerIndex + 1) % alivePlayers.size;
-  return alivePlayers.get(nextAlivePlayerIndex);
+function getNextPlayerName(imState) {
+  const alivePlayers = imState
+    .get('players')
+    .filter(player => player.get('hand').size > 0);
+
+  const filteredOrder = imState
+    .get('order')
+    .filter(player => alivePlayers.has(player));
+
+  const actingPlayerIndex = filteredOrder.indexOf(imState.get('toAct'));
+  const nextPlayerIndex = (actingPlayerIndex + 1) % filteredOrder.size;
+
+  return filteredOrder.get(nextPlayerIndex);
 }
 
-function drawCard(imState, player) {
-  const playerIndex = imState.get('players').indexOf(player);
+function drawCard(imState, playerName) {
   const topCard = imState.get('deck').last();
   return imState
     .update('deck', deck => deck.pop())
-    .updateIn(['players', playerIndex, 'hand'], hand => hand.push(topCard));
+    .updateIn(['players', playerName, 'hand'], hand => hand.push(topCard));
 }
 
-function eliminatePlayer(imState, player) {
-  const playerIndex = imState.get('players').indexOf(player);
+function eliminatePlayer(imState, playerName) {
+  const player = imState.getIn(['players', playerName]);
   return imState
-    .updateIn(['players', playerIndex, 'discards'],
+    .updateIn(['players', playerName, 'discards'],
       discards => discards.push(player.get('hand').first()))
-    .updateIn(['players', playerIndex, 'hand'], hand => []);
+    .updateIn(['players', playerName, 'hand'], hand => []);
 }
 
 function prepareNextTurn(imState) {
-  const nextPlayerToAct = getNextPlayerToAct(imState);
+  const nextPlayerName = getNextPlayerName(imState);
 
-  imState = imState.update('toAct', toAct => nextPlayerToAct.get('name'));
-  imState = drawCard(imState, nextPlayerToAct);
+  imState = imState.update('toAct', toAct => nextPlayerName);
+  imState = drawCard(imState, nextPlayerName);
 
   return imState;
 }
@@ -54,7 +60,7 @@ module.exports = {
   createInitialState(players) {
 
     //Player order is random
-    players = _.shuffle(players);
+    const order = _.shuffle(players);
 
     const deck = _.shuffle([
       ..._(5).times(() => 'guard'),
@@ -67,19 +73,22 @@ module.exports = {
       'princess'
     ]);
 
-    const playerStates = players.map(player => ({
-      name: player,
-      score: 0,
-      hand: [deck.pop()],
-      discards: []
-    }));
+    const playerStates = {};
+    players.forEach(player => {
+      playerStates[player] = {
+        score: 0,
+        hand: [deck.pop()],
+        discards: []
+      };
+    });
 
     //First player draws a card
-    playerStates[0].hand.push(deck.pop());
+    playerStates[order[0]].hand.push(deck.pop());
 
     return {
-      toAct: playerStates[0].name,
+      toAct: order[0],
       players: playerStates,
+      order: order,
       deck: deck
     };
   },
@@ -93,19 +102,15 @@ module.exports = {
 
     imState = moveToDiscards(imState, 'guard');
 
-    const targetPlayer = _.findWhere(state.players, {name: action.target});
+    const targetPlayer = state.players[action.target];
     if (targetPlayer.hand[0] === action.guess) {
-      const targetPlayerIndex = _.indexOf(state.players, targetPlayer);
-
-      imState = imState
-        .updateIn(['players', targetPlayerIndex, 'discards'], discards => discards.push(targetPlayer.hand[0]))
-        .updateIn(['players', targetPlayerIndex, 'hand'], hand => []);
+      imState = eliminatePlayer(imState, action.target);
     }
 
     return prepareNextTurn(imState).toJS();
   },
 
-  usePriest(state) {
+  usePriest(state, action) {
     if (!userMayTakeAction(state, action, 'priest')) {
       return state;
     }
@@ -125,16 +130,13 @@ module.exports = {
 
     imState = moveToDiscards(imState, 'baron');
 
-    const actingPlayer = imState.get('players').find(player => player.get('name') === imState.get('toAct'));
-    const actingPlayerCardValue = cards[actingPlayer.get('hand').first()].value;
-
-    const targetPlayer = imState.get('players').find(player => player.get('name') === action.target);
-    const targetPlayerCardValue = cards[targetPlayer.get('hand').first()].value;
+    const actingPlayerCardValue = cards[state.players[action.acting].hand[0]].value;
+    const targetPlayerCardValue = cards[state.players[action.target].hand[0]].value;
 
     if (actingPlayerCardValue > targetPlayerCardValue) {
-      imState = eliminatePlayer(imState, targetPlayer);
+      imState = eliminatePlayer(imState, action.target);
     } else if (actingPlayerCardValue < targetPlayerCardValue) {
-      imState = eliminatePlayer(imState, actingPlayer);
+      imState = eliminatePlayer(imState, action.acting);
     }
 
     return prepareNextTurn(imState).toJS();
