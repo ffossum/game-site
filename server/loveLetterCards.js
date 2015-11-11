@@ -6,7 +6,8 @@ const cards = {
   PRINCE: 'PRINCE',
   KING: 'KING',
   COUNTESS: 'COUNTESS',
-  PRINCESS: 'PRINCESS'
+  PRINCESS: 'PRINCESS',
+  FACE_DOWN: '?'
 };
 
 const values = {

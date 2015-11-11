@@ -95,6 +95,20 @@ module.exports = {
     };
   },
 
+  asVisibleBy(state, playerName) {
+    let imState = Immutable.fromJS(state);
+
+    imState = imState
+      .update('deck', deck => deck.size)
+      .update('players', players => players.map((player, name) => {
+        return name !== playerName ?
+          player.update('hand', hand => hand.map(card => cards.FACE_DOWN))
+        : player;
+      }));
+
+    return imState.toJS();
+  },
+
   useGuard(state, action) {
     if (!userMayTakeAction(state, action, cards.GUARD)) {
       return state;
