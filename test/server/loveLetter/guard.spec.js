@@ -1,4 +1,5 @@
 import loveLetter from '../../../server/loveLetter';
+import {cards} from '../../../server/loveLetterCards';
 import {expect} from 'chai';
 
 describe('love letter - guard', () => {
@@ -7,22 +8,22 @@ describe('love letter - guard', () => {
       toAct: 'Bob',
       players: {
         'Bob': {
-          hand: ['priest', 'handmaiden'],
+          hand: [cards.PRIEST, cards.HANDMAIDEN],
           discards: []
         },
         'Jack': {
-          hand: ['priest'],
+          hand: [cards.PRIEST],
           discards: []
         }
       },
       order: ['Bob', 'Jack'],
-      deck: ['baron', 'prince']
+      deck: [cards.BARON, cards.PRINCE]
     };
 
     const action = {
       acting: 'Bob',
       target: 'Jack',
-      guess: 'handmaiden'
+      guess: cards.HANDMAIDEN
     };
 
     const state = loveLetter.useGuard(previousState, action);
@@ -35,22 +36,22 @@ describe('love letter - guard', () => {
       toAct: 'Bob',
       players: {
         'Bob': {
-          hand: ['guard', 'guard'],
+          hand: [cards.GUARD, cards.GUARD],
           discards: []
         },
         'Jack': {
-          hand: ['priest'],
+          hand: [cards.PRIEST],
           discards: []
         }
       },
       order: ['Bob', 'Jack'],
-      deck: ['baron', 'prince']
+      deck: [cards.BARON, cards.PRINCE]
     };
 
     const action = {
       acting: 'Bob',
       target: 'Jack',
-      guess: 'handmaiden'
+      guess: cards.HANDMAIDEN
     };
 
     const state = loveLetter.useGuard(previousState, action);
@@ -59,16 +60,16 @@ describe('love letter - guard', () => {
       toAct: 'Jack',
       players: {
         'Bob': {
-          hand: ['guard'],
-          discards: ['guard']
+          hand: [cards.GUARD],
+          discards: [cards.GUARD]
         },
         'Jack': {
-          hand: ['priest', 'prince'],
+          hand: [cards.PRIEST, cards.PRINCE],
           discards: []
         }
       },
       order: ['Bob', 'Jack'],
-      deck: ['baron']
+      deck: [cards.BARON]
     });
   });
 
@@ -77,26 +78,26 @@ describe('love letter - guard', () => {
       toAct: 'Bob',
       players: {
         'Bob': {
-          hand: ['guard', 'guard'],
+          hand: [cards.GUARD, cards.GUARD],
           discards: []
         },
         'Jack': {
-          hand: ['priest'],
+          hand: [cards.PRIEST],
           discards: []
         },
         'Jill': {
-          hand: ['king'],
+          hand: [cards.KING],
           discards: []
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
-      deck: ['baron', 'prince']
+      deck: [cards.BARON, cards.PRINCE]
     };
 
     const action = {
       acting: 'Bob',
       target: 'Jack',
-      guess: 'priest'
+      guess: cards.PRIEST
     };
 
     const state = loveLetter.useGuard(previousState, action);
@@ -105,20 +106,20 @@ describe('love letter - guard', () => {
       toAct: 'Jill',
       players: {
         'Bob': {
-          hand: ['guard'],
-          discards: ['guard']
+          hand: [cards.GUARD],
+          discards: [cards.GUARD]
         },
         'Jack': {
           hand: [],
-          discards: ['priest']
+          discards: [cards.PRIEST]
         },
         'Jill': {
-          hand: ['king', 'prince'],
+          hand: [cards.KING, cards.PRINCE],
           discards: []
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
-      deck: ['baron']
+      deck: [cards.BARON]
     });
   });
 });

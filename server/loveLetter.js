@@ -1,6 +1,8 @@
 const _ = require('underscore');
 const Immutable = require('immutable');
-const cards = require('./loveLetterCards');
+const loveLetterCards = require('./loveLetterCards');
+const cards = loveLetterCards.cards;
+const values = loveLetterCards.values;
 
 function userMayTakeAction(state, action, cardName) {
   const actingPlayer = state.players[action.acting];
@@ -63,14 +65,14 @@ module.exports = {
     const order = _.shuffle(players);
 
     const deck = _.shuffle([
-      ..._(5).times(() => 'guard'),
-      ..._(2).times(() => 'priest'),
-      ..._(2).times(() => 'baron'),
-      ..._(2).times(() => 'handmaiden'),
-      ..._(2).times(() => 'prince'),
-      'king',
-      'countess',
-      'princess'
+      ..._(5).times(() => cards.GUARD),
+      ..._(2).times(() => cards.PRIEST),
+      ..._(2).times(() => cards.BARON),
+      ..._(2).times(() => cards.HANDMAIDEN),
+      ..._(2).times(() => cards.PRINCE),
+      cards.KING,
+      cards.COUNTESS,
+      cards.PRINCESS
     ]);
 
     const playerStates = {};
@@ -94,13 +96,13 @@ module.exports = {
   },
 
   useGuard(state, action) {
-    if (!userMayTakeAction(state, action, 'guard')) {
+    if (!userMayTakeAction(state, action, cards.GUARD)) {
       return state;
     }
 
     let imState = Immutable.fromJS(state);
 
-    imState = moveToDiscards(imState, 'guard');
+    imState = moveToDiscards(imState, cards.GUARD);
 
     const targetPlayer = state.players[action.target];
     if (targetPlayer.hand[0] === action.guess) {
@@ -111,27 +113,27 @@ module.exports = {
   },
 
   usePriest(state, action) {
-    if (!userMayTakeAction(state, action, 'priest')) {
+    if (!userMayTakeAction(state, action, cards.PRIEST)) {
       return state;
     }
 
     let imState = Immutable.fromJS(state);
-    imState = moveToDiscards(imState, 'priest');
+    imState = moveToDiscards(imState, cards.PRIEST);
 
     return prepareNextTurn(imState).toJS();
   },
 
   useBaron(state, action) {
-    if (!userMayTakeAction(state, action, 'baron')) {
+    if (!userMayTakeAction(state, action, cards.BARON)) {
       return state;
     }
 
     let imState = Immutable.fromJS(state);
 
-    imState = moveToDiscards(imState, 'baron');
+    imState = moveToDiscards(imState, cards.BARON);
 
-    const actingPlayerCardValue = cards[state.players[action.acting].hand[0]].value;
-    const targetPlayerCardValue = cards[state.players[action.target].hand[0]].value;
+    const actingPlayerCardValue = values[state.players[action.acting].hand[0]];
+    const targetPlayerCardValue = values[state.players[action.target].hand[0]];
 
     if (actingPlayerCardValue > targetPlayerCardValue) {
       imState = eliminatePlayer(imState, action.target);

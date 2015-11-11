@@ -1,4 +1,5 @@
 import loveLetter from '../../../server/loveLetter';
+import {cards} from '../../../server/loveLetterCards';
 import {expect} from 'chai';
 
 describe('love letter - baron', () => {
@@ -7,23 +8,23 @@ describe('love letter - baron', () => {
       toAct: 'Bob',
       players: {
         'Bob': {
-          hand: ['priest', 'handmaiden'],
+          hand: [cards.PRIEST, cards.HANDMAIDEN],
           discards: []
         },
         'Jack': {
-          hand: ['priest'],
+          hand: [cards.PRIEST],
           discards: []
         }
       },
       order: ['Bob', 'Jack'],
-      deck: ['baron', 'prince']
+      deck: [cards.BARON, cards.PRINCE]
     };
 
     const action = {
       acting: 'Bob',
       guess: {
         player: 'Jack',
-        card: 'handmaiden'
+        card: cards.HANDMAIDEN
       }
     };
 
@@ -36,20 +37,20 @@ describe('love letter - baron', () => {
       toAct: 'Bob',
       players: {
         'Bob': {
-          hand: ['prince', 'baron'],
+          hand: [cards.PRINCE, cards.BARON],
           discards: []
         },
         'Jack': {
-          hand: ['priest'],
+          hand: [cards.PRIEST],
           discards: []
         },
         'Jill': {
-          hand: ['handmaiden'],
+          hand: [cards.HANDMAIDEN],
           discards: []
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
-      deck: ['baron', 'prince']
+      deck: [cards.BARON, cards.PRINCE]
     };
 
     const action = {
@@ -63,20 +64,20 @@ describe('love letter - baron', () => {
       toAct: 'Jill',
       players: {
         'Bob': {
-          hand: ['prince'],
-          discards: ['baron']
+          hand: [cards.PRINCE],
+          discards: [cards.BARON]
         },
         'Jack': {
           hand: [],
-          discards: ['priest']
+          discards: [cards.PRIEST]
         },
         'Jill': {
-          hand: ['handmaiden', 'prince'],
+          hand: [cards.HANDMAIDEN, cards.PRINCE],
           discards: []
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
-      deck: ['baron']
+      deck: [cards.BARON]
     });
   });
 
@@ -85,20 +86,20 @@ describe('love letter - baron', () => {
       toAct: 'Bob',
       players: {
         'Bob': {
-          hand: ['prince', 'baron'],
+          hand: [cards.PRINCE, cards.BARON],
           discards: []
         },
         'Jack': {
-          hand: ['king'],
+          hand: [cards.KING],
           discards: []
         },
         'Jill': {
-          hand: ['handmaiden'],
+          hand: [cards.HANDMAIDEN],
           discards: []
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
-      deck: ['baron', 'prince']
+      deck: [cards.BARON, cards.PRINCE]
     };
 
     const action = {
@@ -113,19 +114,19 @@ describe('love letter - baron', () => {
       players: {
         'Bob': {
           hand: [],
-          discards: ['baron', 'prince']
+          discards: [cards.BARON, cards.PRINCE]
         },
         'Jack': {
-          hand: ['king', 'prince'],
+          hand: [cards.KING, cards.PRINCE],
           discards: []
         },
         'Jill': {
-          hand: ['handmaiden'],
+          hand: [cards.HANDMAIDEN],
           discards: []
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
-      deck: ['baron']
+      deck: [cards.BARON]
     });
   });
 
@@ -134,20 +135,20 @@ describe('love letter - baron', () => {
       toAct: 'Bob',
       players: {
         'Bob': {
-          hand: ['prince', 'baron'],
+          hand: [cards.PRINCE, cards.BARON],
           discards: []
         },
         'Jack': {
-          hand: ['prince'],
+          hand: [cards.PRINCE],
           discards: []
         },
         'Jill': {
-          hand: ['handmaiden'],
+          hand: [cards.HANDMAIDEN],
           discards: []
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
-      deck: ['baron', 'priest']
+      deck: [cards.BARON, cards.PRIEST]
     };
 
     const action = {
@@ -161,20 +162,20 @@ describe('love letter - baron', () => {
       toAct: 'Jack',
       players: {
         'Bob': {
-          hand: ['prince'],
-          discards: ['baron']
+          hand: [cards.PRINCE],
+          discards: [cards.BARON]
         },
         'Jack': {
-          hand: ['prince', 'priest'],
+          hand: [cards.PRINCE, cards.PRIEST],
           discards: []
         },
         'Jill': {
-          hand: ['handmaiden'],
+          hand: [cards.HANDMAIDEN],
           discards: []
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
-      deck: ['baron']
+      deck: [cards.BARON]
     });
   });
 });

@@ -1,4 +1,5 @@
 import loveLetter from '../../../server/loveLetter';
+import {cards} from '../../../server/loveLetterCards';
 import {expect} from 'chai';
 
 describe('love letter - priest', () => {
@@ -7,16 +8,16 @@ describe('love letter - priest', () => {
       toAct: 'Bob',
       players: {
         'Bob': {
-          hand: ['guard', 'handmaiden'],
+          hand: [cards.GUARD, cards.HANDMAIDEN],
           discards: []
         },
         'Jack': {
-          hand: ['priest'],
+          hand: [cards.PRIEST],
           discards: []
         }
       },
       order: ['Bob', 'Jack'],
-      deck: ['baron', 'prince']
+      deck: [cards.BARON, cards.PRINCE]
     };
 
     const action = {
@@ -33,20 +34,20 @@ describe('love letter - priest', () => {
       toAct: 'Bob',
       players: {
         'Bob': {
-          hand: ['priest', 'baron'],
+          hand: [cards.PRIEST, cards.BARON],
           discards: []
         },
         'Jack': {
-          hand: ['prince'],
+          hand: [cards.PRINCE],
           discards: []
         },
         'Jill': {
-          hand: ['handmaiden'],
+          hand: [cards.HANDMAIDEN],
           discards: []
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
-      deck: ['baron', 'priest']
+      deck: [cards.BARON, cards.PRIEST]
     };
 
     const action = {
@@ -60,20 +61,20 @@ describe('love letter - priest', () => {
       toAct: 'Jack',
       players: {
         'Bob': {
-          hand: ['baron'],
-          discards: ['priest']
+          hand: [cards.BARON],
+          discards: [cards.PRIEST]
         },
         'Jack': {
-          hand: ['prince', 'priest'],
+          hand: [cards.PRINCE, cards.PRIEST],
           discards: []
         },
         'Jill': {
-          hand: ['handmaiden'],
+          hand: [cards.HANDMAIDEN],
           discards: []
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
-      deck: ['baron']
+      deck: [cards.BARON]
     });
   });
 });
