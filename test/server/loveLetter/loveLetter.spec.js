@@ -81,7 +81,7 @@ describe('love letter', () => {
     });
 
     it('hiding does not alter original state', () => {
-      const originalState = _.clone(state);
+      const originalState = JSON.parse(JSON.stringify(state));
 
       loveLetter.asVisibleBy(state, 'Bob');
 
