@@ -29,7 +29,7 @@ describe('love letter - handmaiden', () => {
     expect(state).to.equal(previousState);
   });
 
-  it('handmaiden is added as latest discard when used', () => {
+  it('player gains protection when using handmaiden', () => {
     const previousState = {
       toAct: 'Bob',
       players: {
@@ -53,9 +53,10 @@ describe('love letter - handmaiden', () => {
     const state = loveLetter.useHandmaiden(previousState, action);
 
     expect(_.last(state.players['Bob'].discards)).to.equal(cards.HANDMAIDEN);
+    expect(state.players['Bob'].protected).to.be.true;
   });
 
-  it('cannot use guard on player with handmaiden as last discard', () => {
+  it('cannot use guard on player protected by handmaiden', () => {
     const previousState = {
       toAct: 'Bob',
       players: {
@@ -65,7 +66,8 @@ describe('love letter - handmaiden', () => {
         },
         'Jack': {
           hand: [cards.PRIEST],
-          discards: [cards.HANDMAIDEN]
+          discards: [cards.HANDMAIDEN],
+          protected: true
         },
         'Jill': {
           hand: [cards.KING],
@@ -87,7 +89,7 @@ describe('love letter - handmaiden', () => {
     expect(state.players['Jack'].hand).to.be.not.empty;
   });
 
-  it('can use guard on player with handmaiden as earlier discard', () => {
+  it('can use guard on player with discarded handmaiden if not protected', () => {
     const previousState = {
       toAct: 'Bob',
       players: {
@@ -97,7 +99,7 @@ describe('love letter - handmaiden', () => {
         },
         'Jack': {
           hand: [cards.PRIEST],
-          discards: [cards.HANDMAIDEN, cards.GUARD]
+          discards: [cards.HANDMAIDEN]
         },
         'Jill': {
           hand: [cards.KING],

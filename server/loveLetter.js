@@ -10,7 +10,7 @@ function userMayTakeAction(state, action, cardName) {
 
   return (state.toAct === action.acting) &&
     _.contains(actingPlayer.hand, cardName) &&
-    (!targetPlayer || _.last(targetPlayer.discards) !== cards.HANDMAIDEN);
+    (!targetPlayer || !targetPlayer.protected);
 }
 
 function moveToDiscards(imState, cardName) {
@@ -122,6 +122,7 @@ module.exports = {
     let imState = Immutable.fromJS(state);
 
     imState = moveToDiscards(imState, cards.GUARD);
+    imState = imState.deleteIn(['players', action.acting, 'protected']);
 
     const targetPlayer = state.players[action.target];
     if (targetPlayer.hand[0] === action.guess) {
@@ -138,6 +139,7 @@ module.exports = {
 
     let imState = Immutable.fromJS(state);
     imState = moveToDiscards(imState, cards.PRIEST);
+    imState = imState.deleteIn(['players', action.acting, 'protected']);
 
     return prepareNextTurn(imState).toJS();
   },
@@ -150,6 +152,7 @@ module.exports = {
     let imState = Immutable.fromJS(state);
 
     imState = moveToDiscards(imState, cards.BARON);
+    imState = imState.deleteIn(['players', action.acting, 'protected']);
 
     const actingPlayerCardValue = values[state.players[action.acting].hand[0]];
     const targetPlayerCardValue = values[state.players[action.target].hand[0]];
@@ -169,7 +172,9 @@ module.exports = {
     }
 
     let imState = Immutable.fromJS(state);
+
     imState = moveToDiscards(imState, cards.HANDMAIDEN);
+    imState = imState.setIn(['players', action.acting, 'protected'], true);
 
     return prepareNextTurn(imState).toJS();
   },
@@ -180,7 +185,9 @@ module.exports = {
     }
 
     let imState = Immutable.fromJS(state);
+
     imState = moveToDiscards(imState, cards.PRINCE);
+    imState = imState.deleteIn(['players', action.acting, 'protected']);
 
     imState = discardHand(imState, action.target);
     imState = drawCard(imState, action.target);
