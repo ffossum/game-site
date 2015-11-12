@@ -53,6 +53,15 @@ function eliminatePlayer(imState, playerName) {
     .updateIn(['players', playerName, 'hand'], hand => hand.clear());
 }
 
+function switchCards(imState, playerName, targetName) {
+  const targetCard = imState.getIn(['players', targetName, 'hand']).first();
+  const playerCard = imState.getIn(['players', playerName, 'hand']).first();
+
+  return imState
+    .updateIn(['players', targetName, 'hand'], hand => hand.set(0, playerCard))
+    .updateIn(['players', playerName, 'hand'], hand => hand.set(0, targetCard));
+}
+
 let discardHand = eliminatePlayer;
 
 function prepareNextTurn(imState) {
@@ -191,6 +200,20 @@ module.exports = {
 
     imState = discardHand(imState, action.target);
     imState = drawCard(imState, action.target);
+
+    return prepareNextTurn(imState).toJS();
+  },
+
+  useKing(state, action) {
+    if (!userMayTakeAction(state, action, cards.KING)) {
+      return state;
+    }
+
+    let imState = Immutable.fromJS(state);
+    imState = moveToDiscards(imState, cards.KING);
+    imState = imState.deleteIn(['players', action.acting, 'protected']);
+
+    imState = switchCards(imState, action.acting, action.target);
 
     return prepareNextTurn(imState).toJS();
   }
