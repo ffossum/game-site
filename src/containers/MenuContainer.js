@@ -11,6 +11,9 @@ class MenuContainer extends React.Component {
 };
 
 export default connect(
-  state => state.login,
+  state => ({
+    login: state.login,
+    games: state.games
+  }),
   dispatch => bindActionCreators(actions, dispatch)
 )(MenuContainer);
