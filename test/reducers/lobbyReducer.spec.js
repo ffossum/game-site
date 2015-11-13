@@ -6,15 +6,11 @@ describe('lobby reducer', () => {
   it('creates correct initial state', () => {
     const state = reducer(undefined, {type: 'INIT'});
 
-    expect(state).to.deep.equal({
-      games: {}
-    });
+    expect(state).to.deep.equal({});
   });
 
   it('handles game created by other', () => {
-    const previousState = {
-      games: {}
-    };
+    const previousState = {};
 
     const action = actions.gameCreated({
       id: 'gameId',
@@ -26,23 +22,19 @@ describe('lobby reducer', () => {
     const state = reducer(previousState, action);
 
     expect(state).to.deep.equal({
-      games: {
-        'gameId': {
-          players: ['Jack']
-        }
+      'gameId': {
+        players: ['Jack']
       }
     });
   });
 
   it('handles game creation success', () => {
     const previousState = {
-      games: {
-        'game 1': {
-          players: ['Lisa']
-        },
-        'game 2': {
-          players: ['Jack']
-        }
+      'game 1': {
+        players: ['Lisa']
+      },
+      'game 2': {
+        players: ['Jack']
       }
     };
 
@@ -56,25 +48,21 @@ describe('lobby reducer', () => {
     const state = reducer(previousState, action);
 
     expect(state).to.deep.equal({
-      games: {
-        'game 1': {
-          players: ['Lisa']
-        },
-        'game 2': {
-          players: ['Jack', 'Bob'],
-          messages: []
-        }
+      'game 1': {
+        players: ['Lisa']
+      },
+      'game 2': {
+        players: ['Jack', 'Bob'],
+        messages: []
       }
     });
   });
 
   it('handles player joined correctly', () => {
     const previousState = {
-      games: {
-        'game 1': {
-          players: ['Lisa'],
-          messages: []
-        }
+      'game 1': {
+        players: ['Lisa'],
+        messages: []
       }
     };
 
@@ -86,24 +74,20 @@ describe('lobby reducer', () => {
     const state = reducer(previousState, action);
 
     expect(state).to.deep.equal({
-      games: {
-        'game 1': {
-          players: ['Lisa', 'Bob'],
-          messages: [{
-            text: 'Bob has joined the game.'
-          }]
-        }
+      'game 1': {
+        players: ['Lisa', 'Bob'],
+        messages: [{
+          text: 'Bob has joined the game.'
+        }]
       }
     });
   });
 
   it('passes through unknown action', () => {
     const previousState = {
-      games: {
-        'game 1': {
-          players: ['Lisa'],
-          messages: []
-        }
+      'game 1': {
+        players: ['Lisa'],
+        messages: []
       }
     };
 
