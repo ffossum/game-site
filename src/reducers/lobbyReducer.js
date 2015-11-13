@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
 import _ from 'underscore';
-import Immutable from 'immutable';
+import Immutable, {List} from 'immutable';
 
 const initialState = {};
 
@@ -33,7 +33,7 @@ export default function games(state = initialState, action) {
         .updateIn([action.payload.id, 'players'],
           players => players.push(action.payload.name))
         .updateIn([action.payload.id, 'messages'],
-          messages => messages.push({text: `${action.payload.name} has joined the game.`}))
+          messages => (messages || new List()).push({text: `${action.payload.name} has joined the game.`}))
         .toJS();
     }
 
@@ -44,7 +44,7 @@ export default function games(state = initialState, action) {
         .updateIn([action.payload.id, 'players'],
           players => players.filter(player => player !== action.payload.name))
         .updateIn([action.payload.id, 'messages'],
-          messages => messages.push({text: `${action.payload.name} has left the game.`}))
+          messages => (messages || new List()).push({text: `${action.payload.name} has left the game.`}))
         .toJS();
     }
 
@@ -53,7 +53,7 @@ export default function games(state = initialState, action) {
       const immutableState = Immutable.fromJS(state);
 
       return immutableState.updateIn([action.payload.id, 'messages'],
-        messages => messages.push(action.payload.msg)).toJS();
+        messages => (messages || new List()).push(action.payload.msg)).toJS();
     }
 
     default:

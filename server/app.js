@@ -44,6 +44,13 @@ io.on('connection', socket => {
       users[username] = username;
 
       loggedIn = true;
+
+      _.each(games, (game, gameId) => {
+        if (_.contains(game.players, username)) {
+          socket.join(gameId);
+        }
+      });
+
       socket.emit('LOG_IN_SUCCESS');
     }
   });
