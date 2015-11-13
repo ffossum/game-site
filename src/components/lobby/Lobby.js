@@ -5,8 +5,7 @@ import GameList from './GameList';
 
 export default class Lobby extends React.Component {
   render() {
-    const {loggedIn} = this.props.login;
-    const {games} = this.props.lobby;
+    const {games, loggedIn} = this.props;
 
     return (
       <div>

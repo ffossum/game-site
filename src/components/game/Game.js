@@ -28,7 +28,7 @@ export default class Game extends React.Component {
   render() {
     const {loggedIn, username} = this.props.login;
     const gameId = this.props.params.id;
-    const {games} = this.props.lobby;
+    const {games} = this.props;
     const game = games[gameId];
 
     if (!game) {

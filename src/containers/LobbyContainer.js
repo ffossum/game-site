@@ -6,13 +6,13 @@ import Lobby from '../components/lobby/Lobby';
 
 class LobbyContainer extends React.Component {
   render() {
-    return <Lobby {...this.props} />;
+    return <Lobby games={this.props.games} loggedIn={this.props.login.loggedIn} />;
   }
 };
 
 export default connect(
   state => ({
-    lobby: state.lobby,
+    games: state.games,
     login: state.login
   }),
   dispatch => bindActionCreators(actions, dispatch)

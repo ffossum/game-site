@@ -12,7 +12,6 @@ class CreateGameContainer extends React.Component {
 
 export default connect(
   state => ({
-    lobby: state.lobby,
     login: state.login
   }),
   dispatch => bindActionCreators(actions, dispatch)
