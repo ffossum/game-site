@@ -48,6 +48,10 @@ io.on('connection', socket => {
       _.each(games, (game, gameId) => {
         if (_.contains(game.players, username)) {
           socket.join(gameId);
+          socket.broadcast.to(gameId).emit('PLAYER_RECONNECTED', {
+            id: gameId,
+            name: username
+          });
         }
       });
 
@@ -128,6 +132,16 @@ io.on('connection', socket => {
   });
 
   socket.on('disconnect', () => {
+
+    _.each(games, (game, gameId) => {
+      if (_.contains(game.players, socket.username)) {
+        socket.broadcast.to(gameId).emit('PLAYER_DISCONNECTED', {
+          id: gameId,
+          name: socket.username
+        });
+      }
+    });
+
     delete users[socket.username];
   });
 });

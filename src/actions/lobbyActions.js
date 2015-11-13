@@ -103,3 +103,17 @@ export function newGameMessage(payload) {
     payload
   };
 }
+
+export function playerReconnected(payload) {
+  return {
+    type: types.PLAYER_RECONNECTED,
+    payload
+  };
+}
+
+export function playerDisconnected(payload) {
+  return {
+    type: types.PLAYER_DISCONNECTED,
+    payload
+  };
+}

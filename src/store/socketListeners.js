@@ -18,7 +18,10 @@ const actions = {
   [types.LEAVE_GAME_SUCCESS]: data => lobbyActions.leaveGameSuccess(data),
   [types.PLAYER_LEFT]: data => lobbyActions.playerLeft(data),
 
-  [types.NEW_GAME_MESSAGE]: data => lobbyActions.newGameMessage(data)
+  [types.NEW_GAME_MESSAGE]: data => lobbyActions.newGameMessage(data),
+
+  [types.PLAYER_RECONNECTED]: data => lobbyActions.playerReconnected(data),
+  [types.PLAYER_DISCONNECTED]: data => lobbyActions.playerDisconnected(data)
 };
 
 export function addAll(socket, store) {

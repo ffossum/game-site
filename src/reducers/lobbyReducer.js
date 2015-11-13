@@ -48,6 +48,20 @@ export default function games(state = initialState, action) {
         .toJS();
     }
 
+    case types.PLAYER_RECONNECTED: {
+      return Immutable.fromJS(state)
+        .updateIn([action.payload.id, 'messages'],
+          messages => (messages || new List()).push({text: `${action.payload.name} has reconnected.`}))
+        .toJS();
+    }
+
+    case types.PLAYER_DISCONNECTED: {
+      return Immutable.fromJS(state)
+        .updateIn([action.payload.id, 'messages'],
+          messages => (messages || new List()).push({text: `${action.payload.name} has disconnected.`}))
+        .toJS();
+    }
+
     case types.NEW_GAME_MESSAGE:
     case types.SEND_GAME_MESSAGE: {
       const immutableState = Immutable.fromJS(state);
