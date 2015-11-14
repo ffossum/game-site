@@ -128,6 +128,17 @@ io.on('connection', socket => {
 
   socket.on('LOG_OUT', () => {
     loggedIn = false;
+
+    _.each(games, (game, gameId) => {
+      if (_.contains(game.players, socket.username)) {
+        socket.leave(gameId);
+        socket.broadcast.to(gameId).emit('PLAYER_DISCONNECTED', {
+          id: gameId,
+          name: socket.username
+        });
+      }
+    });
+
     delete users[socket.username];
   });
 
