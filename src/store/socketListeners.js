@@ -21,7 +21,10 @@ const actions = {
   [types.NEW_GAME_MESSAGE]: data => lobbyActions.newGameMessage(data),
 
   [types.PLAYER_RECONNECTED]: data => lobbyActions.playerReconnected(data),
-  [types.PLAYER_DISCONNECTED]: data => lobbyActions.playerDisconnected(data)
+  [types.PLAYER_DISCONNECTED]: data => lobbyActions.playerDisconnected(data),
+
+  [types.START_GAME_SUCCESS]: data => lobbyActions.startGameSuccess(data),
+  [types.GAME_STARTED]: data => lobbyActions.gameStarted(data)
 };
 
 export function addAll(socket, store) {

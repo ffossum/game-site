@@ -1,4 +1,5 @@
 import * as types from '../constants/ActionTypes';
+import * as status from '../constants/GameStatus';
 import _ from 'underscore';
 import Immutable, {List} from 'immutable';
 
@@ -68,6 +69,21 @@ export default function games(state = initialState, action) {
 
       return immutableState.updateIn([action.payload.id, 'messages'],
         messages => (messages || new List()).push(action.payload.msg)).toJS();
+    }
+
+    case types.START_GAME_REQUEST: {
+      return Immutable.fromJS(state)
+        .setIn([action.payload, 'status'], status.STARTING)
+        .toJS();
+    }
+
+    case types.START_GAME_SUCCESS:
+    case types.GAME_STARTED: {
+      return Immutable.fromJS(state)
+        .updateIn([action.payload, 'messages'],
+          messages => (messages || new List()).push({text: 'The game has started.'}))
+        .setIn([action.payload, 'status'], status.IN_PROGRESS)
+        .toJS();
     }
 
     default:

@@ -117,3 +117,27 @@ export function playerDisconnected(payload) {
     payload
   };
 }
+
+export function startGame(gameId) {
+  return {
+    type: types.START_GAME_REQUEST,
+    payload: gameId,
+    meta: {
+      socket: true
+    }
+  };
+}
+
+export function startGameSuccess(payload) {
+  return {
+    type: types.START_GAME_SUCCESS,
+    payload
+  };
+}
+
+export function gameStarted(payload) {
+  return {
+    type: types.GAME_STARTED,
+    payload
+  };
+}

@@ -126,6 +126,14 @@ io.on('connection', socket => {
     }
   });
 
+  socket.on('START_GAME_REQUEST', gameId => {
+    const game = games[gameId];
+    game.status = 'IN_PROGRESS';
+
+    socket.emit('START_GAME_SUCCESS', gameId);
+    socket.broadcast.to(gameId).emit('GAME_STARTED', gameId);
+  });
+
   socket.on('LOG_OUT', () => {
     loggedIn = false;
 
