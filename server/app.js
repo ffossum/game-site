@@ -25,6 +25,7 @@ const games = {};
 io.on('connection', socket => {
   let loggedIn = false;
 
+  socket.emit('UPDATE_PLAYERS', users);
   socket.emit('UPDATE_GAMES', games);
 
   socket.on('SEND_MESSAGE', data => {
@@ -56,6 +57,7 @@ io.on('connection', socket => {
         }
       });
 
+      socket.broadcast.emit('UPDATE_PLAYERS', {[socket.user.id]: socket.user});
       socket.emit('LOG_IN_SUCCESS', socket.user);
     }
   });

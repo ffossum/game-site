@@ -1,6 +1,7 @@
 import * as loginActions from '../actions/loginActions';
 import * as chatActions from '../actions/chatActions';
 import * as lobbyActions from '../actions/lobbyActions';
+import * as playersActions from '../actions/playersActions';
 import * as types from '../constants/ActionTypes';
 import {each} from 'underscore';
 
@@ -24,7 +25,9 @@ const actions = {
   [types.PLAYER_DISCONNECTED]: data => lobbyActions.playerDisconnected(data),
 
   [types.START_GAME_SUCCESS]: data => lobbyActions.startGameSuccess(data),
-  [types.GAME_STARTED]: data => lobbyActions.gameStarted(data)
+  [types.GAME_STARTED]: data => lobbyActions.gameStarted(data),
+
+  [types.UPDATE_PLAYERS]: data => playersActions.updatePlayers(data)
 };
 
 export function addAll(socket, store) {
