@@ -6,7 +6,8 @@ import Game from '../components/game/Game';
 
 class GameContainer extends React.Component {
   render() {
-    return <Game {...this.props} />;
+    const game = this.props.games[this.props.params.id];
+    return <Game game={game} {...this.props} />;
   }
 };
 

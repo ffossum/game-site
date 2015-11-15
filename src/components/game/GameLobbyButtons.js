@@ -14,21 +14,21 @@ export default class GameLobbyButtons extends React.Component {
   }
 
   joinGame() {
-    const {gameId, joinGame} = this.props;
+    const {game, joinGame} = this.props;
 
-    joinGame(gameId);
+    joinGame(game.id);
   }
   leaveGame() {
-    const {gameId, leaveGame} = this.props;
+    const {game, leaveGame} = this.props;
 
-    leaveGame(gameId);
+    leaveGame(game.id);
   }
   startGame() {
-    const {gameId, game, startGame} = this.props;
+    const {game, startGame} = this.props;
     const {username} = this.props.login;
 
     if (game.host === username) {
-      startGame(gameId);
+      startGame(game.id);
     }
   }
 
@@ -82,6 +82,8 @@ export default class GameLobbyButtons extends React.Component {
 };
 
 GameLobbyButtons.propTypes = {
+  login: PropTypes.object.isRequired,
+  game: PropTypes.object.isRequired,
   joinGame: PropTypes.func.isRequired,
   leaveGame: PropTypes.func.isRequired,
   startGame: PropTypes.func.isRequired

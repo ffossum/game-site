@@ -8,9 +8,7 @@ import PlayerList from './PlayerList';
 export default class Game extends React.Component {
   render() {
     const {username} = this.props.login;
-    const gameId = this.props.params.id;
-    const {games} = this.props;
-    const game = games[gameId];
+    const {game} = this.props;
 
     if (!game) {
       return <Alert bsStyle='danger'>Invalid game id</Alert>;
@@ -23,7 +21,6 @@ export default class Game extends React.Component {
           <PlayerList game={game} />
           <GameLobbyButtons
             login={this.props.login}
-            gameId={gameId}
             game={game}
             joinGame={this.props.joinGame}
             leaveGame={this.props.leaveGame}
@@ -34,7 +31,7 @@ export default class Game extends React.Component {
                 <Chat
                   login={this.props.login}
                   messages={messages}
-                  sendMessage={_.partial(this.props.sendGameMessage, gameId)} />
+                  sendMessage={_.partial(this.props.sendGameMessage, game.id)} />
               </Panel> : null
           }
         </div>
@@ -44,6 +41,8 @@ export default class Game extends React.Component {
 };
 
 Game.propTypes = {
+  login: PropTypes.object.isRequired,
+  game: PropTypes.object.isRequired,
   joinGame: PropTypes.func.isRequired,
   leaveGame: PropTypes.func.isRequired,
   startGame: PropTypes.func.isRequired
