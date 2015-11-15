@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Alert, Input, Button, Panel} from 'react-bootstrap';
-import {text} from '../../constants/Errors';
+import texts from '../../constants/Texts';
 import {isEmpty} from 'underscore';
 import Spinner from '../common/Spinner';
 
@@ -41,7 +41,7 @@ export default class Login extends React.Component {
               placeholder="Username"
               defaultValue={username}
               readOnly={waiting}
-              help={error ? text[error] : null}
+              help={error ? texts[error] : null}
               bsStyle={error ? 'error' : null} />
 
             <Button
