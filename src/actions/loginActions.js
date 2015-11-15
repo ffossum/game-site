@@ -10,9 +10,10 @@ export function logIn(username) {
   };
 }
 
-export function logInSuccess() {
+export function logInSuccess(payload) {
   return {
-    type: type.LOG_IN_SUCCESS
+    type: type.LOG_IN_SUCCESS,
+    payload
   };
 }
 

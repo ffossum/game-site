@@ -4,17 +4,17 @@ import Icon from '../common/Icon';
 export default props => (
   <ul>
     {
-      props.game.players.map(player => {
-        const host = props.game.host === player;
+      props.game.players.map(id => {
+        const host = props.game.host === id;
 
         return (
-          <li key={player}>
+          <li key={id}>
             {
               host ?
               <span>
-                <Icon type='star' /> {player}
+                {id} <Icon type='star' />
               </span> :
-              player
+              id
             }
           </li>
         );

@@ -30,15 +30,19 @@ describe('login reducer', () => {
 
   it('handles login success correctly', () => {
     const previousState = {
-      waiting: true,
-      username: 'Jack'
+      loggedIn: false,
+      waiting: true
     };
 
-    const action = actions.logInSuccess();
+    const action = actions.logInSuccess({
+      id: 'userId',
+      name: 'Jack'
+    });
     const state = reducer(previousState, action);
 
     expect(state).to.deep.equal({
       loggedIn: true,
+      id: 'userId',
       username: 'Jack'
     });
   });

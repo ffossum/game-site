@@ -7,14 +7,14 @@ import PlayerList from './PlayerList';
 
 export default class Game extends React.Component {
   render() {
-    const {username} = this.props.login;
+    const userId = this.props.login.id;
     const {game} = this.props;
 
     if (!game) {
       return <Alert bsStyle='danger'>Invalid game id</Alert>;
     } else {
       const {messages = []} = game;
-      const inGame = _.contains(game.players, username);
+      const inGame = _.contains(game.players, userId);
 
       return (
         <div>
@@ -42,7 +42,7 @@ export default class Game extends React.Component {
 
 Game.propTypes = {
   login: PropTypes.object.isRequired,
-  game: PropTypes.object.isRequired,
+  game: PropTypes.object,
   joinGame: PropTypes.func.isRequired,
   leaveGame: PropTypes.func.isRequired,
   startGame: PropTypes.func.isRequired

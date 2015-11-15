@@ -9,7 +9,7 @@ class GameContainer extends React.Component {
   render() {
     const game = this.props.games[this.props.params.id];
     return (
-      <DocumentTitle title={`Game ${game.id}`}>
+      <DocumentTitle title={`Game ${this.props.params.id}`}>
         <Game game={game} {...this.props} />
       </DocumentTitle>
     );

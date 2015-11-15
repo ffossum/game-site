@@ -25,18 +25,18 @@ export default class GameLobbyButtons extends React.Component {
   }
   startGame() {
     const {game, startGame} = this.props;
-    const {username} = this.props.login;
+    const userId = this.props.login.id;
 
-    if (game.host === username) {
+    if (game.host === userId) {
       startGame(game.id);
     }
   }
 
   render() {
     const {game} = this.props;
-    const {username, loggedIn}= this.props.login;
-    const inGame = _.contains(game.players, username);
-    const host = game.host === username;
+    const {id, loggedIn}= this.props.login;
+    const inGame = _.contains(game.players, id);
+    const host = game.host === id;
     const inProgress = game.status === status.IN_PROGRESS;
 
     if (inProgress) {

@@ -29,45 +29,45 @@ export default function games(state = initialState, action) {
 
     case types.PLAYER_JOINED: {
       const gameId = action.payload.game.id;
-      const username = action.payload.user.name;
+      const userId = action.payload.user.id;
 
       return Immutable.fromJS(state)
         .updateIn([gameId, 'players'],
-          players => players.push(username))
+          players => players.push(userId))
         .updateIn([gameId, 'messages'],
-          messages => (messages || new List()).push({text: `${username} has joined the game.`}))
+          messages => (messages || new List()).push({text: `${userId} has joined the game.`}))
         .toJS();
     }
 
     case types.PLAYER_LEFT: {
       const gameId = action.payload.game.id;
-      const username = action.payload.user.name;
+      const userId = action.payload.user.id;
 
       return Immutable.fromJS(state)
         .updateIn([gameId, 'players'],
-          players => players.filter(player => player !== username))
+          players => players.filter(player => player !== userId))
         .updateIn([gameId, 'messages'],
-          messages => (messages || new List()).push({text: `${username} has left the game.`}))
+          messages => (messages || new List()).push({text: `${userId} has left the game.`}))
         .toJS();
     }
 
     case types.PLAYER_RECONNECTED: {
       const gameId = action.payload.game.id;
-      const username = action.payload.user.name;
+      const userId = action.payload.user.id;
 
       return Immutable.fromJS(state)
         .updateIn([gameId, 'messages'],
-          messages => (messages || new List()).push({text: `${username} has reconnected.`}))
+          messages => (messages || new List()).push({text: `${userId} has reconnected.`}))
         .toJS();
     }
 
     case types.PLAYER_DISCONNECTED: {
       const gameId = action.payload.game.id;
-      const username = action.payload.user.name;
+      const userId = action.payload.user.id;
 
       return Immutable.fromJS(state)
         .updateIn([gameId, 'messages'],
-          messages => (messages || new List()).push({text: `${username} has disconnected.`}))
+          messages => (messages || new List()).push({text: `${userId} has disconnected.`}))
         .toJS();
     }
 

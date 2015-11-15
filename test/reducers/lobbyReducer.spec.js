@@ -14,15 +14,14 @@ describe('lobby reducer', () => {
 
     const action = actions.gameCreated({
       id: 'gameId',
-      game: {
-        players: ['Jack']
-      }
+      players: ['Jack']
     });
 
     const state = reducer(previousState, action);
 
     expect(state).to.deep.equal({
       'gameId': {
+        id: 'gameId',
         players: ['Jack']
       }
     });
@@ -31,27 +30,25 @@ describe('lobby reducer', () => {
   it('handles game creation success', () => {
     const previousState = {
       'game 1': {
+        id: 'game 1',
         players: ['Lisa']
-      },
-      'game 2': {
-        players: ['Jack']
       }
     };
 
     const action = actions.createGameSuccess({
       id: 'game 2',
-      game: {
-        players: ['Jack', 'Bob']
-      }
+      players: ['Jack', 'Bob']
     });
 
     const state = reducer(previousState, action);
 
     expect(state).to.deep.equal({
       'game 1': {
+        id: 'game 1',
         players: ['Lisa']
       },
       'game 2': {
+        id: 'game 2',
         players: ['Jack', 'Bob'],
         messages: []
       }
@@ -67,8 +64,8 @@ describe('lobby reducer', () => {
     };
 
     const action = actions.playerJoined({
-      id: 'game 1',
-      name: 'Bob'
+      game: {id: 'game 1'},
+      user: {id: 'Bob'}
     });
 
     const state = reducer(previousState, action);

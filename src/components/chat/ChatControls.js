@@ -18,16 +18,16 @@ class ChatControls extends React.Component {
   }
   onSubmit(e) {
     e.preventDefault();
-    const {loggedIn, username} = this.props;
+    const {loggedIn, id} = this.props.login;
 
     if (loggedIn) {
       const message = this.state.message;
       this.state.message = '';
-      this.props.sendMessage(username, message);
+      this.props.sendMessage(id, message);
     }
   }
   render() {
-    const {loggedIn} = this.props;
+    const {loggedIn} = this.props.login;
 
     const sendButton = (
       <Button

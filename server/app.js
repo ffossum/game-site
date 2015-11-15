@@ -4,6 +4,7 @@ import favicon from 'serve-favicon';
 import path from 'path';
 import shortid from 'shortid';
 import _ from 'underscore';
+import db from './db';
 
 const app = express();
 const server = Server(app);
@@ -33,29 +34,29 @@ io.on('connection', socket => {
   socket.on('LOG_IN_REQUEST', username => {
 
     if (loggedIn) {
-      delete users[socket.username];
+      delete users[socket.user.id];
     }
 
-    if (users[username]){
-      socket.emit('LOG_IN_FAILURE', 'USERNAME_TAKEN');
+    const user = _.findWhere(db.users, {name: username});
+    if (!user) {
+      socket.emit('LOG_IN_FAILURE', 'USER_NOT_FOUND');
     } else {
-
-      socket.username = username;
-      users[username] = username;
+      socket.user = _.pick(user, ['id', 'name', 'avatar']);
+      users[user.id] = socket.user;
 
       loggedIn = true;
 
       _.each(games, (game, gameId) => {
-        if (_.contains(game.players, username)) {
+        if (_.contains(game.players, user.id)) {
           socket.join(gameId);
           socket.broadcast.to(gameId).emit('PLAYER_RECONNECTED', {
             game: {id: gameId},
-            user: {name: socket.username}
+            user: {id: user.id}
           });
         }
       });
 
-      socket.emit('LOG_IN_SUCCESS');
+      socket.emit('LOG_IN_SUCCESS', socket.user);
     }
   });
 
@@ -65,8 +66,8 @@ io.on('connection', socket => {
 
     const game = {
       id: gameId,
-      host: socket.username,
-      players: [socket.username]
+      host: socket.user.id,
+      players: [socket.user.id]
     };
 
     games[gameId] = game;
@@ -80,12 +81,12 @@ io.on('connection', socket => {
     const game = games[gameId];
 
     if (game) {
-      game.players.push(socket.username);
+      game.players.push(socket.user.id);
 
       socket.emit('JOIN_GAME_SUCCESS', game);
       socket.broadcast.to(gameId).emit('PLAYER_JOINED', {
         game: {id: gameId},
-        user: {name: socket.username}
+        user: {id: socket.user.id}
       });
 
     } else {
@@ -98,12 +99,12 @@ io.on('connection', socket => {
     const game = games[gameId];
 
     if (game) {
-      game.players = _.without(game.players, socket.username);
+      game.players = _.without(game.players, socket.user.id);
 
       socket.emit('LEAVE_GAME_SUCCESS', game);
       socket.broadcast.to(gameId).emit('PLAYER_LEFT', {
         game: {id: gameId},
-        user: {name: socket.username}
+        user: {id: socket.user.id}
       });
     }
   });
@@ -128,30 +129,31 @@ io.on('connection', socket => {
     loggedIn = false;
 
     _.each(games, (game, gameId) => {
-      if (_.contains(game.players, socket.username)) {
+      if (_.contains(game.players, socket.user.id)) {
         socket.leave(gameId);
         socket.broadcast.to(gameId).emit('PLAYER_DISCONNECTED', {
           game: {id: gameId},
-          user: {name: socket.username}
+          user: {id: socket.user.id}
         });
       }
     });
 
-    delete users[socket.username];
+    delete users[socket.user.id];
   });
 
   socket.on('disconnect', () => {
 
     _.each(games, (game, gameId) => {
-      if (_.contains(game.players, socket.username)) {
+      if (_.contains(game.players, socket.user.id)) {
         socket.broadcast.to(gameId).emit('PLAYER_DISCONNECTED', {
           game: {id: gameId},
-          user: {name: socket.username}
+          user: {id: socket.user.id}
         });
       }
     });
-
-    delete users[socket.username];
+    if (socket.user) {
+      delete users[socket.user.id];
+    }
   });
 });
 

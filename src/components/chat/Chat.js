@@ -8,12 +8,11 @@ export default class Chat extends React.Component {
   render() {
     const {sendMessage} = this.props;
     const {messages} = this.props;
-    const {loggedIn, username} = this.props.login;
 
     return (
       <div className="chat-container">
         <ChatMessages messages={messages} />
-        <ChatControls username={username} loggedIn={loggedIn} sendMessage={sendMessage} />
+        <ChatControls login={this.props.login} sendMessage={sendMessage} />
       </div>
     );
   }

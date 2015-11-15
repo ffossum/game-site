@@ -13,7 +13,7 @@ class Menu extends React.Component {
       {href: '/about', text: 'About'}
     ];
 
-    const {username, loggedIn} = this.props.login;
+    const {id, username, loggedIn} = this.props.login;
     const {logOut} = this.props;
 
     return (
@@ -34,7 +34,7 @@ class Menu extends React.Component {
           () => {
             if (loggedIn) {
               const myGames = _.pick(this.props.games, (game, gameId) => {
-                return _.contains(game.players, username);
+                return _.contains(game.players, id);
               });
 
               return (

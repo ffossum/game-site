@@ -5,7 +5,7 @@ import * as types from '../constants/ActionTypes';
 import {each} from 'underscore';
 
 const actions = {
-  [types.LOG_IN_SUCCESS]: () => loginActions.logInSuccess(),
+  [types.LOG_IN_SUCCESS]: (data) => loginActions.logInSuccess(data),
   [types.LOG_IN_FAILURE]: error => loginActions.logInFailure(error),
 
   [types.NEW_MESSAGE]: data => chatActions.newMessage(data),

@@ -16,7 +16,8 @@ export default function(state = initialState, action) {
     case LOG_IN_SUCCESS:
       return {
         loggedIn: true,
-        username: state.username
+        username: action.payload.name,
+        id: action.payload.id
       };
 
     case LOG_IN_FAILURE:
