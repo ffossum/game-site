@@ -1,16 +1,19 @@
 import React, {PropTypes} from 'react';
 import {Panel} from 'react-bootstrap';
 import {Link} from 'react-router';
+import _ from 'underscore';
 
 const GameListEntry = props => {
-  const {game, id} = props;
+  const {game, players} = props;
+
+  const playerNames = _.map(game.players, id => players[id].name);
 
   return (
     <Panel>
-      <Link to={`/game/${id}`}>{id}</Link>
+      <Link to={`/game/${game.id}`}>{game.id}</Link>
       {' '}
       <span>
-        {'Players: ' + game.players.join(', ')}
+        {'Players: ' + playerNames.join(', ')}
       </span>
     </Panel>
   );
@@ -19,8 +22,8 @@ const GameListEntry = props => {
 export default GameListEntry;
 
 GameListEntry.propTypes = {
-  id: PropTypes.string.isRequired,
   game: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     players: PropTypes.array.isRequired
   }).isRequired
 };

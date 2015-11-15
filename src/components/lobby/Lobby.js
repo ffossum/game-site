@@ -5,7 +5,7 @@ import GameList from './GameList';
 
 export default class Lobby extends React.Component {
   render() {
-    const {games, loggedIn} = this.props;
+    const {games, players, loggedIn} = this.props;
 
     return (
       <div>
@@ -18,7 +18,7 @@ export default class Lobby extends React.Component {
           </LinkContainer>
         </div>
 
-        <GameList games={games} />
+        <GameList players={players} games={games} />
       </div>
     );
   }

@@ -9,7 +9,10 @@ class LobbyContainer extends React.Component {
   render() {
     return (
       <DocumentTitle title='Game Lobby'>
-        <Lobby games={this.props.games} loggedIn={this.props.login.loggedIn} />
+        <Lobby
+          players={this.props.players}
+          games={this.props.games}
+          loggedIn={this.props.login.loggedIn} />
       </DocumentTitle>
     );
   }
@@ -17,6 +20,7 @@ class LobbyContainer extends React.Component {
 
 export default connect(
   state => ({
+    players: state.players,
     games: state.games,
     login: state.login
   }),

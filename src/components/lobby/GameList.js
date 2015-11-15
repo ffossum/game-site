@@ -7,7 +7,7 @@ export default props => (
     {
       _.map(props.games, (game, id) => {
         return (
-          <GameListEntry game={game} id={id} key={id} />
+          <GameListEntry players={props.players} game={game} key={id} />
         );
       })
     }
