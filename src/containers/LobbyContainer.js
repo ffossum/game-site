@@ -3,10 +3,15 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from '../actions/lobbyActions';
 import Lobby from '../components/lobby/Lobby';
+import DocumentTitle from 'react-document-title';
 
 class LobbyContainer extends React.Component {
   render() {
-    return <Lobby games={this.props.games} loggedIn={this.props.login.loggedIn} />;
+    return (
+      <DocumentTitle title='Game Lobby'>
+        <Lobby games={this.props.games} loggedIn={this.props.login.loggedIn} />
+      </DocumentTitle>
+    );
   }
 };
 
