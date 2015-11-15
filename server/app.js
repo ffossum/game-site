@@ -22,10 +22,25 @@ app.get('*', (req, res) => {
 const users = {};
 const games = {};
 
+function getUsersInGames(games) {
+  const userIds = _.chain(games)
+    .map(game => game.players)
+    .flatten()
+    .uniq()
+    .value();
+
+  const usersInGames = {};
+  _.each(userIds, userId => {
+    usersInGames[userId] = _.pick(db.users[userId], ['id', 'name', 'avatar']);
+  });
+
+  return usersInGames;
+}
+
 io.on('connection', socket => {
   let loggedIn = false;
 
-  socket.emit('UPDATE_PLAYERS', users);
+  socket.emit('UPDATE_PLAYERS', _.extend({}, users, getUsersInGames(games)));
   socket.emit('UPDATE_GAMES', games);
 
   socket.on('SEND_MESSAGE', data => {
