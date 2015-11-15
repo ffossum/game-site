@@ -49,8 +49,8 @@ io.on('connection', socket => {
         if (_.contains(game.players, username)) {
           socket.join(gameId);
           socket.broadcast.to(gameId).emit('PLAYER_RECONNECTED', {
-            id: gameId,
-            name: username
+            game: {id: gameId},
+            user: {name: socket.username}
           });
         }
       });
@@ -64,19 +64,15 @@ io.on('connection', socket => {
     socket.join(gameId);
 
     const game = {
+      id: gameId,
       host: socket.username,
       players: [socket.username]
     };
 
     games[gameId] = game;
 
-    const response = {
-      id: gameId,
-      game: game
-    };
-
-    socket.emit('CREATE_GAME_SUCCESS', response);
-    socket.broadcast.emit('GAME_CREATED', response);
+    socket.emit('CREATE_GAME_SUCCESS', game);
+    socket.broadcast.emit('GAME_CREATED', game);
   });
 
   socket.on('JOIN_GAME_REQUEST', gameId => {
@@ -86,13 +82,10 @@ io.on('connection', socket => {
     if (game) {
       game.players.push(socket.username);
 
-      socket.emit('JOIN_GAME_SUCCESS', {
-        id: gameId,
-        game: game
-      });
+      socket.emit('JOIN_GAME_SUCCESS', game);
       socket.broadcast.to(gameId).emit('PLAYER_JOINED', {
-        id: gameId,
-        name: socket.username
+        game: {id: gameId},
+        user: {name: socket.username}
       });
 
     } else {
@@ -107,13 +100,10 @@ io.on('connection', socket => {
     if (game) {
       game.players = _.without(game.players, socket.username);
 
-      socket.emit('LEAVE_GAME_SUCCESS', {
-        id: gameId,
-        game: game
-      });
+      socket.emit('LEAVE_GAME_SUCCESS', game);
       socket.broadcast.to(gameId).emit('PLAYER_LEFT', {
-        id: gameId,
-        name: socket.username
+        game: {id: gameId},
+        user: {name: socket.username}
       });
     }
   });
@@ -141,8 +131,8 @@ io.on('connection', socket => {
       if (_.contains(game.players, socket.username)) {
         socket.leave(gameId);
         socket.broadcast.to(gameId).emit('PLAYER_DISCONNECTED', {
-          id: gameId,
-          name: socket.username
+          game: {id: gameId},
+          user: {name: socket.username}
         });
       }
     });
@@ -155,8 +145,8 @@ io.on('connection', socket => {
     _.each(games, (game, gameId) => {
       if (_.contains(game.players, socket.username)) {
         socket.broadcast.to(gameId).emit('PLAYER_DISCONNECTED', {
-          id: gameId,
-          name: socket.username
+          game: {id: gameId},
+          user: {name: socket.username}
         });
       }
     });

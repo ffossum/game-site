@@ -15,12 +15,12 @@ export default function games(state = initialState, action) {
     case types.LEAVE_GAME_SUCCESS:
       return {
         ...state,
-        [action.payload.id]: action.payload.game
+        [action.payload.id]: action.payload
       };
 
     case types.CREATE_GAME_SUCCESS:
     case types.JOIN_GAME_SUCCESS: {
-      const game = _.extend({}, action.payload.game, {messages: []});
+      const game = _.extend({}, action.payload, {messages: []});
       return {
         ...state,
         [action.payload.id]: game
@@ -28,47 +28,55 @@ export default function games(state = initialState, action) {
     }
 
     case types.PLAYER_JOINED: {
-      const immutableState = Immutable.fromJS(state);
+      const gameId = action.payload.game.id;
+      const username = action.payload.user.name;
 
-      return immutableState
-        .updateIn([action.payload.id, 'players'],
-          players => players.push(action.payload.name))
-        .updateIn([action.payload.id, 'messages'],
-          messages => (messages || new List()).push({text: `${action.payload.name} has joined the game.`}))
+      return Immutable.fromJS(state)
+        .updateIn([gameId, 'players'],
+          players => players.push(username))
+        .updateIn([gameId, 'messages'],
+          messages => (messages || new List()).push({text: `${username} has joined the game.`}))
         .toJS();
     }
 
     case types.PLAYER_LEFT: {
-      const immutableState = Immutable.fromJS(state);
+      const gameId = action.payload.game.id;
+      const username = action.payload.user.name;
 
-      return immutableState
-        .updateIn([action.payload.id, 'players'],
-          players => players.filter(player => player !== action.payload.name))
-        .updateIn([action.payload.id, 'messages'],
-          messages => (messages || new List()).push({text: `${action.payload.name} has left the game.`}))
+      return Immutable.fromJS(state)
+        .updateIn([gameId, 'players'],
+          players => players.filter(player => player !== username))
+        .updateIn([gameId, 'messages'],
+          messages => (messages || new List()).push({text: `${username} has left the game.`}))
         .toJS();
     }
 
     case types.PLAYER_RECONNECTED: {
+      const gameId = action.payload.game.id;
+      const username = action.payload.user.name;
+
       return Immutable.fromJS(state)
-        .updateIn([action.payload.id, 'messages'],
-          messages => (messages || new List()).push({text: `${action.payload.name} has reconnected.`}))
+        .updateIn([gameId, 'messages'],
+          messages => (messages || new List()).push({text: `${username} has reconnected.`}))
         .toJS();
     }
 
     case types.PLAYER_DISCONNECTED: {
+      const gameId = action.payload.game.id;
+      const username = action.payload.user.name;
+
       return Immutable.fromJS(state)
-        .updateIn([action.payload.id, 'messages'],
-          messages => (messages || new List()).push({text: `${action.payload.name} has disconnected.`}))
+        .updateIn([gameId, 'messages'],
+          messages => (messages || new List()).push({text: `${username} has disconnected.`}))
         .toJS();
     }
 
     case types.NEW_GAME_MESSAGE:
     case types.SEND_GAME_MESSAGE: {
-      const immutableState = Immutable.fromJS(state);
-
-      return immutableState.updateIn([action.payload.id, 'messages'],
-        messages => (messages || new List()).push(action.payload.msg)).toJS();
+      return Immutable.fromJS(state)
+        .updateIn([action.payload.id, 'messages'],
+          messages => (messages || new List()).push(action.payload.msg))
+        .toJS();
     }
 
     case types.START_GAME_REQUEST: {
