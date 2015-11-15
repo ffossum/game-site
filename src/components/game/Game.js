@@ -8,7 +8,7 @@ import PlayerList from './PlayerList';
 export default class Game extends React.Component {
   render() {
     const userId = this.props.login.id;
-    const {game} = this.props;
+    const {game, players} = this.props;
 
     if (!game) {
       return <Alert bsStyle='danger'>Invalid game id</Alert>;
@@ -18,7 +18,7 @@ export default class Game extends React.Component {
 
       return (
         <div>
-          <PlayerList game={game} />
+          <PlayerList players={players} game={game} />
           <GameLobbyButtons
             login={this.props.login}
             game={game}
@@ -31,6 +31,7 @@ export default class Game extends React.Component {
                 <Chat
                   login={this.props.login}
                   messages={messages}
+                  users={players}
                   sendMessage={_.partial(this.props.sendGameMessage, game.id)} />
               </Panel> : null
           }

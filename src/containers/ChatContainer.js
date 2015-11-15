@@ -14,6 +14,7 @@ export default connect(
   state => {
     return {
       login: state.login,
+      users: state.players,
       messages: state.chat.messages
     };
   },

@@ -25,7 +25,7 @@ class ChatMessages extends React.Component {
     node.scrollTop = node.scrollHeight;
   }
   render() {
-    const {messages} = this.props;
+    const {users, messages} = this.props;
     return (
       <div className="chat-messages-container">
         <div className="chat-messages" ref="chatMessages">
@@ -34,7 +34,7 @@ class ChatMessages extends React.Component {
               if (msg.user) {
                 return (
                   <div key={index} className="chat-message">
-                    {msg.user}: {msg.text}
+                    {users[msg.user].name}: {msg.text}
                   </div>
                 );
               } else {

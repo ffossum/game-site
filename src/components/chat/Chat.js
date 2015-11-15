@@ -6,12 +6,11 @@ import '../../stylesheets/chat.scss';
 
 export default class Chat extends React.Component {
   render() {
-    const {sendMessage} = this.props;
-    const {messages} = this.props;
+    const {users, messages, sendMessage} = this.props;
 
     return (
       <div className="chat-container">
-        <ChatMessages messages={messages} />
+        <ChatMessages users={users} messages={messages} />
         <ChatControls login={this.props.login} sendMessage={sendMessage} />
       </div>
     );
