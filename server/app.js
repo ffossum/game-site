@@ -20,6 +20,7 @@ app.get('*', (req, res) => {
 });
 
 const users = {};
+const userSockets = {};
 const games = {};
 
 function getUsersInGames(games) {
@@ -59,6 +60,7 @@ io.on('connection', socket => {
     } else {
       socket.user = _.pick(user, ['id', 'name', 'avatar']);
       users[user.id] = socket.user;
+      userSockets[user.id] = _.union(userSockets[user.id], [socket]);
 
       loggedIn = true;
 
@@ -79,7 +81,7 @@ io.on('connection', socket => {
 
   socket.on('CREATE_GAME_REQUEST', () => {
     const gameId = shortid.generate();
-    socket.join(gameId);
+    _.each(userSockets[socket.user.id], userSocket => userSocket.join(gameId));
 
     const game = {
       id: gameId,
@@ -94,10 +96,10 @@ io.on('connection', socket => {
   });
 
   socket.on('JOIN_GAME_REQUEST', gameId => {
-    socket.join(gameId);
     const game = games[gameId];
 
     if (game) {
+      _.each(userSockets[socket.user.id], userSocket => userSocket.join(gameId));
       game.players.push(socket.user.id);
 
       socket.emit('JOIN_GAME_SUCCESS', game);
@@ -145,17 +147,20 @@ io.on('connection', socket => {
   socket.on('LOG_OUT', () => {
     loggedIn = false;
 
-    _.each(games, (game, gameId) => {
-      if (_.contains(game.players, socket.user.id)) {
-        socket.leave(gameId);
-        socket.broadcast.to(gameId).emit('PLAYER_DISCONNECTED', {
-          game: {id: gameId},
-          user: {id: socket.user.id}
-        });
-      }
-    });
+    if (socket.user) {
+      _.each(games, (game, gameId) => {
+        if (_.contains(game.players, socket.user.id)) {
+          socket.leave(gameId);
+          socket.broadcast.to(gameId).emit('PLAYER_DISCONNECTED', {
+            game: {id: gameId},
+            user: {id: socket.user.id}
+          });
+        }
+      });
 
-    delete users[socket.user.id];
+      userSockets[socket.user.id] = _.without(userSockets[socket.user.id], socket);
+      delete users[socket.user.id];
+    }
   });
 
   socket.on('disconnect', () => {
@@ -170,6 +175,7 @@ io.on('connection', socket => {
         }
       });
 
+      userSockets[socket.user.id] = _.without(userSockets[socket.user.id], socket);
       delete users[socket.user.id];
     }
   });
