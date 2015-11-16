@@ -1,19 +1,17 @@
 import React, {PropTypes} from 'react';
-import {Panel} from 'react-bootstrap';
-import {Link} from 'react-router';
+import {ListGroupItem} from 'react-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap';
 import PlayerList from '../game/PlayerList';
 
 const GameListEntry = props => {
   const {game, players} = props;
 
   return (
-    <Panel>
-      <Link to={`/game/${game.id}`}>{game.id}</Link>
-      {' '}
-      <span>
+    <LinkContainer to={`/game/${game.id}`}>
+      <ListGroupItem>
         <PlayerList players={players} game={game} />
-      </span>
-    </Panel>
+      </ListGroupItem>
+    </LinkContainer>
   );
 };
 

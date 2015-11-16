@@ -1,9 +1,10 @@
 import React from 'react';
 import _ from 'underscore';
 import GameListEntry from './GameListEntry';
+import {ListGroup} from 'react-bootstrap';
 
 export default props => (
-  <div>
+  <ListGroup>
     {
       _.map(props.games, (game, id) => {
         return (
@@ -11,5 +12,5 @@ export default props => (
         );
       })
     }
-  </div>
+  </ListGroup>
 );
