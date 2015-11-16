@@ -4,6 +4,7 @@ import Chat from '../chat/Chat';
 import GameLobbyButtons from './GameLobbyButtons';
 import _ from 'underscore';
 import PlayerList from './PlayerList';
+import '../../stylesheets/game.scss';
 
 export default class Game extends React.Component {
   render() {
@@ -18,7 +19,9 @@ export default class Game extends React.Component {
 
       return (
         <div>
-          <PlayerList players={players} game={game} />
+          <div className='game-player-list'>
+            <PlayerList players={players} game={game} />
+          </div>
           <GameLobbyButtons
             login={this.props.login}
             game={game}

@@ -1,19 +1,17 @@
 import React, {PropTypes} from 'react';
 import {Panel} from 'react-bootstrap';
 import {Link} from 'react-router';
-import _ from 'underscore';
+import PlayerList from '../game/PlayerList';
 
 const GameListEntry = props => {
   const {game, players} = props;
-
-  const playerNames = _.map(game.players, id => players[id].name);
 
   return (
     <Panel>
       <Link to={`/game/${game.id}`}>{game.id}</Link>
       {' '}
       <span>
-        {'Players: ' + playerNames.join(', ')}
+        <PlayerList players={players} game={game} />
       </span>
     </Panel>
   );
