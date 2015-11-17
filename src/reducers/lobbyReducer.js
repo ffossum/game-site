@@ -94,6 +94,15 @@ export default function games(state = initialState, action) {
         .toJS();
     }
 
+    case types.UPDATE_GAME_STATE: {
+      const gameId = action.payload.game.id;
+      const gameState = action.payload.game.state;
+
+      return Immutable.fromJS(state)
+        .setIn([gameId, 'state'], gameState)
+        .toJS();
+    }
+
     default:
       return state;
   }

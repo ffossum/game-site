@@ -43,7 +43,9 @@ io.on('connection', socket => {
   let loggedIn = false;
 
   socket.emit('UPDATE_PLAYERS', _.extend({}, users, getUsersInGames(games)));
-  socket.emit('UPDATE_GAMES', games);
+  socket.emit('UPDATE_GAMES', _.mapObject(games, game => {
+    return _.pick(game, ['id', 'host', 'players', 'status']);
+  }));
 
   socket.on('SEND_MESSAGE', data => {
     socket.broadcast.emit('NEW_MESSAGE', data);
