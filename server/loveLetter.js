@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, {times} from 'lodash';
 import Immutable from 'immutable';
 import {cards, values} from './loveLetterCards';
 
@@ -78,11 +78,11 @@ export default {
     const order = _.shuffle(players);
 
     const deck = _.shuffle([
-      ..._(5).times(() => cards.GUARD).value(),
-      ..._(2).times(() => cards.PRIEST).value(),
-      ..._(2).times(() => cards.BARON).value(),
-      ..._(2).times(() => cards.HANDMAIDEN).value(),
-      ..._(2).times(() => cards.PRINCE).value(),
+      ...times(5, () => cards.GUARD),
+      ...times(2, () => cards.PRIEST),
+      ...times(2, () => cards.BARON),
+      ...times(2, () => cards.HANDMAIDEN),
+      ...times(2, () => cards.PRINCE),
       cards.KING,
       cards.COUNTESS,
       cards.PRINCESS
