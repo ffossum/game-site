@@ -1,8 +1,6 @@
-const _ = require('underscore');
-const Immutable = require('immutable');
-const loveLetterCards = require('./loveLetterCards');
-const cards = loveLetterCards.cards;
-const values = loveLetterCards.values;
+import _ from 'underscore';
+import Immutable from 'immutable';
+import {cards, values} from './loveLetterCards';
 
 function userMayTakeAction(state, action, cardName) {
   const actingPlayer = state.players[action.acting];
@@ -14,16 +12,16 @@ function userMayTakeAction(state, action, cardName) {
 }
 
 function moveToDiscards(imState, cardName) {
-  const actingPlayerName = imState.get('toAct');
-  const actingPlayer = imState.get('players').get(actingPlayerName);
+  const actingPlayerId = imState.get('toAct');
+  const actingPlayer = imState.get('players').get(actingPlayerId);
   const cardIndex = actingPlayer.get('hand').indexOf(cardName);
 
   return imState
-    .deleteIn(['players', actingPlayerName, 'hand', cardIndex])
-    .updateIn(['players', actingPlayerName, 'discards'], discards => discards.push(cardName));
+    .deleteIn(['players', actingPlayerId, 'hand', cardIndex])
+    .updateIn(['players', actingPlayerId, 'discards'], discards => discards.push(cardName));
 }
 
-function getNextPlayerName(imState) {
+function getNextPlayerId(imState) {
   const alivePlayers = imState
     .get('players')
     .filter(player => player.get('hand').size > 0);
@@ -38,42 +36,42 @@ function getNextPlayerName(imState) {
   return filteredOrder.get(nextPlayerIndex);
 }
 
-function drawCard(imState, playerName) {
+function drawCard(imState, playerId) {
   const topCard = imState.get('deck').last();
   return imState
     .update('deck', deck => deck.pop())
-    .updateIn(['players', playerName, 'hand'], hand => hand.push(topCard));
+    .updateIn(['players', playerId, 'hand'], hand => hand.push(topCard));
 }
 
-function eliminatePlayer(imState, playerName) {
-  const player = imState.getIn(['players', playerName]);
+function eliminatePlayer(imState, playerId) {
+  const player = imState.getIn(['players', playerId]);
   return imState
-    .updateIn(['players', playerName, 'discards'],
+    .updateIn(['players', playerId, 'discards'],
       discards => discards.concat(player.get('hand')))
-    .updateIn(['players', playerName, 'hand'], hand => hand.clear());
+    .updateIn(['players', playerId, 'hand'], hand => hand.clear());
 }
 
-function switchCards(imState, playerName, targetName) {
-  const targetCard = imState.getIn(['players', targetName, 'hand']).first();
-  const playerCard = imState.getIn(['players', playerName, 'hand']).first();
+function switchCards(imState, playerId, targetId) {
+  const targetCard = imState.getIn(['players', targetId, 'hand']).first();
+  const playerCard = imState.getIn(['players', playerId, 'hand']).first();
 
   return imState
-    .updateIn(['players', targetName, 'hand'], hand => hand.set(0, playerCard))
-    .updateIn(['players', playerName, 'hand'], hand => hand.set(0, targetCard));
+    .updateIn(['players', targetId, 'hand'], hand => hand.set(0, playerCard))
+    .updateIn(['players', playerId, 'hand'], hand => hand.set(0, targetCard));
 }
 
 let discardHand = eliminatePlayer;
 
 function prepareNextTurn(imState) {
-  const nextPlayerName = getNextPlayerName(imState);
+  const nextPlayerId = getNextPlayerId(imState);
 
-  imState = imState.update('toAct', toAct => nextPlayerName);
-  imState = drawCard(imState, nextPlayerName);
+  imState = imState.update('toAct', toAct => nextPlayerId);
+  imState = drawCard(imState, nextPlayerId);
 
   return imState;
 }
 
-module.exports = {
+export default {
   createInitialState(players) {
 
     //Player order is random
@@ -110,10 +108,10 @@ module.exports = {
     };
   },
 
-  asVisibleBy(state, playerName) {
+  asVisibleBy(state, playerId) {
     const players = _.mapObject(state.players, (player, name) => ({
       ...player,
-      hand: (name === playerName) ? player.hand : _.map(player.hand, card => cards.FACE_DOWN)
+      hand: (name === playerId) ? player.hand : _.map(player.hand, card => cards.FACE_DOWN)
     }));
 
     return {
