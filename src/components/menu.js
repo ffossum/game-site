@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 import {Navbar, NavBrand, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import Icon from './common/Icon';
-import _ from 'underscore';
+import _ from 'lodash';
 
 class Menu extends React.Component {
   render() {

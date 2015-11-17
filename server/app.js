@@ -3,7 +3,7 @@ import {Server} from 'http';
 import favicon from 'serve-favicon';
 import path from 'path';
 import shortid from 'shortid';
-import _ from 'underscore';
+import _ from 'lodash';
 import db from './db';
 import loveLetter from './loveLetter';
 
@@ -43,7 +43,7 @@ io.on('connection', socket => {
   let loggedIn = false;
 
   socket.emit('UPDATE_PLAYERS', _.extend({}, users, getUsersInGames(games)));
-  socket.emit('UPDATE_GAMES', _.mapObject(games, game => {
+  socket.emit('UPDATE_GAMES', _.mapValues(games, game => {
     return _.pick(game, ['id', 'host', 'players', 'status']);
   }));
 

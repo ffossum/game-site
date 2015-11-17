@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Button} from 'react-bootstrap';
-import _ from 'underscore';
+import _ from 'lodash';
 import Spinner from '../common/Spinner';
 import * as status from '../../constants/GameStatus';
 

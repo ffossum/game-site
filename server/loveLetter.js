@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import _ from 'lodash';
 import Immutable from 'immutable';
 import {cards, values} from './loveLetterCards';
 
@@ -78,11 +78,11 @@ export default {
     const order = _.shuffle(players);
 
     const deck = _.shuffle([
-      ..._(5).times(() => cards.GUARD),
-      ..._(2).times(() => cards.PRIEST),
-      ..._(2).times(() => cards.BARON),
-      ..._(2).times(() => cards.HANDMAIDEN),
-      ..._(2).times(() => cards.PRINCE),
+      ..._(5).times(() => cards.GUARD).value(),
+      ..._(2).times(() => cards.PRIEST).value(),
+      ..._(2).times(() => cards.BARON).value(),
+      ..._(2).times(() => cards.HANDMAIDEN).value(),
+      ..._(2).times(() => cards.PRINCE).value(),
       cards.KING,
       cards.COUNTESS,
       cards.PRINCESS
@@ -109,7 +109,7 @@ export default {
   },
 
   asVisibleBy(state, playerId) {
-    const players = _.mapObject(state.players, (player, name) => ({
+    const players = _.mapValues(state.players, (player, name) => ({
       ...player,
       hand: (name === playerId) ? player.hand : _.map(player.hand, card => cards.FACE_DOWN)
     }));

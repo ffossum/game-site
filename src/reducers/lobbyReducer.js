@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
 import * as status from '../constants/GameStatus';
-import _ from 'underscore';
+import _ from 'lodash';
 import Immutable, {List} from 'immutable';
 
 const initialState = {};

@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {Alert, Panel} from 'react-bootstrap';
 import Chat from '../chat/Chat';
 import GameLobbyButtons from './GameLobbyButtons';
-import _ from 'underscore';
+import _ from 'lodash';
 import PlayerList from './PlayerList';
 import '../../stylesheets/game.scss';
 
