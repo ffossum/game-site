@@ -5,6 +5,7 @@ import path from 'path';
 import shortid from 'shortid';
 import _ from 'underscore';
 import db from './db';
+import loveLetter from './loveLetter';
 
 const app = express();
 const server = Server(app);
@@ -139,6 +140,17 @@ io.on('connection', socket => {
   socket.on('START_GAME_REQUEST', gameId => {
     const game = games[gameId];
     game.status = 'IN_PROGRESS';
+    game.state = loveLetter.createInitialState(game.players);
+    _.each(game.players, userId => {
+      _.each(userSockets[userId], userSocket => {
+        userSocket.emit('UPDATE_GAME_STATE', {
+          game: {
+            id: gameId,
+            state: loveLetter.asVisibleBy(game.state, userId)
+          }
+        });
+      });
+    });
 
     socket.emit('START_GAME_SUCCESS', gameId);
     socket.broadcast.to(gameId).emit('GAME_STARTED', gameId);
