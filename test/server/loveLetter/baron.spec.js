@@ -21,14 +21,12 @@ describe('love letter - baron', () => {
     };
 
     const action = {
+      card: cards.BARON,
       acting: 'Bob',
-      guess: {
-        player: 'Jack',
-        card: cards.HANDMAIDEN
-      }
+      target: 'Jack'
     };
 
-    const state = loveLetter.useBaron(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
     expect(state).to.equal(previousState);
   });
 
@@ -54,11 +52,12 @@ describe('love letter - baron', () => {
     };
 
     const action = {
+      card: cards.BARON,
       acting: 'Bob',
       target: 'Jack'
     };
 
-    const state = loveLetter.useBaron(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
 
     expect(state).to.deep.equal({
       toAct: 'Jill',
@@ -103,11 +102,12 @@ describe('love letter - baron', () => {
     };
 
     const action = {
+      card: cards.BARON,
       acting: 'Bob',
       target: 'Jack'
     };
 
-    const state = loveLetter.useBaron(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
 
     expect(state).to.deep.equal({
       toAct: 'Jack',
@@ -152,11 +152,12 @@ describe('love letter - baron', () => {
     };
 
     const action = {
+      card: cards.BARON,
       acting: 'Bob',
       target: 'Jack'
     };
 
-    const state = loveLetter.useBaron(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
 
     expect(state).to.deep.equal({
       toAct: 'Jack',

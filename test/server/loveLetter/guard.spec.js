@@ -21,12 +21,13 @@ describe('love letter - guard', () => {
     };
 
     const action = {
+      card: cards.GUARD,
       acting: 'Bob',
       target: 'Jack',
       guess: cards.HANDMAIDEN
     };
 
-    const state = loveLetter.useGuard(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
     expect(state).to.equal(previousState);
 
   });
@@ -49,12 +50,13 @@ describe('love letter - guard', () => {
     };
 
     const action = {
+      card: cards.GUARD,
       acting: 'Bob',
       target: 'Jack',
       guess: cards.HANDMAIDEN
     };
 
-    const state = loveLetter.useGuard(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
 
     expect(state).to.deep.equal({
       toAct: 'Jack',
@@ -95,12 +97,13 @@ describe('love letter - guard', () => {
     };
 
     const action = {
+      card: cards.GUARD,
       acting: 'Bob',
       target: 'Jack',
       guess: cards.PRIEST
     };
 
-    const state = loveLetter.useGuard(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
 
     expect(state).to.deep.equal({
       toAct: 'Jill',

@@ -22,10 +22,11 @@ describe('love letter - handmaiden', () => {
     };
 
     const action = {
+      card: cards.HANDMAIDEN,
       acting: 'Bob'
     };
 
-    const state = loveLetter.useHandmaiden(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
     expect(state).to.equal(previousState);
   });
 
@@ -47,10 +48,11 @@ describe('love letter - handmaiden', () => {
     };
 
     const action = {
+      card: cards.HANDMAIDEN,
       acting: 'Bob'
     };
 
-    const state = loveLetter.useHandmaiden(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
 
     expect(_.last(state.players['Bob'].discards)).to.equal(cards.HANDMAIDEN);
     expect(state.players['Bob'].protected).to.be.true;
@@ -79,12 +81,13 @@ describe('love letter - handmaiden', () => {
     };
 
     const action = {
+      card: cards.GUARD,
       acting: 'Bob',
       target: 'Jack',
       guess: cards.PRIEST
     };
 
-    const state = loveLetter.useGuard(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
 
     expect(state.players['Jack'].hand).to.be.not.empty;
   });
@@ -111,12 +114,13 @@ describe('love letter - handmaiden', () => {
     };
 
     const action = {
+      card: cards.GUARD,
       acting: 'Bob',
       target: 'Jack',
       guess: cards.PRIEST
     };
 
-    const state = loveLetter.useGuard(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
 
     expect(state.players['Jack'].hand).to.be.empty;
   });

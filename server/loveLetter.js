@@ -162,113 +162,17 @@ export function asVisibleBy(state, playerId) {
   };
 }
 
-export function useGuard(state, action) {
-  if (!userMayTakeAction(state, action, cards.GUARD)) {
+export function useCard(state, action) {
+  if (!userMayTakeAction(state, action, action.card)) {
     return state;
   }
 
   let imState = Immutable.fromJS(state);
 
-  imState = moveToDiscards(imState, cards.GUARD);
+  imState = moveToDiscards(imState, action.card);
   imState = imState.deleteIn(['players', action.acting, 'protected']);
 
-  imState = cardEffect[cards.GUARD](imState, action);
-
-  return prepareNextTurn(imState).toJS();
-}
-
-export function usePriest(state, action) {
-  if (!userMayTakeAction(state, action, cards.PRIEST)) {
-    return state;
-  }
-
-  let imState = Immutable.fromJS(state);
-  imState = moveToDiscards(imState, cards.PRIEST);
-  imState = imState.deleteIn(['players', action.acting, 'protected']);
-
-  return prepareNextTurn(imState).toJS();
-}
-
-export function useBaron(state, action) {
-  if (!userMayTakeAction(state, action, cards.BARON)) {
-    return state;
-  }
-
-  let imState = Immutable.fromJS(state);
-
-  imState = moveToDiscards(imState, cards.BARON);
-  imState = imState.deleteIn(['players', action.acting, 'protected']);
-
-  imState = cardEffect[cards.BARON](imState, action);
-
-  return prepareNextTurn(imState).toJS();
-}
-
-export function useHandmaiden(state, action) {
-  if (!userMayTakeAction(state, action, cards.HANDMAIDEN)) {
-    return state;
-  }
-
-  let imState = Immutable.fromJS(state);
-
-  imState = moveToDiscards(imState, cards.HANDMAIDEN);
-
-  imState = cardEffect[cards.HANDMAIDEN](imState, action);
-
-  return prepareNextTurn(imState).toJS();
-}
-
-export function usePrince(state, action) {
-  if (!userMayTakeAction(state, action, cards.PRINCE)) {
-    return state;
-  }
-
-  let imState = Immutable.fromJS(state);
-
-  imState = moveToDiscards(imState, cards.PRINCE);
-  imState = imState.deleteIn(['players', action.acting, 'protected']);
-
-  imState = cardEffect[cards.PRINCE](imState, action);
-
-  return prepareNextTurn(imState).toJS();
-}
-
-export function useKing(state, action) {
-  if (!userMayTakeAction(state, action, cards.KING)) {
-    return state;
-  }
-
-  let imState = Immutable.fromJS(state);
-  imState = moveToDiscards(imState, cards.KING);
-  imState = imState.deleteIn(['players', action.acting, 'protected']);
-
-  imState = cardEffect[cards.KING](imState, action);
-
-  return prepareNextTurn(imState).toJS();
-}
-
-export function useCountess(state, action) {
-  if (!userMayTakeAction(state, action, cards.COUNTESS)) {
-    return state;
-  }
-
-  let imState = Immutable.fromJS(state);
-  imState = moveToDiscards(imState, cards.COUNTESS);
-  imState = imState.deleteIn(['players', action.acting, 'protected']);
-
-  return prepareNextTurn(imState).toJS();
-}
-
-export function usePrincess(state, action) {
-  if (!userMayTakeAction(state, action, cards.PRINCESS)) {
-    return state;
-  }
-
-  let imState = Immutable.fromJS(state);
-  imState = moveToDiscards(imState, cards.PRINCESS);
-  imState = imState.deleteIn(['players', action.acting, 'protected']);
-
-  imState = cardEffect[cards.PRINCESS](imState, action);
+  imState = cardEffect[action.card](imState, action);
 
   return prepareNextTurn(imState).toJS();
 }

@@ -21,11 +21,12 @@ describe('love letter - king', () => {
     };
 
     const action = {
+      card: cards.KING,
       acting: 'Bob',
       target: 'Jack'
     };
 
-    const state = loveLetter.useKing(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
     expect(state).to.equal(previousState);
   });
 
@@ -47,11 +48,12 @@ describe('love letter - king', () => {
     };
 
     const action = {
+      card: cards.KING,
       acting: 'Bob',
       target: 'Jack'
     };
 
-    const state = loveLetter.useKing(previousState, action);
+    const state = loveLetter.useCard(previousState, action);
 
     expect(state).to.deep.equal({
       toAct: 'Jack',
