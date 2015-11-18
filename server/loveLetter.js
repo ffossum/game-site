@@ -4,11 +4,18 @@ import {cards, values} from './loveLetterCards';
 
 function userMayTakeAction(state, action, cardName) {
   const actingPlayer = state.players[action.acting];
-  const targetPlayer = state.players[action.target];
 
-  return (state.toAct === action.acting) &&
-    _.contains(actingPlayer.hand, cardName) &&
-    (!targetPlayer || !targetPlayer.protected);
+  if (_.includes([cards.PRINCE, cards.KING], cardName) &&
+    _.includes(actingPlayer.hand, cards.COUNTESS)) {
+    return false;
+  }
+
+  const targetPlayer = state.players[action.target];
+  const playerCanAct = action.acting === state.toAct;
+  const playerHasCard = _.contains(actingPlayer.hand, cardName);
+  const targetIsProtected = targetPlayer && targetPlayer.protected;
+
+  return playerCanAct && playerHasCard && !targetIsProtected;
 }
 
 function moveToDiscards(imState, cardName) {
@@ -214,5 +221,17 @@ export default {
     imState = switchCards(imState, action.acting, action.target);
 
     return prepareNextTurn(imState).toJS();
-  }
+  },
+
+  useCountess(state, action) {
+    if (!userMayTakeAction(state, action, cards.COUNTESS)) {
+      return state;
+    }
+
+    let imState = Immutable.fromJS(state);
+    imState = moveToDiscards(imState, cards.COUNTESS);
+    imState = imState.deleteIn(['players', action.acting, 'protected']);
+
+    return prepareNextTurn(imState).toJS();
+  },
 };
