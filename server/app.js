@@ -5,7 +5,7 @@ import path from 'path';
 import shortid from 'shortid';
 import _ from 'lodash';
 import db from './db';
-import loveLetter from './loveLetter';
+import * as loveLetter from './loveLetter';
 
 const app = express();
 const server = Server(app);

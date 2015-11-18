@@ -1,4 +1,4 @@
-import loveLetter from '../../../server/loveLetter';
+import * as loveLetter from '../../../server/loveLetter';
 import {cards} from '../../../server/loveLetterCards';
 import {expect} from 'chai';
 

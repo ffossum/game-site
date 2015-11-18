@@ -1,7 +1,6 @@
-import loveLetter from '../../../server/loveLetter';
+import * as loveLetter from '../../../server/loveLetter';
 import {cards} from '../../../server/loveLetterCards';
 import {expect} from 'chai';
-import _ from 'underscore';
 
 describe('love letter', () => {
   it('creates correct initial state for 2 player game', () => {
