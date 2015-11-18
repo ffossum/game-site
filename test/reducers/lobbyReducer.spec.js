@@ -49,8 +49,7 @@ describe('lobby reducer', () => {
       },
       'game 2': {
         id: 'game 2',
-        players: ['Jack', 'Bob'],
-        messages: []
+        players: ['Jack', 'Bob']
       }
     });
   });
@@ -70,14 +69,7 @@ describe('lobby reducer', () => {
 
     const state = reducer(previousState, action);
 
-    expect(state).to.deep.equal({
-      'game 1': {
-        players: ['Lisa', 'Bob'],
-        messages: [{
-          text: 'Bob has joined the game.'
-        }]
-      }
-    });
+    expect(state['game 1'].players).to.deep.equal(['Lisa', 'Bob']);
   });
 
   it('passes through unknown action', () => {

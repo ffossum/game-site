@@ -132,14 +132,15 @@ io.on('connection', socket => {
   });
 
   socket.on('SEND_GAME_MESSAGE', data => {
-    const gameId = data.id;
+    const gameId = data.game.id;
     const game = games[gameId];
     if (game) {
       socket.broadcast.to(gameId).emit('NEW_GAME_MESSAGE', data);
     }
   });
 
-  socket.on('START_GAME_REQUEST', gameId => {
+  socket.on('START_GAME_REQUEST', data => {
+    const gameId = data.game.id;
     const game = games[gameId];
     game.status = 'IN_PROGRESS';
     game.state = loveLetter.createInitialState(game.players);
@@ -154,8 +155,8 @@ io.on('connection', socket => {
       });
     });
 
-    socket.emit('START_GAME_SUCCESS', gameId);
-    socket.broadcast.to(gameId).emit('GAME_STARTED', gameId);
+    socket.emit('START_GAME_SUCCESS', data);
+    socket.broadcast.to(gameId).emit('GAME_STARTED', data);
   });
 
   socket.on('LOG_OUT', () => {

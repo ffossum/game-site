@@ -85,7 +85,9 @@ export function sendGameMessage(gameId, user, text) {
   return {
     type: types.SEND_GAME_MESSAGE,
     payload: {
-      id: gameId,
+      game: {
+        id: gameId
+      },
       msg: {
         user,
         text
@@ -121,7 +123,11 @@ export function playerDisconnected(payload) {
 export function startGame(gameId) {
   return {
     type: types.START_GAME_REQUEST,
-    payload: gameId,
+    payload: {
+      game: {
+        id: gameId
+      }
+    },
     meta: {
       socket: true
     }
