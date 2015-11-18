@@ -234,4 +234,18 @@ export default {
 
     return prepareNextTurn(imState).toJS();
   },
+
+  usePrincess(state, action) {
+    if (!userMayTakeAction(state, action, cards.PRINCESS)) {
+      return state;
+    }
+
+    let imState = Immutable.fromJS(state);
+    imState = moveToDiscards(imState, cards.PRINCESS);
+    imState = imState.deleteIn(['players', action.acting, 'protected']);
+
+    imState = eliminatePlayer(imState, action.acting);
+
+    return prepareNextTurn(imState).toJS();
+  }
 };
