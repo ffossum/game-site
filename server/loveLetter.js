@@ -78,6 +78,41 @@ function prepareNextTurn(imState) {
   return imState;
 }
 
+const cardEffect = {
+  [cards.GUARD]: (imState, action) => {
+    const targetPlayerCard = imState.getIn(['players', action.target, 'hand', 0]);
+    if (targetPlayerCard === action.guess) {
+      return eliminatePlayer(imState, action.target);
+    } else {
+      return imState;
+    }
+  },
+  [cards.PRIEST]: (imState, action) => imState,
+  [cards.BARON]: (imState, action) => {
+    const actingPlayerCardValue = values[imState.getIn(['players', action.acting, 'hand', 0])];
+    const targetPlayerCardValue = values[imState.getIn(['players', action.target, 'hand', 0])];
+
+    if (actingPlayerCardValue > targetPlayerCardValue) {
+      imState = eliminatePlayer(imState, action.target);
+    } else if (actingPlayerCardValue < targetPlayerCardValue) {
+      imState = eliminatePlayer(imState, action.acting);
+    }
+    return imState;
+  },
+  [cards.HANDMAIDEN]: (imState, action) =>  imState.setIn(['players', action.acting, 'protected'], true),
+  [cards.PRINCE]: (imState, action) => {
+    imState = discardHand(imState, action.target);
+    return drawCard(imState, action.target);
+  },
+  [cards.KING]: (imState, action) => {
+    return switchCards(imState, action.acting, action.target);
+  },
+  [cards.COUNTESS]: (imState, action) => imState,
+  [cards.PRINCESS]: (imState, action) => {
+    return eliminatePlayer(imState, action.acting);
+  }
+};
+
 export default {
   createInitialState(players) {
 
@@ -138,10 +173,7 @@ export default {
     imState = moveToDiscards(imState, cards.GUARD);
     imState = imState.deleteIn(['players', action.acting, 'protected']);
 
-    const targetPlayer = state.players[action.target];
-    if (targetPlayer.hand[0] === action.guess) {
-      imState = eliminatePlayer(imState, action.target);
-    }
+    imState = cardEffect[cards.GUARD](imState, action);
 
     return prepareNextTurn(imState).toJS();
   },
@@ -168,14 +200,7 @@ export default {
     imState = moveToDiscards(imState, cards.BARON);
     imState = imState.deleteIn(['players', action.acting, 'protected']);
 
-    const actingPlayerCardValue = values[state.players[action.acting].hand[0]];
-    const targetPlayerCardValue = values[state.players[action.target].hand[0]];
-
-    if (actingPlayerCardValue > targetPlayerCardValue) {
-      imState = eliminatePlayer(imState, action.target);
-    } else if (actingPlayerCardValue < targetPlayerCardValue) {
-      imState = eliminatePlayer(imState, action.acting);
-    }
+    imState = cardEffect[cards.BARON](imState, action);
 
     return prepareNextTurn(imState).toJS();
   },
@@ -188,7 +213,8 @@ export default {
     let imState = Immutable.fromJS(state);
 
     imState = moveToDiscards(imState, cards.HANDMAIDEN);
-    imState = imState.setIn(['players', action.acting, 'protected'], true);
+
+    imState = cardEffect[cards.HANDMAIDEN](imState, action);
 
     return prepareNextTurn(imState).toJS();
   },
@@ -203,8 +229,7 @@ export default {
     imState = moveToDiscards(imState, cards.PRINCE);
     imState = imState.deleteIn(['players', action.acting, 'protected']);
 
-    imState = discardHand(imState, action.target);
-    imState = drawCard(imState, action.target);
+    imState = cardEffect[cards.PRINCE](imState, action);
 
     return prepareNextTurn(imState).toJS();
   },
@@ -218,7 +243,7 @@ export default {
     imState = moveToDiscards(imState, cards.KING);
     imState = imState.deleteIn(['players', action.acting, 'protected']);
 
-    imState = switchCards(imState, action.acting, action.target);
+    imState = cardEffect[cards.KING](imState, action);
 
     return prepareNextTurn(imState).toJS();
   },
@@ -244,7 +269,7 @@ export default {
     imState = moveToDiscards(imState, cards.PRINCESS);
     imState = imState.deleteIn(['players', action.acting, 'protected']);
 
-    imState = eliminatePlayer(imState, action.acting);
+    imState = cardEffect[cards.PRINCESS](imState, action);
 
     return prepareNextTurn(imState).toJS();
   }
