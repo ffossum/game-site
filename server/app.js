@@ -74,6 +74,15 @@ io.on('connection', socket => {
             game: {id: gameId},
             user: {id: user.id}
           });
+
+          if (game.status === 'IN_PROGRESS') {
+            socket.emit('UPDATE_GAME_STATE', {
+              game: {
+                id: gameId,
+                state: loveLetter.asVisibleBy(game.state, user.id)
+              }
+            });
+          }
         }
       });
 
