@@ -3,6 +3,7 @@ import _ from 'lodash';
 import {Alert, Panel} from 'react-bootstrap';
 import Avatar from '../../common/Avatar';
 import WaitingIcon from '../../common/WaitingIcon';
+import Hand from './Hand';
 
 export default function GameState(props) {
 
@@ -29,6 +30,7 @@ export default function GameState(props) {
   return (
     <div>
       {playerStates}
+      <Hand hand={props.game.state.players[props.login.id].hand} />
     </div>
   );
 };
