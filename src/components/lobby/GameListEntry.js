@@ -3,19 +3,19 @@ import {ListGroupItem} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import PlayerList from '../game/PlayerList';
 
-const GameListEntry = props => {
-  const {game, players} = props;
+export default class GameListEntry extends React.Component {
+  render() {
+    const {game, players} = this.props;
 
-  return (
-    <LinkContainer to={`/game/${game.id}`}>
-      <ListGroupItem>
-        <PlayerList players={players} game={game} />
-      </ListGroupItem>
-    </LinkContainer>
-  );
+    return (
+      <LinkContainer to={`/game/${game.id}`}>
+        <ListGroupItem>
+          <PlayerList players={players} game={game} />
+        </ListGroupItem>
+      </LinkContainer>
+    );
+  }
 };
-
-export default GameListEntry;
 
 GameListEntry.propTypes = {
   game: PropTypes.shape({

@@ -9,28 +9,30 @@ function requiresTarget(card) {
   return _.includes(['GUARD', 'PRIEST', 'BARON', 'PRINCE', 'KING'], card);
 }
 
-export default function Hand(props) {
-  const hand = props.gameState.players[props.id].hand;
+export default class Hand extends React.Component {
+  render() {
+    const hand = this.props.gameState.players[this.props.id].hand;
 
-  return (
-    <div className='love-letter-player-hand'>
-      {
-        _.map(hand, (card, index) => {
-          if (requiresTarget(card)) {
+    return (
+      <div className='love-letter-player-hand'>
+        {
+          _.map(hand, (card, index) => {
+            if (requiresTarget(card)) {
+                return <span key={card+index}>
+                  <PlayableTargetedCard
+                    index={index}
+                    card={card}
+                    players={this.props.players}
+                    gameState={this.props.gameState} />
+                </span>;
+            } else {
               return <span key={card+index}>
-                <PlayableTargetedCard
-                  index={index}
-                  card={card}
-                  players={props.players}
-                  gameState={props.gameState} />
+                <PlayableCard card={card} />
               </span>;
-          } else {
-            return <span key={card+index}>
-              <PlayableCard card={card} />
-            </span>;
-          }
-        })
-      }
-    </div>
-  );
+            }
+          })
+        }
+      </div>
+    );
+  }
 }

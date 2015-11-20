@@ -2,28 +2,30 @@ import React from 'react';
 import {ButtonGroup, Button, OverlayTrigger, Popover} from 'react-bootstrap';
 import Card from './Card';
 
-export default function PlayableTargetedCard(props) {
-  return (
-    <OverlayTrigger
-      trigger="click"
-      placement="top"
-      overlay={
-        <Popover title="Choose target" id={props.card + props.index}>
-          <ButtonGroup vertical block>
-            {
-              _.map(props.gameState.players, (playerState, playerId) => {
-                return <Button key={'target-' + playerId}>
-                  {props.players[playerId].name}
-                </Button>;
-              })
-            }
-          </ButtonGroup>
-        </Popover>
-      }>
+export default class PlayableTargetedCard extends React.Component {
+  render() {
+    return (
+      <OverlayTrigger
+        trigger="click"
+        placement="top"
+        overlay={
+          <Popover title="Choose target" id={this.props.card + this.props.index}>
+            <ButtonGroup vertical block>
+              {
+                _.map(this.props.gameState.players, (playerState, playerId) => {
+                  return <Button key={'target-' + playerId}>
+                    {this.props.players[playerId].name}
+                  </Button>;
+                })
+              }
+            </ButtonGroup>
+          </Popover>
+        }>
 
-      <Button>
-        <Card card={props.card} />
-      </Button>
-    </OverlayTrigger>
-  );
+        <Button>
+          <Card card={this.props.card} />
+        </Button>
+      </OverlayTrigger>
+    );
+  }
 }
