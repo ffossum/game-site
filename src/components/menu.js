@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {Navbar, NavBrand, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
+import {Navbar, NavbarBrand, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import Icon from './common/Icon';
 import _ from 'lodash';
@@ -18,7 +18,7 @@ class Menu extends React.Component {
 
     return (
       <Navbar inverse>
-        <NavBrand><Link to="/">Game Site</Link></NavBrand>
+        <NavbarBrand><Link to="/">Game Site</Link></NavbarBrand>
         <Nav>
           {
             links.map(link => {
@@ -38,7 +38,7 @@ class Menu extends React.Component {
               });
 
               return (
-                <Nav right>
+                <Nav pullRight>
                   {
                     !_.isEmpty(myGames) ?
                     <NavDropdown title="My games" id="nav-games-dropdown">
@@ -61,7 +61,7 @@ class Menu extends React.Component {
 
             } else {
               return (
-                <Nav right>
+                <Nav pullRight>
                   <LinkContainer to="/login">
                     <NavItem><Icon type='sign-in'/> Log in</NavItem>
                   </LinkContainer>
