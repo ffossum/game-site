@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {ButtonGroup, Button, OverlayTrigger, Popover} from 'react-bootstrap';
 import Card from './Card';
 import {map, omit} from 'lodash';
@@ -10,10 +10,10 @@ function mayTargetSelf(card) {
 export default class PlayableTargetedCard extends React.Component {
   render() {
 
-    const {id, card, index, gameState, players} = this.props;
-    const otherPlayerStates = omit(gameState.players, id);
+    const {id, login, card, game, players} = this.props;
+    const otherPlayerStates = omit(game.state.players, login.id);
 
-    const targets = mayTargetSelf(card) ? gameState.players : otherPlayerStates;
+    const targets = mayTargetSelf(card) ? game.state.players : otherPlayerStates;
 
     return (
       <OverlayTrigger
@@ -21,7 +21,7 @@ export default class PlayableTargetedCard extends React.Component {
         trigger="click"
         placement="right"
         overlay={
-          <Popover title="Choose target" id={card + index}>
+          <Popover title="Choose target" id={id} >
             <ButtonGroup vertical block>
               {
                 map(targets, (playerState, playerId) => {
@@ -45,3 +45,7 @@ export default class PlayableTargetedCard extends React.Component {
     );
   }
 }
+
+PlayableTargetedCard.propTypes = {
+  playCard: PropTypes.func.isRequired
+};

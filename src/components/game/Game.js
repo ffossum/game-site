@@ -6,6 +6,7 @@ import LoveLetterGameState from './loveLetter/LoveLetterGameState';
 import _ from 'lodash';
 import PlayerList from './PlayerList';
 import * as status from '../../constants/GameStatus';
+import LoveLetterContainer from '../../containers/LoveLetterContainer';
 import '../../stylesheets/game.scss';
 
 export default class Game extends React.Component {
@@ -25,10 +26,7 @@ export default class Game extends React.Component {
             () => {
               switch (game.status) {
                 case status.IN_PROGRESS:
-                  return <LoveLetterGameState
-                    login={this.props.login}
-                    players={players}
-                    game={game} />;
+                  return <LoveLetterContainer game={game} />;
 
                 default:
                   return [

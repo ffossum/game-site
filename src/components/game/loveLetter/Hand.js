@@ -11,24 +11,28 @@ function requiresTarget(card) {
 
 export default class Hand extends React.Component {
   render() {
-    const hand = this.props.gameState.players[this.props.id].hand;
+    const {login, players, game, playCard} = this.props;
+    const hand = game.state.players[login.id].hand;
 
     return (
       <div className='love-letter-player-hand'>
         {
           _.map(hand, (card, index) => {
             if (requiresTarget(card)) {
-                return <span key={card+index}>
+                return <span key={card + index}>
                   <PlayableTargetedCard
-                    id={this.props.id}
-                    index={index}
+                    id={card + index}
+                    login={login}
                     card={card}
-                    players={this.props.players}
-                    gameState={this.props.gameState} />
+                    players={players}
+                    game={game}
+                    playCard={playCard} />
                 </span>;
             } else {
               return <span key={card+index}>
-                <PlayableCard card={card} />
+                <PlayableCard
+                  card={card}
+                  playCard={playCard} />
               </span>;
             }
           })
