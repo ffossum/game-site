@@ -31,6 +31,7 @@ export default class GameState extends React.Component {
     return (
       <div>
         {playerStates}
+        <div>Deck: {this.props.game.state.deck}</div>
         <Hand
           players={this.props.players}
           id={this.props.login.id}
