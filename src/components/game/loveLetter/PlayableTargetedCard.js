@@ -1,21 +1,37 @@
 import React from 'react';
 import {ButtonGroup, Button, OverlayTrigger, Popover} from 'react-bootstrap';
 import Card from './Card';
+import {map, omit} from 'lodash';
+
+function mayTargetSelf(card) {
+  return card === 'PRINCE';
+}
 
 export default class PlayableTargetedCard extends React.Component {
   render() {
+
+    const {id, card, index, gameState, players} = this.props;
+    const otherPlayerStates = omit(gameState.players, id);
+
+    const targets = mayTargetSelf(card) ? gameState.players : otherPlayerStates;
+
     return (
       <OverlayTrigger
+        rootClose
         trigger="click"
-        placement="top"
+        placement="right"
         overlay={
-          <Popover title="Choose target" id={this.props.card + this.props.index}>
+          <Popover title="Choose target" id={card + index}>
             <ButtonGroup vertical block>
               {
-                _.map(this.props.gameState.players, (playerState, playerId) => {
-                  return <Button key={'target-' + playerId}>
-                    {this.props.players[playerId].name}
-                  </Button>;
+                map(targets, (playerState, playerId) => {
+                  return (
+                    <Button
+                      key={'target-' + playerId}
+                      disabled={playerState.protected}>
+                      {players[playerId].name}
+                    </Button>
+                  );
                 })
               }
             </ButtonGroup>
@@ -23,7 +39,7 @@ export default class PlayableTargetedCard extends React.Component {
         }>
 
         <Button>
-          <Card card={this.props.card} />
+          <Card card={card} />
         </Button>
       </OverlayTrigger>
     );

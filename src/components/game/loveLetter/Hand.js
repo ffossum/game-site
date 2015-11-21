@@ -20,6 +20,7 @@ export default class Hand extends React.Component {
             if (requiresTarget(card)) {
                 return <span key={card+index}>
                   <PlayableTargetedCard
+                    id={this.props.id}
                     index={index}
                     card={card}
                     players={this.props.players}
