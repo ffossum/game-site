@@ -6,7 +6,6 @@ import Lobby from './containers/LobbyContainer';
 import Create from './containers/CreateGameContainer';
 import Game from './containers/GameContainer';
 import About from './components/About';
-import Login from './containers/LoginContainer';
 import NotFound from './components/NotFound';
 
 export default (
@@ -16,7 +15,6 @@ export default (
     <Route path="create" component={Create} />
     <Route path="game/:id" component={Game} />
     <Route path="about" component={About} />
-    <Route path="login" component={Login} />
     <Route path="*" component={NotFound} />
   </Route>
 );

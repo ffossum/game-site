@@ -1,11 +1,37 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
+import {Navbar, Nav, NavItem, NavDropdown, MenuItem, Modal} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import Icon from './common/Icon';
 import _ from 'lodash';
+import LoginContainer from '../containers/LoginContainer';
 
 class Menu extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.closeLogin = this.closeLogin.bind(this);
+    this.openLogin = this.openLogin.bind(this);
+
+    this.state = {showLogin: false};
+  }
+
+  closeLogin() {
+    this.setState({showLogin: false});
+  }
+
+  openLogin() {
+    this.setState({showLogin: true});
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {loggedIn} = nextProps.login;
+
+    if (loggedIn) {
+      this.closeLogin();
+    }
+  }
+
   render() {
 
     const links = [
@@ -68,15 +94,21 @@ class Menu extends React.Component {
               } else {
                 return (
                   <Nav pullRight>
-                    <LinkContainer to="/login">
-                      <NavItem><Icon type='sign-in'/> Log in</NavItem>
-                    </LinkContainer>
+                    <NavItem onClick={this.openLogin}><Icon type='sign-in'/> Log in</NavItem>
                   </Nav>
                 );
               }
             }()
           }
         </Navbar.Collapse>
+        <Modal show={this.state.showLogin} onHide={this.closeLogin}>
+          <Modal.Header closeButton>
+            <Modal.Title>Log in</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <LoginContainer />
+          </Modal.Body>
+        </Modal>
       </Navbar>
     );
   }
