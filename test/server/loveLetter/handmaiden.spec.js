@@ -58,6 +58,34 @@ describe('love letter - handmaiden', () => {
     expect(state.players['Bob'].protected).to.be.true;
   });
 
+  it("player loses protection when it's their turn", () => {
+    const previousState = {
+      toAct: 'Bob',
+      players: {
+        'Bob': {
+          hand: [cards.HANDMAIDEN, cards.PRIEST],
+          discards: []
+        },
+        'Jack': {
+          hand: [cards.PRIEST],
+          discards: [],
+          protected: true
+        }
+      },
+      order: ['Bob', 'Jack'],
+      deck: [cards.BARON, cards.PRINCE]
+    };
+
+    const action = {
+      card: cards.HANDMAIDEN,
+      acting: 'Bob'
+    };
+
+    const state = loveLetter.useCard(previousState, action);
+    expect(state.toAct).to.equal('Jack');
+    expect(state.players['Jack'].protected).to.be.not.true;
+  });
+
   it('cannot use guard on player protected by handmaiden', () => {
     const previousState = {
       toAct: 'Bob',

@@ -73,6 +73,7 @@ function prepareNextTurn(imState) {
   const nextPlayerId = getNextPlayerId(imState);
 
   imState = imState.update('toAct', toAct => nextPlayerId);
+  imState = imState.deleteIn(['players', nextPlayerId, 'protected']);
   imState = drawCard(imState, nextPlayerId);
 
   return imState;
@@ -170,8 +171,6 @@ export function useCard(state, action) {
   let imState = Immutable.fromJS(state);
 
   imState = moveToDiscards(imState, action.card);
-  imState = imState.deleteIn(['players', action.acting, 'protected']);
-
   imState = cardEffect[action.card](imState, action);
 
   return prepareNextTurn(imState).toJS();
