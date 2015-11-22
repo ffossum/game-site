@@ -1,7 +1,9 @@
 import React, {PropTypes} from 'react';
-import {ButtonGroup, Button, OverlayTrigger, Popover} from 'react-bootstrap';
+import {Button, OverlayTrigger, Popover} from 'react-bootstrap';
 import Card from './Card';
-import {map, omit} from 'lodash';
+import {omit} from 'lodash';
+import GuardForm from './GuardForm';
+import CardTargetForm from './CardTargetForm';
 
 function mayTargetSelf(card) {
   return card === 'PRINCE';
@@ -21,25 +23,12 @@ export default class PlayableTargetedCard extends React.Component {
         trigger="click"
         placement="right"
         overlay={
-          <Popover title="Choose target" id={id} >
-            <ButtonGroup vertical block>
-              {
-                map(targets, (targetState, targetId) => {
-                  const onTargetClicked = event => {
-                    playCard(card, {target: targetId});
-                  };
-
-                  return (
-                    <Button
-                      key={'target-' + targetId}
-                      disabled={targetState.protected}
-                      onClick={onTargetClicked} >
-                      {players[targetId].name}
-                    </Button>
-                  );
-                })
-              }
-            </ButtonGroup>
+          <Popover id={id} >
+            {
+              card === 'GUARD' ?
+              <GuardForm players={players} targets={targets} playCard={playCard} /> :
+              <CardTargetForm card={card} players={players} targets={targets} playCard={playCard} />
+            }
           </Popover>
         }>
 
