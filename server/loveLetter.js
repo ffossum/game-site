@@ -107,6 +107,7 @@ function prepareNextRound(imState) {
   imState = imState.update('players', players => {
     return players.map(player => {
       return player
+        .delete('protected')
         .update('hand', hand => {
           return hand.clear().push(nextDeck.pop());
         })

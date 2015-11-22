@@ -95,7 +95,8 @@ describe('love letter', () => {
         'Bob': {
           score: 0,
           hand: [cards.GUARD, cards.GUARD],
-          discards: []
+          discards: [],
+          protected: true
         },
         'Jack': {
           score: 0,
@@ -122,6 +123,10 @@ describe('love letter', () => {
 
     it('winning player starts next round', () => {
       expect(state.toAct).to.equal('Bob');
+    });
+
+    it('handmaiden protection from previous round no longer applies', () => {
+      expect(state.players['Bob'].protected).to.be.not.true;
     });
 
     it('discards are emptied for next round', () => {
