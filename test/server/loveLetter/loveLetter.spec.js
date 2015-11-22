@@ -11,22 +11,22 @@ describe('love letter', () => {
       expect(firstPlayer.hand.length).to.equal(2);
     });
 
-    it('deck has 13 cards in 2 player game', () => {
+    it('deck has 12 cards in 2 player game', () => {
       const state = loveLetter.createInitialState(['Bob', 'Jack']);
-
-      expect(state.deck.length).to.equal(13);
-    });
-
-    it('deck has 12 cards in 3 player game', () => {
-      const state = loveLetter.createInitialState(['Bob', 'Jack', 'Jill']);
 
       expect(state.deck.length).to.equal(12);
     });
 
-    it('deck has 11 cards in 4 player game', () => {
-      const state = loveLetter.createInitialState(['Bob', 'Jack', 'Jill', 'Chris']);
+    it('deck has 11 cards in 3 player game', () => {
+      const state = loveLetter.createInitialState(['Bob', 'Jack', 'Jill']);
 
       expect(state.deck.length).to.equal(11);
+    });
+
+    it('deck has 10 cards in 4 player game', () => {
+      const state = loveLetter.createInitialState(['Bob', 'Jack', 'Jill', 'Chris']);
+
+      expect(state.deck.length).to.equal(10);
     });
   });
 
@@ -130,7 +130,7 @@ describe('love letter', () => {
     });
 
     it('new deck is created for next round', () => {
-      expect(state.deck.length).to.equal(13);
+      expect(state.deck.length).to.equal(12);
     });
 
     it('new hands are dealt', () => {

@@ -101,6 +101,9 @@ function prepareNextRound(imState) {
 
   const nextDeck = getNewDeck();
 
+  //First card is discarded
+  nextDeck.pop();
+
   imState = imState.update('players', players => {
     return players.map(player => {
       return player
@@ -186,6 +189,9 @@ export function createInitialState(players) {
   const order = _.shuffle(players);
 
   const deck = getNewDeck();
+
+  //First card is discarded
+  deck.pop();
 
   const playerStates = {};
   players.forEach(player => {
