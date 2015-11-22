@@ -117,6 +117,7 @@ describe('love letter - handmaiden', () => {
 
     const state = loveLetter.useCard(previousState, action);
 
+    expect(state.toAct).to.equal('Bob');
     expect(state.players['Jack'].hand).to.be.not.empty;
   });
 
@@ -151,5 +152,41 @@ describe('love letter - handmaiden', () => {
     const state = loveLetter.useCard(previousState, action);
 
     expect(state.players['Jack'].hand).to.be.empty;
+  });
+
+  it('can use guard with no effect if all other players are protected', () => {
+    const previousState = {
+      toAct: 'Bob',
+      players: {
+        'Bob': {
+          hand: [cards.GUARD, cards.GUARD],
+          discards: []
+        },
+        'Jack': {
+          hand: [cards.PRIEST],
+          discards: [cards.HANDMAIDEN],
+          protected: true
+        },
+        'Jill': {
+          hand: [cards.KING],
+          discards: [],
+          protected: true
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
+      deck: [cards.BARON, cards.PRINCE]
+    };
+
+    const action = {
+      card: cards.GUARD,
+      acting: 'Bob',
+      target: 'Jack',
+      guess: cards.PRIEST
+    };
+
+    const state = loveLetter.useCard(previousState, action);
+
+    expect(state.toAct).to.equal('Jack');
+    expect(state.players['Jack'].hand).to.be.not.empty;
   });
 });
