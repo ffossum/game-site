@@ -25,7 +25,6 @@ function userMayTakeAction(state, action, cardName) {
     (!targetIsProtected || (cardTargetsOpponent && _.isEmpty(nonProtectedOpponents)));
 }
 
-
 function moveToDiscards(imState, cardName) {
   const actingPlayerId = imState.get('toAct');
   const actingPlayer = imState.get('players').get(actingPlayerId);
@@ -178,6 +177,12 @@ const cardEffect = {
   [cards.HANDMAIDEN]: (imState, action) =>  imState.setIn(['players', action.acting, 'protected'], true),
   [cards.PRINCE]: (imState, action) => {
     imState = discardHand(imState, action.target);
+
+    const targetDiscards = imState.getIn(['players', action.target, 'discards']);
+    if (targetDiscards.includes(cards.PRINCESS)) {
+      return imState;
+    }
+
     return drawCard(imState, action.target);
   },
   [cards.KING]: (imState, action) => {

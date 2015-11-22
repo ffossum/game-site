@@ -113,4 +113,54 @@ describe('love letter - prince', () => {
       deck: [cards.PRINCESS]
     });
   });
+
+  it('target is eliminated if they are forced to discard Princess', () => {
+    const previousState = {
+      toAct: 'Bob',
+      players: {
+        'Bob': {
+          hand: [cards.PRINCE, cards.HANDMAIDEN],
+          discards: []
+        },
+        'Jack': {
+          hand: [cards.PRINCESS],
+          discards: []
+        },
+        'Jill': {
+          hand: [cards.COUNTESS],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
+      deck: [cards.GUARD, cards.BARON, cards.PRINCE]
+    };
+
+    const action = {
+      card: cards.PRINCE,
+      acting: 'Bob',
+      target: 'Jack'
+    };
+
+    const state = loveLetter.useCard(previousState, action);
+
+    expect(state).to.deep.equal({
+      toAct: 'Jill',
+      players: {
+        'Bob': {
+          hand: [cards.HANDMAIDEN],
+          discards: [cards.PRINCE]
+        },
+        'Jack': {
+          hand: [],
+          discards: [cards.PRINCESS]
+        },
+        'Jill': {
+          hand: [cards.COUNTESS, cards.PRINCE],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
+      deck: [cards.GUARD, cards.BARON]
+    });
+  });
 });
