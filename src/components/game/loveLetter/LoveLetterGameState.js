@@ -26,6 +26,10 @@ export default class LoveLetterGameState extends React.Component {
           {players[id].name}
           {game.state.toAct === id ? <span> <WaitingIcon /></span> : null}
           <span> {_.isEmpty(playerState.hand) ? 'DEAD' : 'ALIVE'}</span>
+          {' '}
+          <span>
+            <label>Discards:</label> {_(playerState.discards).join(', ')}
+          </span>
         </Panel>
       );
     });
