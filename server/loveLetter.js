@@ -29,9 +29,7 @@ function moveToDiscards(imState, cardName) {
 }
 
 function getNextPlayerId(imState) {
-  const alivePlayers = imState
-    .get('players')
-    .filter(player => player.get('hand').size > 0);
+  const alivePlayers = getAlivePlayers(imState);
 
   const filteredOrder = imState
     .get('order')
@@ -41,6 +39,12 @@ function getNextPlayerId(imState) {
   const nextPlayerIndex = (actingPlayerIndex + 1) % filteredOrder.size;
 
   return filteredOrder.get(nextPlayerIndex);
+}
+
+function getAlivePlayers(imState) {
+  return imState
+    .get('players')
+    .filter(player => player.get('hand').size > 0);
 }
 
 function drawCard(imState, playerId) {
@@ -65,6 +69,55 @@ function switchCards(imState, playerId, targetId) {
   return imState
     .updateIn(['players', targetId, 'hand'], hand => hand.set(0, playerCard))
     .updateIn(['players', playerId, 'hand'], hand => hand.set(0, targetCard));
+}
+
+function roundIsOver(imState) {
+  const deckExhausted = imState.get('deck').isEmpty();
+  const onePlayerAlive = getAlivePlayers(imState).size === 1;
+
+  return deckExhausted || onePlayerAlive;
+}
+
+function getWinnerId(imState) {
+  const alivePlayers = getAlivePlayers(imState);
+
+  if (alivePlayers.size === 1) {
+    return alivePlayers.keys().next().value;
+  }
+
+  const winner = alivePlayers.maxBy(player => {
+    const card = player.get('hand').first();
+    return values[card];
+  });
+
+  return alivePlayers.keyOf(winner);
+}
+
+function prepareNextRound(imState) {
+  const winnerId = getWinnerId(imState);
+
+  imState = imState.updateIn(['players', winnerId, 'score'], score => score + 1);
+  imState = imState.set('toAct', winnerId);
+
+  const nextDeck = getNewDeck();
+
+  imState = imState.update('players', players => {
+    return players.map(player => {
+      return player
+        .update('hand', hand => {
+          return hand.clear().push(nextDeck.pop());
+        })
+        .update('discards', discards => discards.clear());
+    });
+  });
+
+  imState = imState.updateIn(['players', winnerId, 'hand'], hand => {
+    return hand.push(nextDeck.pop());
+  });
+
+  imState = imState.set('deck', Immutable.fromJS(nextDeck));
+
+  return imState;
 }
 
 let discardHand = eliminatePlayer;
@@ -114,12 +167,8 @@ const cardEffect = {
   }
 };
 
-export function createInitialState(players) {
-
-  //Player order is random
-  const order = _.shuffle(players);
-
-  const deck = _.shuffle([
+function getNewDeck() {
+  return _.shuffle([
     ...times(5, () => cards.GUARD),
     ...times(2, () => cards.PRIEST),
     ...times(2, () => cards.BARON),
@@ -129,6 +178,14 @@ export function createInitialState(players) {
     cards.COUNTESS,
     cards.PRINCESS
   ]);
+}
+
+export function createInitialState(players) {
+
+  //Player order is random
+  const order = _.shuffle(players);
+
+  const deck = getNewDeck();
 
   const playerStates = {};
   players.forEach(player => {
@@ -173,5 +230,9 @@ export function useCard(state, action) {
   imState = moveToDiscards(imState, action.card);
   imState = cardEffect[action.card](imState, action);
 
-  return prepareNextTurn(imState).toJS();
+  if (roundIsOver(imState)) {
+    return prepareNextRound(imState).toJS();
+  } else {
+    return prepareNextTurn(imState).toJS();
+  }
 }

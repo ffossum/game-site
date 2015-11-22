@@ -87,4 +87,55 @@ describe('love letter', () => {
       expect(state).to.deep.equal(originalState);
     });
   });
+
+  describe('end of round', () => {
+    const previousState = {
+      toAct: 'Bob',
+      players: {
+        'Bob': {
+          score: 0,
+          hand: [cards.GUARD, cards.GUARD],
+          discards: []
+        },
+        'Jack': {
+          score: 0,
+          hand: [cards.PRIEST],
+          discards: [cards.COUNTESS]
+        }
+      },
+      order: ['Bob', 'Jack'],
+      deck: [cards.BARON, cards.PRINCE]
+    };
+
+    const action = {
+      card: cards.GUARD,
+      acting: 'Bob',
+      target: 'Jack',
+      guess: cards.PRIEST
+    };
+
+    const state = loveLetter.useCard(previousState, action);
+
+    it('the only remaining player scores a point', () => {
+      expect(state.players['Bob'].score).to.equal(1);
+    });
+
+    it('winning player starts next round', () => {
+      expect(state.toAct).to.equal('Bob');
+    });
+
+    it('discards are emptied for next round', () => {
+      expect(state.players['Bob'].discards).to.be.empty;
+      expect(state.players['Jack'].discards).to.be.empty;
+    });
+
+    it('new deck is created for next round', () => {
+      expect(state.deck.length).to.equal(13);
+    });
+
+    it('new hands are dealt', () => {
+      expect(state.players['Bob'].hand.length).to.equal(2);
+      expect(state.players['Jack'].hand.length).to.equal(1);
+    });
+  });
 });
