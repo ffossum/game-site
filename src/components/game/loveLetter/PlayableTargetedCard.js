@@ -10,7 +10,7 @@ function mayTargetSelf(card) {
 export default class PlayableTargetedCard extends React.Component {
   render() {
 
-    const {id, login, card, game, players} = this.props;
+    const {id, login, card, game, players, playCard} = this.props;
     const otherPlayerStates = omit(game.state.players, login.id);
 
     const targets = mayTargetSelf(card) ? game.state.players : otherPlayerStates;
@@ -24,12 +24,17 @@ export default class PlayableTargetedCard extends React.Component {
           <Popover title="Choose target" id={id} >
             <ButtonGroup vertical block>
               {
-                map(targets, (playerState, playerId) => {
+                map(targets, (targetState, targetId) => {
+                  const onTargetClicked = event => {
+                    playCard(card, {target: targetId});
+                  };
+
                   return (
                     <Button
-                      key={'target-' + playerId}
-                      disabled={playerState.protected}>
-                      {players[playerId].name}
+                      key={'target-' + targetId}
+                      disabled={targetState.protected}
+                      onClick={onTargetClicked} >
+                      {players[targetId].name}
                     </Button>
                   );
                 })
