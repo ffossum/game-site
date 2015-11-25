@@ -10,5 +10,5 @@ node_modules/
 .idea/
 *.iml
 
-server/public/static/*
-!server/public/static/meeple.png
+public/static/*
+!public/static/meeple.png

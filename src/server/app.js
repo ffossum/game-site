@@ -12,10 +12,10 @@ const server = Server(app);
 const io = require('socket.io')(server);
 
 app.use(express.static('public'));
-app.use(favicon(path.join(__dirname,'public','static','meeple.png')));
+app.use(favicon(path.join('public','static','meeple.png')));
 
 app.get('*', (req, res) => {
-  res.render('index.jade', {
+  res.render(path.join(__dirname, 'views', 'index.jade'), {
     env: process.env.NODE_ENV
   });
 });
