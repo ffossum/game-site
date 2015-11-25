@@ -1,9 +1,9 @@
-import * as loveLetter from '../../../server/loveLetter';
-import {cards} from '../../../server/loveLetterCards';
+import * as loveLetter from '../../../src/server/loveLetter';
+import {cards} from '../../../src/server/loveLetterCards';
 import {expect} from 'chai';
 
-describe('love letter - princess', () => {
-  it('player must have princess card to perform princess action', () => {
+describe('love letter - king', () => {
+  it('player must have card to perform action', () => {
     const previousState = {
       toAct: 'Bob',
       players: {
@@ -12,7 +12,7 @@ describe('love letter - princess', () => {
           discards: []
         },
         'Jack': {
-          hand: [cards.PRIEST],
+          hand: [cards.GUARD],
           discards: []
         }
       },
@@ -21,38 +21,36 @@ describe('love letter - princess', () => {
     };
 
     const action = {
-      card: cards.PRINCESS,
-      acting: 'Bob'
+      card: cards.KING,
+      acting: 'Bob',
+      target: 'Jack'
     };
 
     const state = loveLetter.useCard(previousState, action);
     expect(state).to.equal(previousState);
   });
 
-  it('player using princess is eliminated', () => {
+  it('switches cards with target', () => {
     const previousState = {
       toAct: 'Bob',
       players: {
         'Bob': {
-          hand: [cards.PRINCESS, cards.BARON],
+          hand: [cards.PRIEST, cards.KING],
           discards: []
         },
         'Jack': {
-          hand: [cards.KING],
-          discards: []
-        },
-        'Jill': {
-          hand: [cards.HANDMAIDEN],
+          hand: [cards.GUARD],
           discards: []
         }
       },
-      order: ['Bob', 'Jack', 'Jill'],
+      order: ['Bob', 'Jack'],
       deck: [cards.BARON, cards.PRINCE]
     };
 
     const action = {
-      card: cards.PRINCESS,
-      acting: 'Bob'
+      card: cards.KING,
+      acting: 'Bob',
+      target: 'Jack'
     };
 
     const state = loveLetter.useCard(previousState, action);
@@ -61,19 +59,15 @@ describe('love letter - princess', () => {
       toAct: 'Jack',
       players: {
         'Bob': {
-          hand: [],
-          discards: [cards.PRINCESS, cards.BARON]
+          hand: [cards.GUARD],
+          discards: [cards.KING]
         },
         'Jack': {
-          hand: [cards.KING, cards.PRINCE],
-          discards: []
-        },
-        'Jill': {
-          hand: [cards.HANDMAIDEN],
+          hand: [cards.PRIEST, cards.PRINCE],
           discards: []
         }
       },
-      order: ['Bob', 'Jack', 'Jill'],
+      order: ['Bob', 'Jack'],
       deck: [cards.BARON]
     });
   });

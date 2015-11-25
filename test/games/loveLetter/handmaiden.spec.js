@@ -1,7 +1,7 @@
-import * as loveLetter from '../../../server/loveLetter';
-import {cards} from '../../../server/loveLetterCards';
+import * as loveLetter from '../../../src/server/loveLetter';
+import {cards} from '../../../src/server/loveLetterCards';
 import {expect} from 'chai';
-import _ from 'underscore';
+import _ from 'lodash';
 
 describe('love letter - handmaiden', () => {
   it('player must have handmaiden card to perform handmaiden action', () => {

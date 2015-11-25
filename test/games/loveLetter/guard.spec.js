@@ -1,9 +1,9 @@
-import * as loveLetter from '../../../server/loveLetter';
-import {cards} from '../../../server/loveLetterCards';
+import * as loveLetter from '../../../src/server/loveLetter';
+import {cards} from '../../../src/server/loveLetterCards';
 import {expect} from 'chai';
 
-describe('love letter - countess', () => {
-  it('player must have countess card to perform countess action', () => {
+describe('love letter - guard', () => {
+  it('player must have guard card to perform guard action', () => {
     const previousState = {
       toAct: 'Bob',
       players: {
@@ -21,20 +21,23 @@ describe('love letter - countess', () => {
     };
 
     const action = {
-      card: cards.COUNTESS,
-      acting: 'Bob'
+      card: cards.GUARD,
+      acting: 'Bob',
+      target: 'Jack',
+      guess: cards.HANDMAIDEN
     };
 
     const state = loveLetter.useCard(previousState, action);
     expect(state).to.equal(previousState);
+
   });
 
-  it('correctly passes turn', () => {
+  it('wrong guess simply passes turn', () => {
     const previousState = {
       toAct: 'Bob',
       players: {
         'Bob': {
-          hand: [cards.COUNTESS, cards.HANDMAIDEN],
+          hand: [cards.GUARD, cards.GUARD],
           discards: []
         },
         'Jack': {
@@ -47,17 +50,20 @@ describe('love letter - countess', () => {
     };
 
     const action = {
-      card: cards.COUNTESS,
-      acting: 'Bob'
+      card: cards.GUARD,
+      acting: 'Bob',
+      target: 'Jack',
+      guess: cards.HANDMAIDEN
     };
 
     const state = loveLetter.useCard(previousState, action);
+
     expect(state).to.deep.equal({
       toAct: 'Jack',
       players: {
         'Bob': {
-          hand: [cards.HANDMAIDEN],
-          discards: [cards.COUNTESS]
+          hand: [cards.GUARD],
+          discards: [cards.GUARD]
         },
         'Jack': {
           hand: [cards.PRIEST, cards.PRINCE],
@@ -69,59 +75,54 @@ describe('love letter - countess', () => {
     });
   });
 
-  it('player may not play prince if he has countess in hand', () => {
+  it('correct guess eliminates target and passes turn', () => {
     const previousState = {
       toAct: 'Bob',
       players: {
         'Bob': {
-          hand: [cards.PRINCE, cards.COUNTESS],
+          hand: [cards.GUARD, cards.GUARD],
           discards: []
         },
         'Jack': {
           hand: [cards.PRIEST],
           discards: []
-        }
-      },
-      order: ['Bob', 'Jack'],
-      deck: [cards.PRINCESS, cards.BARON, cards.PRINCE]
-    };
-
-    const action = {
-      card: cards.PRINCE,
-      acting: 'Bob',
-      target: 'Jack'
-    };
-
-    const state = loveLetter.useCard(previousState, action);
-
-    expect(state).to.equal(previousState);
-  });
-
-  it('player may not play king if he has countess in hand', () => {
-    const previousState = {
-      toAct: 'Bob',
-      players: {
-        'Bob': {
-          hand: [cards.COUNTESS, cards.KING],
-          discards: []
         },
-        'Jack': {
-          hand: [cards.GUARD],
+        'Jill': {
+          hand: [cards.KING],
           discards: []
         }
       },
-      order: ['Bob', 'Jack'],
+      order: ['Bob', 'Jack', 'Jill'],
       deck: [cards.BARON, cards.PRINCE]
     };
 
     const action = {
-      card: cards.KING,
+      card: cards.GUARD,
       acting: 'Bob',
-      target: 'Jack'
+      target: 'Jack',
+      guess: cards.PRIEST
     };
 
     const state = loveLetter.useCard(previousState, action);
 
-    expect(state).to.equal(previousState);
+    expect(state).to.deep.equal({
+      toAct: 'Jill',
+      players: {
+        'Bob': {
+          hand: [cards.GUARD],
+          discards: [cards.GUARD]
+        },
+        'Jack': {
+          hand: [],
+          discards: [cards.PRIEST]
+        },
+        'Jill': {
+          hand: [cards.KING, cards.PRINCE],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
+      deck: [cards.BARON]
+    });
   });
 });
