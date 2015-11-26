@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {ButtonGroup, Button, Input} from 'react-bootstrap';
-import {every, map} from 'lodash';
+import {map} from 'lodash';
 
 const guardOptions = ['PRIEST', 'BARON', 'HANDMAIDEN', 'PRINCE', 'KING', 'COUNTESS', 'PRINCESS'];
 
@@ -19,7 +19,6 @@ export default class GuardForm extends React.Component {
 
   render() {
     const {players, targets, playCard} = this.props;
-    const allTargetsProtected = every(targets, target => target.protected);
 
     return (
       <div>
@@ -45,7 +44,7 @@ export default class GuardForm extends React.Component {
               return (
                 <Button
                   key={'target-' + targetId}
-                  disabled={targetState.protected && !allTargetsProtected}
+                  disabled={targetState.protected}
                   onClick={onTargetClicked} >
                   {players[targetId].name}
                 </Button>

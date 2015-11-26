@@ -180,7 +180,6 @@ describe('love letter - handmaiden', () => {
     const action = {
       card: cards.GUARD,
       acting: 'Bob',
-      target: 'Jack',
       guess: cards.PRIEST
     };
 

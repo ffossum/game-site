@@ -4,25 +4,31 @@ import {cards, values} from './loveLetterCards';
 
 function userMayTakeAction(state, action, cardName) {
   const actingPlayer = state.players[action.acting];
+  const playerCanAct = action.acting === state.toAct;
+  const playerHasCard = _.contains(actingPlayer.hand, cardName);
+
+  if (!playerCanAct || !playerHasCard) {
+    return false;
+  }
 
   if (_.includes([cards.PRINCE, cards.KING], cardName) &&
     _.includes(actingPlayer.hand, cards.COUNTESS)) {
     return false;
   }
 
-  const playerCanAct = action.acting === state.toAct;
-  const playerHasCard = _.contains(actingPlayer.hand, cardName);
-
-  const targetPlayer = state.players[action.target];
-  const targetIsProtected = targetPlayer && targetPlayer.protected;
-
-  const cardTargetsOpponent = _.includes([cards.GUARD, cards.PRIEST, cards.BARON, cards.KING], cardName);
+  const mustTargetOpponent = _.includes([cards.GUARD, cards.PRIEST, cards.BARON, cards.KING], cardName);
   const nonProtectedOpponents = _.pick(state.players, (playerState, playerId) => {
     return playerId !== action.acting && !playerState.protected;
   });
 
-  return playerCanAct && playerHasCard &&
-    (!targetIsProtected || (cardTargetsOpponent && _.isEmpty(nonProtectedOpponents)));
+  if (mustTargetOpponent && !_.isEmpty(nonProtectedOpponents) && !action.target) {
+    return false;
+  }
+
+  const targetPlayer = state.players[action.target];
+  const targetIsProtected = targetPlayer && targetPlayer.protected;
+
+  return !targetIsProtected;
 }
 
 function moveToDiscards(imState, cardName) {
@@ -145,10 +151,10 @@ function prepareNextTurn(imState) {
 
 const cardEffect = {
   [cards.GUARD]: (imState, action) => {
-    const targetPlayer = imState.getIn(['players', action.target]);
-    if (targetPlayer.get('protected')) {
+    if (!action.target) {
       return imState;
     }
+    const targetPlayer = imState.getIn(['players', action.target]);
     const targetPlayerCard = targetPlayer.get('hand').first();
     if (targetPlayerCard === action.guess) {
       return eliminatePlayer(imState, action.target);
@@ -160,8 +166,7 @@ const cardEffect = {
     return imState;
   },
   [cards.BARON]: (imState, action) => {
-    const targetPlayer = imState.getIn(['players', action.target]);
-    if (targetPlayer.get('protected')) {
+    if (!action.target) {
       return imState;
     }
     const actingPlayerCardValue = values[imState.getIn(['players', action.acting, 'hand', 0])];
@@ -186,8 +191,7 @@ const cardEffect = {
     return drawCard(imState, action.target);
   },
   [cards.KING]: (imState, action) => {
-    const targetPlayer = imState.getIn(['players', action.target]);
-    if (targetPlayer.get('protected')) {
+    if (!action.target) {
       return imState;
     }
     return switchCards(imState, action.acting, action.target);

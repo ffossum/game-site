@@ -1,9 +1,10 @@
 import React, {PropTypes} from 'react';
 import {Button, OverlayTrigger, Popover} from 'react-bootstrap';
 import Card from './Card';
-import {omit} from 'lodash';
+import {every, omit} from 'lodash';
 import GuardForm from './GuardForm';
 import CardTargetForm from './CardTargetForm';
+import PlayableCard from './PlayableCard';
 
 function mayTargetSelf(card) {
   return card === 'PRINCE';
@@ -16,6 +17,11 @@ export default class PlayableTargetedCard extends React.Component {
     const otherPlayerStates = omit(game.state.players, login.id);
 
     const targets = mayTargetSelf(card) ? game.state.players : otherPlayerStates;
+    const allTargetsProtected = every(targets, target => target.protected);
+
+    if (allTargetsProtected) {
+      return <PlayableCard card={card} playCard={playCard} />;
+    }
 
     return (
       <OverlayTrigger
