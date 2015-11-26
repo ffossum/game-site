@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react';
 import {Alert, Panel} from 'react-bootstrap';
 import Chat from '../chat/Chat';
 import GameLobbyButtons from './GameLobbyButtons';
-import LoveLetterGameState from './loveLetter/LoveLetterGameState';
 import _ from 'lodash';
 import PlayerList from './PlayerList';
 import * as status from '../../constants/GameStatus';

@@ -1,4 +1,3 @@
-import * as actions from './ActionTypes';
 import * as errors from './Errors';
 
 export default {
