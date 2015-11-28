@@ -163,6 +163,13 @@ const cardEffect = {
     }
   },
   [cards.PRIEST]: (imState, action) => {
+    if (!action.target) {
+      return imState;
+    }
+
+    const revealedCard = imState.getIn(['players', action.target, 'hand', 0]);
+    imState = addPublicInfo(imState, 'USED_CARD_ON', [action.acting, action.target, action.card]);
+    imState = addSecretInfo(imState, [action.acting], 'HAS_CARD', [action.target, revealedCard]);
     return imState;
   },
   [cards.BARON]: (imState, action) => {

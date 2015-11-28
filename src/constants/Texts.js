@@ -19,7 +19,9 @@ const messageTexts = {
   [messageKeys.PLAYER_DISCONNECTED]: userId => `${getPlayerName(userId)} has disconnected.`,
   [messageKeys.GAME_STARTED]: () => 'The game has started',
 
-  [messageKeys.USED_CARD]: (userId, card) => `${getPlayerName(userId)} used ${card}`
+  [messageKeys.USED_CARD]: (userId, card) => `${getPlayerName(userId)} used ${card}`,
+  [messageKeys.USED_CARD_ON]: (userId, targetId, card) => `${getPlayerName(userId)} used ${card} on ${getPlayerName(targetId)}`,
+  [messageKeys.HAS_CARD]: (userId, card) => `${getPlayerName(userId)} has a ${card}`
 };
 
 export function getMessageText(key, args = []) {

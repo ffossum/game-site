@@ -61,6 +61,5 @@ describe('love letter - priest', () => {
 
     const state = loveLetter.useCard(previousState, action);
     expect(state.toAct).to.equal('Jack');
-    expect(state.info).to.deep.equal([]);
   });
 });

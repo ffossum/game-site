@@ -5,3 +5,5 @@ export const PLAYER_DISCONNECTED = 'PLAYER_DISCONNECTED';
 export const GAME_STARTED = 'GAME_STARTED';
 
 export const USED_CARD = 'USED_CARD';
+export const USED_CARD_ON = 'USED_CARD_ON';
+export const HAS_CARD = 'HAS_CARD';

@@ -175,14 +175,6 @@ io.on('connection', socket => {
     const action = _.extend(data.action, {acting: socket.user.id});
     game.state = loveLetter.useCard(game.state, action);
 
-    io.to(gameId).emit('NEW_GAME_MESSAGE', {
-      game: {id: gameId},
-      msg: {
-        user: socket.user.id,
-        text: 'used ' + data.action.card
-      }
-    });
-
     _.each(game.players, userId => {
       _.each(userSockets[userId], userSocket => {
         userSocket.emit('UPDATE_GAME_STATE', {
