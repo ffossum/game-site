@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import ChatMessage from './ChatMessage';
 
 class ChatMessages extends React.Component {
 
@@ -30,20 +31,8 @@ class ChatMessages extends React.Component {
       <div className="chat-messages-container">
         <div className="chat-messages" ref="chatMessages">
           {
-            messages.map((msg, index) => {
-              if (msg.user) {
-                return (
-                  <div key={index} className="chat-message">
-                    {users[msg.user].name}: {msg.text}
-                  </div>
-                );
-              } else {
-                return (
-                  <div key={index} className="chat-info-message">
-                    {msg.text}
-                  </div>
-                );
-              }
+            messages.map((message, index) => {
+              return <ChatMessage key={index} users={users} message={message} />;
             })
           }
         </div>
