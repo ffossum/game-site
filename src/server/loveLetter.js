@@ -202,6 +202,34 @@ const cardEffect = {
   }
 };
 
+function clearInfo(imState) {
+  return imState.update('info', info => info.clear());
+}
+
+function addPublicInfo(imState, key, args) {
+  const newInfo = {
+    public: true,
+    msg: {
+      key,
+      args
+    }
+  };
+
+  return imState.update('info', info => info.push(Immutable.fromJS(newInfo)));
+}
+
+function addSecretInfo(imState, forPlayers, key, args) {
+  const newInfo = {
+    for: forPlayers,
+    msg: {
+      key,
+      args
+    }
+  };
+
+  return imState.update('info', info => info.push(Immutable.fromJS(newInfo)));
+}
+
 function getNewDeck() {
   return _.shuffle([
     ...times(5, () => cards.GUARD),
@@ -241,7 +269,8 @@ export function createInitialState(players) {
     toAct: order[0],
     players: playerStates,
     order: order,
-    deck: deck
+    deck: deck,
+    info: []
   };
 }
 
@@ -251,10 +280,15 @@ export function asVisibleBy(state, playerId) {
     hand: (name === playerId) ? player.hand : _.map(player.hand, card => cards.FACE_DOWN)
   }));
 
+  const info = _.filter(state.info, info => {
+    return info.public || _.includes(info.for, playerId);
+  });
+
   return {
     ...state,
-    players: players,
-    deck: state.deck.length
+    players,
+    deck: state.deck.length,
+    info
   };
 }
 
@@ -265,6 +299,7 @@ export function useCard(state, action) {
 
   let imState = Immutable.fromJS(state);
 
+  imState = clearInfo(imState);
   imState = moveToDiscards(imState, action.card);
   imState = cardEffect[action.card](imState, action);
 

@@ -17,7 +17,8 @@ describe('love letter - countess', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.BARON, cards.PRINCE]
+      deck: [cards.BARON, cards.PRINCE],
+      info: []
     };
 
     const action = {
@@ -43,7 +44,8 @@ describe('love letter - countess', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.BARON, cards.PRINCE]
+      deck: [cards.BARON, cards.PRINCE],
+      info: []
     };
 
     const action = {
@@ -65,7 +67,8 @@ describe('love letter - countess', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.BARON]
+      deck: [cards.BARON],
+      info: []
     });
   });
 
@@ -83,7 +86,8 @@ describe('love letter - countess', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.PRINCESS, cards.BARON, cards.PRINCE]
+      deck: [cards.PRINCESS, cards.BARON, cards.PRINCE],
+      info: []
     };
 
     const action = {
@@ -111,7 +115,8 @@ describe('love letter - countess', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.BARON, cards.PRINCE]
+      deck: [cards.BARON, cards.PRINCE],
+      info: []
     };
 
     const action = {

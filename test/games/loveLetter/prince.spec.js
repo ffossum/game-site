@@ -17,7 +17,8 @@ describe('love letter - prince', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.BARON, cards.PRINCE]
+      deck: [cards.BARON, cards.PRINCE],
+      info: []
     };
 
     const action = {
@@ -44,7 +45,8 @@ describe('love letter - prince', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.PRINCESS, cards.BARON, cards.PRINCE]
+      deck: [cards.PRINCESS, cards.BARON, cards.PRINCE],
+      info: []
     };
 
     const action = {
@@ -68,7 +70,8 @@ describe('love letter - prince', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.PRINCESS]
+      deck: [cards.PRINCESS],
+      info: []
     });
   });
 
@@ -86,7 +89,8 @@ describe('love letter - prince', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.PRINCESS, cards.BARON, cards.PRINCE]
+      deck: [cards.PRINCESS, cards.BARON, cards.PRINCE],
+      info: []
     };
 
     const action = {
@@ -110,7 +114,8 @@ describe('love letter - prince', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.PRINCESS]
+      deck: [cards.PRINCESS],
+      info: []
     });
   });
 
@@ -132,7 +137,8 @@ describe('love letter - prince', () => {
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
-      deck: [cards.GUARD, cards.BARON, cards.PRINCE]
+      deck: [cards.GUARD, cards.BARON, cards.PRINCE],
+      info: []
     };
 
     const action = {
@@ -160,7 +166,8 @@ describe('love letter - prince', () => {
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
-      deck: [cards.GUARD, cards.BARON]
+      deck: [cards.GUARD, cards.BARON],
+      info: []
     });
   });
 });

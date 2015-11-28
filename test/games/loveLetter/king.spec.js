@@ -17,7 +17,8 @@ describe('love letter - king', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.BARON, cards.PRINCE]
+      deck: [cards.BARON, cards.PRINCE],
+      info: []
     };
 
     const action = {
@@ -44,7 +45,8 @@ describe('love letter - king', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.BARON, cards.PRINCE]
+      deck: [cards.BARON, cards.PRINCE],
+      info: []
     };
 
     const action = {
@@ -68,7 +70,8 @@ describe('love letter - king', () => {
         }
       },
       order: ['Bob', 'Jack'],
-      deck: [cards.BARON]
+      deck: [cards.BARON],
+      info: []
     });
   });
 });
