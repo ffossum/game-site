@@ -5,6 +5,7 @@ import Avatar from '../../common/Avatar';
 import Icon from '../../common/Icon';
 import WaitingIcon from '../../common/WaitingIcon';
 import Hand from './Hand';
+import ProtectedIcon from './ProtectedIcon';
 
 export default class LoveLetterGameState extends React.Component {
   render() {
@@ -21,7 +22,7 @@ export default class LoveLetterGameState extends React.Component {
         <Panel key={id}>
           <Icon type="heart" /> {playerState.score}
           {' '}
-          <Avatar players={players} id={id} size="S" />
+          <ProtectedIcon protect={playerState.protected} /> <Avatar players={players} id={id} size="S" />
           {' '}
           {players[id].name}
           {game.state.toAct === id ? <span> <WaitingIcon /></span> : null}

@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import {ButtonGroup, Button, Input} from 'react-bootstrap';
 import {map} from 'lodash';
+import ProtectedIcon from './ProtectedIcon';
 
 const guardOptions = ['PRIEST', 'BARON', 'HANDMAIDEN', 'PRINCE', 'KING', 'COUNTESS', 'PRINCESS'];
 
@@ -46,7 +47,7 @@ export default class GuardForm extends React.Component {
                   key={'target-' + targetId}
                   disabled={targetState.protected}
                   onClick={onTargetClicked} >
-                  {players[targetId].name}
+                  <ProtectedIcon protect={targetState.protected} /> {players[targetId].name}
                 </Button>
               );
             })
