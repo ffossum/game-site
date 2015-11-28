@@ -1,38 +1,53 @@
-import * as types from '../../constants/ActionTypes';
+import * as actions from '../../constants/ActionTypes';
+import * as messageKeys from '../../constants/GameMessages';
 
 const initialState = [];
 
 export default function gameMessages(state = initialState, action) {
 
   switch(action.type) {
-    case types.PLAYER_JOINED: {
+    case actions.PLAYER_JOINED: {
       const userId = action.payload.user.id;
-      return [...state, {text: `${userId} has joined the game.`}];
+      return [...state, {
+        key: messageKeys.PLAYER_JOINED,
+        args: [userId]
+      }];
     }
 
-    case types.PLAYER_LEFT: {
+    case actions.PLAYER_LEFT: {
       const userId = action.payload.user.id;
-      return [...state, {text: `${userId} has left the game.`}];
+      return [...state, {
+        key: messageKeys.PLAYER_LEFT,
+        args: [userId]
+      }];
     }
 
-    case types.PLAYER_RECONNECTED: {
+    case actions.PLAYER_RECONNECTED: {
       const userId = action.payload.user.id;
-      return [...state, {text: `${userId} has reconnected.`}];
+      return [...state, {
+        key: messageKeys.PLAYER_RECONNECTED,
+        args: [userId]
+      }];
     }
 
-    case types.PLAYER_DISCONNECTED: {
+    case actions.PLAYER_DISCONNECTED: {
       const userId = action.payload.user.id;
-      return [...state, {text: `${userId} has disconnected.`}];
+      return [...state, {
+        key: messageKeys.PLAYER_DISCONNECTED,
+        args: [userId]
+      }];
     }
 
-    case types.NEW_GAME_MESSAGE:
-    case types.SEND_GAME_MESSAGE: {
+    case actions.NEW_GAME_MESSAGE:
+    case actions.SEND_GAME_MESSAGE: {
       return [...state, action.payload.msg];
     }
 
-    case types.START_GAME_SUCCESS:
-    case types.GAME_STARTED: {
-      return [...state, {text: 'The game has started.'}];
+    case actions.START_GAME_SUCCESS:
+    case actions.GAME_STARTED: {
+      return [...state, {
+        key: messageKeys.GAME_STARTED
+      }];
     }
 
     default:

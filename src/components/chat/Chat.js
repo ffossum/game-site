@@ -22,7 +22,9 @@ Chat.propTypes = {
   messages: PropTypes.arrayOf(
     PropTypes.shape({
       user: PropTypes.string,
-      text: PropTypes.string.isRequired
+      text: PropTypes.string,
+      key: PropTypes.string,
+      args: PropTypes.array
     })).isRequired,
   login: PropTypes.shape({
     loggedIn: PropTypes.bool,
