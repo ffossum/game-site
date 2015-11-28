@@ -1,4 +1,4 @@
-import {performGameAction} from '../gameActions';
+import {performGameAction} from '../../../actions/gameActions';
 
 export function playCard(userId, gameId, card, options = {}) {
   return performGameAction({

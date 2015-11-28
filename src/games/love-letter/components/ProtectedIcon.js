@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from '../../common/Icon';
+import Icon from '../../../components/common/Icon';
 
 class ProtectedIcon extends React.Component {
   render() {

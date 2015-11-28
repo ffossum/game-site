@@ -3,7 +3,7 @@ import _ from 'lodash';
 import PlayableCard from './PlayableCard';
 import PlayableTargetedCard from './PlayableTargetedCard';
 
-import '../../../stylesheets/loveLetter/hand.scss';
+import '../stylesheets/hand.scss';
 
 function requiresTarget(card) {
   return _.includes(['GUARD', 'PRIEST', 'BARON', 'PRINCE', 'KING'], card);

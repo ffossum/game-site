@@ -5,7 +5,7 @@ import GameLobbyButtons from './GameLobbyButtons';
 import _ from 'lodash';
 import PlayerList from './PlayerList';
 import * as status from '../../constants/GameStatus';
-import LoveLetterContainer from '../../containers/LoveLetterContainer';
+import LoveLetterContainer from '../../games/love-letter/containers/LoveLetterContainer';
 import '../../stylesheets/game.scss';
 
 export default class Game extends React.Component {

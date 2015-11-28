@@ -1,9 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
 import {Alert, Panel} from 'react-bootstrap';
-import Avatar from '../../common/Avatar';
-import Icon from '../../common/Icon';
-import WaitingIcon from '../../common/WaitingIcon';
+import Avatar from '../../../components/common/Avatar';
+import Icon from '../../../components/common/Icon';
+import WaitingIcon from '../../../components/common/WaitingIcon';
 import Hand from './Hand';
 import ProtectedIcon from './ProtectedIcon';
 

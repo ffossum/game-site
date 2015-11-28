@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import * as actions from '../actions/loveLetter/loveLetterActions';
-import LoveLetterGameState from '../components/game/loveLetter/LoveLetterGameState';
+import * as actions from '../actions/loveLetterActions';
+import LoveLetterGameState from '../components/LoveLetterGameState';
 
 class LoveLetter extends React.Component {
   render() {
