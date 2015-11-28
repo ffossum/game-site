@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {getText} from '../../constants/GameMessages';
+import {getMessageText} from '../../constants/Texts';
 
 class ChatMessage extends React.Component {
   render() {
@@ -7,7 +7,7 @@ class ChatMessage extends React.Component {
     const {message, users} = this.props;
 
     let messageText = message.key ?
-      getText(message.key, message.args) : message.text;
+      getMessageText(message.key, message.args) : message.text;
 
     if (message.user) {
       return (
