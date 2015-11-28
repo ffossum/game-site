@@ -58,26 +58,8 @@ describe('love letter - princess', () => {
     };
 
     const state = loveLetter.useCard(previousState, action);
-
-    expect(state).to.deep.equal({
-      toAct: 'Jack',
-      players: {
-        'Bob': {
-          hand: [],
-          discards: [cards.PRINCESS, cards.BARON]
-        },
-        'Jack': {
-          hand: [cards.KING, cards.PRINCE],
-          discards: []
-        },
-        'Jill': {
-          hand: [cards.HANDMAIDEN],
-          discards: []
-        }
-      },
-      order: ['Bob', 'Jack', 'Jill'],
-      deck: [cards.BARON],
-      info: []
-    });
+    expect(state.toAct).to.equal('Jack');
+    expect(state.players['Bob'].hand).to.be.empty;
+    expect(state.players['Bob'].discards).to.deep.equal([cards.PRINCESS, cards.BARON]);
   });
 });

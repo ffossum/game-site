@@ -56,23 +56,9 @@ describe('love letter - prince', () => {
     };
 
     const state = loveLetter.useCard(previousState, action);
-
-    expect(state).to.deep.equal({
-      toAct: 'Jack',
-      players: {
-        'Bob': {
-          hand: [cards.HANDMAIDEN],
-          discards: [cards.PRINCE]
-        },
-        'Jack': {
-          hand: [cards.PRINCE, cards.BARON],
-          discards: [cards.PRIEST]
-        }
-      },
-      order: ['Bob', 'Jack'],
-      deck: [cards.PRINCESS],
-      info: []
-    });
+    expect(state.toAct).to.equal('Jack');
+    expect(state.players['Jack'].hand).to.deep.equal([cards.PRINCE, cards.BARON]);
+    expect(state.players['Jack'].discards).to.deep.equal([cards.PRIEST]);
   });
 
   it('may target self', () => {
@@ -100,23 +86,9 @@ describe('love letter - prince', () => {
     };
 
     const state = loveLetter.useCard(previousState, action);
-
-    expect(state).to.deep.equal({
-      toAct: 'Jack',
-      players: {
-        'Bob': {
-          hand: [cards.PRINCE],
-          discards: [cards.PRINCE, cards.HANDMAIDEN]
-        },
-        'Jack': {
-          hand: [cards.PRIEST, cards.BARON],
-          discards: []
-        }
-      },
-      order: ['Bob', 'Jack'],
-      deck: [cards.PRINCESS],
-      info: []
-    });
+    expect(state.toAct).to.equal('Jack');
+    expect(state.players['Bob'].hand).to.deep.equal([cards.PRINCE]);
+    expect(state.players['Bob'].discards).to.deep.equal([cards.PRINCE, cards.HANDMAIDEN]);
   });
 
   it('target is eliminated if they are forced to discard Princess', () => {
@@ -148,26 +120,8 @@ describe('love letter - prince', () => {
     };
 
     const state = loveLetter.useCard(previousState, action);
-
-    expect(state).to.deep.equal({
-      toAct: 'Jill',
-      players: {
-        'Bob': {
-          hand: [cards.HANDMAIDEN],
-          discards: [cards.PRINCE]
-        },
-        'Jack': {
-          hand: [],
-          discards: [cards.PRINCESS]
-        },
-        'Jill': {
-          hand: [cards.COUNTESS, cards.PRINCE],
-          discards: []
-        }
-      },
-      order: ['Bob', 'Jack', 'Jill'],
-      deck: [cards.GUARD, cards.BARON],
-      info: []
-    });
+    expect(state.toAct).to.equal('Jill');
+    expect(state.players['Jack'].hand).to.be.empty;
+    expect(state.players['Jack'].discards).to.deep.equal([cards.PRINCESS]);
   });
 });

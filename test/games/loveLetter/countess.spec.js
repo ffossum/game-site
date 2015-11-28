@@ -54,22 +54,8 @@ describe('love letter - countess', () => {
     };
 
     const state = loveLetter.useCard(previousState, action);
-    expect(state).to.deep.equal({
-      toAct: 'Jack',
-      players: {
-        'Bob': {
-          hand: [cards.HANDMAIDEN],
-          discards: [cards.COUNTESS]
-        },
-        'Jack': {
-          hand: [cards.PRIEST, cards.PRINCE],
-          discards: []
-        }
-      },
-      order: ['Bob', 'Jack'],
-      deck: [cards.BARON],
-      info: []
-    });
+    expect(state.toAct).to.equal('Jack');
+    expect(state.players['Jack'].hand).to.deep.equal([cards.PRIEST, cards.PRINCE]);
   });
 
   it('player may not play prince if he has countess in hand', () => {
@@ -97,7 +83,6 @@ describe('love letter - countess', () => {
     };
 
     const state = loveLetter.useCard(previousState, action);
-
     expect(state).to.equal(previousState);
   });
 
@@ -126,7 +111,6 @@ describe('love letter - countess', () => {
     };
 
     const state = loveLetter.useCard(previousState, action);
-
     expect(state).to.equal(previousState);
   });
 });
