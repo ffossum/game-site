@@ -1,6 +1,6 @@
 import _, {times} from 'lodash';
 import Immutable from 'immutable';
-import {cards, values} from './loveLetterCards';
+import {cards, values} from '../games/love-letter/constants/cards';
 
 function userMayTakeAction(state, action, cardName) {
   const actingPlayer = state.players[action.acting];

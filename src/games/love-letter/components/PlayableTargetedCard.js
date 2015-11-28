@@ -6,9 +6,10 @@ import {every, omit} from 'lodash';
 import GuardForm from './GuardForm';
 import CardTargetForm from './CardTargetForm';
 import PlayableCard from './PlayableCard';
+import {cards} from '../constants/cards';
 
 function mayTargetSelf(card) {
-  return card === 'PRINCE';
+  return card === cards.PRINCE;
 }
 
 export default class PlayableTargetedCard extends React.Component {
@@ -59,7 +60,7 @@ export default class PlayableTargetedCard extends React.Component {
           target={() => ReactDOM.findDOMNode(this.refs.cardButton)}>
           <Popover id={id} >
             {
-              card === 'GUARD' ?
+              card === cards.GUARD ?
               <GuardForm players={players} targets={targets} playCard={hidePopoverAndPlayCard} /> :
               <CardTargetForm card={card} players={players} targets={targets} playCard={hidePopoverAndPlayCard} />
             }

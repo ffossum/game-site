@@ -2,14 +2,23 @@ import React, {PropTypes} from 'react';
 import {ButtonGroup, Button, Input} from 'react-bootstrap';
 import {map} from 'lodash';
 import ProtectedIcon from './ProtectedIcon';
+import {cards} from '../constants/cards';
 
-const guardOptions = ['PRIEST', 'BARON', 'HANDMAIDEN', 'PRINCE', 'KING', 'COUNTESS', 'PRINCESS'];
+const guardOptions = [
+  cards.PRIEST,
+  cards.BARON,
+  cards.HANDMAIDEN,
+  cards.PRINCE,
+  cards.KING,
+  cards.COUNTESS,
+  cards.PRINCESS
+];
 
 export default class GuardForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {selectedGuess: 'PRIEST'};
+    this.state = {selectedGuess: cards.PRIEST};
 
     this.guessChanged = this.guessChanged.bind(this);
   }
@@ -36,7 +45,7 @@ export default class GuardForm extends React.Component {
           {
             map(targets, (targetState, targetId) => {
               const onTargetClicked = event => {
-                playCard('GUARD', {
+                playCard(cards.GUARD, {
                   target: targetId,
                   guess: this.state.selectedGuess
                 });
