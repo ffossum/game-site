@@ -1,6 +1,7 @@
 import _, {times} from 'lodash';
 import Immutable from 'immutable';
 import {cards, values} from '../games/love-letter/constants/cards';
+import * as messageKeys from '../constants/GameMessages';
 
 function userMayTakeAction(state, action, cardName) {
   const actingPlayer = state.players[action.acting];
@@ -157,8 +158,10 @@ const cardEffect = {
     const targetPlayer = imState.getIn(['players', action.target]);
     const targetPlayerCard = targetPlayer.get('hand').first();
     if (targetPlayerCard === action.guess) {
+      imState = addPublicInfo(imState, messageKeys.GUARD_CORRECT, [action.acting, action.target, action.guess]);
       return eliminatePlayer(imState, action.target);
     } else {
+      imState = addPublicInfo(imState, messageKeys.GUARD_WRONG, [action.acting, action.target, action.guess]);
       return imState;
     }
   },
@@ -168,8 +171,8 @@ const cardEffect = {
     }
 
     const revealedCard = imState.getIn(['players', action.target, 'hand', 0]);
-    imState = addPublicInfo(imState, 'USED_CARD_ON', [action.acting, action.target, action.card]);
-    imState = addSecretInfo(imState, [action.acting], 'HAS_CARD', [action.target, revealedCard]);
+    imState = addPublicInfo(imState, messageKeys.USED_PRIEST, [action.acting, action.target]);
+    imState = addSecretInfo(imState, [action.acting], messageKeys.HAS_CARD, [action.target, revealedCard]);
     return imState;
   },
   [cards.BARON]: (imState, action) => {
@@ -180,31 +183,45 @@ const cardEffect = {
     const targetPlayerCardValue = values[imState.getIn(['players', action.target, 'hand', 0])];
 
     if (actingPlayerCardValue > targetPlayerCardValue) {
+      imState = addPublicInfo(imState, messageKeys.BARON_SUCCESS, [action.acting, action.target]);
       imState = eliminatePlayer(imState, action.target);
     } else if (actingPlayerCardValue < targetPlayerCardValue) {
+      imState = addPublicInfo(imState, messageKeys.BARON_FAIL, [action.acting, action.target]);
       imState = eliminatePlayer(imState, action.acting);
+    } else {
+      imState = addPublicInfo(imState, messageKeys.BARON_DRAW, [action.acting, action.target]);
     }
     return imState;
   },
-  [cards.HANDMAIDEN]: (imState, action) =>  imState.setIn(['players', action.acting, 'protected'], true),
+  [cards.HANDMAIDEN]: (imState, action) => {
+    imState = addPublicInfo(imState, messageKeys.USED_HANDMAIDEN, [action.acting]);
+    return imState.setIn(['players', action.acting, 'protected'], true);
+  },
   [cards.PRINCE]: (imState, action) => {
     imState = discardHand(imState, action.target);
 
     const targetDiscards = imState.getIn(['players', action.target, 'discards']);
     if (targetDiscards.includes(cards.PRINCESS)) {
+      imState = addPublicInfo(imState, messageKeys.USED_PRINCE_ON_PRINCESS, [action.acting, action.target]);
       return imState;
     }
 
+    imState = addPublicInfo(imState, messageKeys.USED_PRINCE, [action.acting, action.target]);
     return drawCard(imState, action.target);
   },
   [cards.KING]: (imState, action) => {
     if (!action.target) {
       return imState;
     }
+    imState = addPublicInfo(imState, messageKeys.USED_KING, [action.acting, action.target]);
     return switchCards(imState, action.acting, action.target);
   },
-  [cards.COUNTESS]: (imState, action) => imState,
+  [cards.COUNTESS]: (imState, action) => {
+    imState = addPublicInfo(imState, messageKeys.USED_COUNTESS, [action.acting]);
+    return imState;
+  },
   [cards.PRINCESS]: (imState, action) => {
+    imState = addPublicInfo(imState, messageKeys.USED_PRINCESS, [action.acting]);
     return eliminatePlayer(imState, action.acting);
   }
 };
