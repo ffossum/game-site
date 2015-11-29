@@ -6,28 +6,46 @@ import {cards} from '../games/love-letter/constants/cards';
 
 const cardTexts = {
   [cards.GUARD]: {
-    title: 'Guard'
+    value: '1',
+    title: 'Guard',
+    description: `Name a non-Guard card and choose another player.
+If that player has that card, he or she is out of the round.`
   },
   [cards.PRIEST]: {
-    title: 'Priest'
+    value: '2',
+    title: 'Priest',
+    description: "Look at another player's hand."
   },
   [cards.BARON]: {
-    title: 'Baron'
+    value: '3',
+    title: 'Baron',
+    description: `You and another player secretly compare hands.
+The player with the lower value is out of the round.`
   },
   [cards.HANDMAIDEN]: {
-    title: 'Handmaiden'
+    value: '4',
+    title: 'Handmaiden',
+    description: "Until your next turn, ignore all effects from other players' cards."
   },
   [cards.PRINCE]: {
-    title: 'Prince'
+    value: '5',
+    title: 'Prince',
+    description: 'Choose any player (including yourself) to discard his or her hand and draw a new card.'
   },
   [cards.KING]: {
-    title: 'King'
+    value: '6',
+    title: 'King',
+    description: 'Trade hands with another player of your choice.'
   },
   [cards.COUNTESS]: {
-    title: 'Countess'
+    value: '7',
+    title: 'Countess',
+    description: 'If you have this card and the King or Prince in your hand, you must discard this card.'
   },
   [cards.PRINCESS]: {
-    title: 'Princess'
+    value: '8',
+    title: 'Princess',
+    description: 'If you discard this card, you are out of the round.'
   }
 };
 
