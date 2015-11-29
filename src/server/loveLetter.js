@@ -26,10 +26,15 @@ function userMayTakeAction(state, action, cardName) {
     return false;
   }
 
-  const targetPlayer = state.players[action.target];
-  const targetIsProtected = targetPlayer && targetPlayer.protected;
+  if (action.target) {
+    const targetPlayer = state.players[action.target];
+    const targetIsProtected = targetPlayer && targetPlayer.protected;
+    const targetAlreadyOut = _.isEmpty(targetPlayer.hand);
 
-  return !targetIsProtected;
+    return !targetIsProtected && !targetAlreadyOut;
+  }
+
+  return true;
 }
 
 function moveToDiscards(imState, cardName) {

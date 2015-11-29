@@ -30,7 +30,6 @@ describe('love letter - guard', () => {
 
     const state = loveLetter.useCard(previousState, action);
     expect(state).to.equal(previousState);
-
   });
 
   it('wrong guess simply passes turn', () => {
@@ -96,5 +95,39 @@ describe('love letter - guard', () => {
 
     expect(state.toAct).to.equal('Jill');
     expect(state.players['Jack'].hand).to.be.empty;
+  });
+
+  it('may not target player who is already eliminated', () => {
+    const previousState = {
+      toAct: 'Bob',
+      players: {
+        'Bob': {
+          hand: [cards.GUARD, cards.GUARD],
+          discards: []
+        },
+        'Jack': {
+          hand: [],
+          discards: []
+        },
+        'Jill': {
+          hand: [cards.KING],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
+      deck: [cards.BARON, cards.PRINCE],
+      info: []
+    };
+
+    const action = {
+      card: cards.GUARD,
+      acting: 'Bob',
+      target: 'Jack',
+      guess: cards.PRIEST
+    };
+
+    const state = loveLetter.useCard(previousState, action);
+
+    expect(state).to.equal(previousState);
   });
 });
