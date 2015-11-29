@@ -3,6 +3,7 @@ import {ButtonGroup, Button, Input} from 'react-bootstrap';
 import {map} from 'lodash';
 import ProtectedIcon from './ProtectedIcon';
 import {cards} from '../constants/cards';
+import texts from '../../../constants/Texts';
 
 const guardOptions = [
   cards.PRIEST,
@@ -36,7 +37,7 @@ export default class GuardForm extends React.Component {
         <Input type='select' value={this.state.selectedGuess} onChange={this.guessChanged}>
           {
             _.map(guardOptions, option => {
-              return <option key={option} value={option}>{option}</option>;
+              return <option key={option} value={option}>{texts[option].title}</option>;
             })
           }
         </Input>
