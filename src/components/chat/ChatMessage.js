@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import {getMessageText} from '../../constants/Texts';
+import _ from 'lodash';
 
 class ChatMessage extends React.Component {
   render() {
@@ -16,9 +17,10 @@ class ChatMessage extends React.Component {
         </div>
       );
     } else {
+      const messageLines = messageText.split('\n');
       return (
         <div className="chat-info-message">
-          {messageText}
+          {_.map(messageLines, (line, index) => <div key={index}>{line}</div>)}
         </div>
       );
     }
