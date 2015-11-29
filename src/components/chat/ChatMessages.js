@@ -11,7 +11,7 @@ class ChatMessages extends React.Component {
 
   componentWillUpdate() {
     const node = this.refs.chatMessages;
-    this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
+    this.shouldScrollBottom = node.scrollTop + node.offsetHeight - node.scrollHeight > -10;
   }
   componentDidUpdate() {
     if (this.shouldScrollBottom) {
