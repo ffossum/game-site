@@ -1,5 +1,5 @@
 import * as loveLetter from '../../../src/server/loveLetter';
-import {cards} from '../../../src/server/loveLetterCards';
+import {cards} from '../../../src/games/love-letter/constants/cards';
 import {expect} from 'chai';
 import _ from 'lodash';
 
