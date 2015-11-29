@@ -53,66 +53,66 @@ const messageTexts = {
     const userName = getPlayerName(userId);
     const targetName = getPlayerName(targetId);
     return `${userName} plays ${cardTexts[cards.GUARD].title}.\n
-      ${userName} guesses ${targetName} has a ${cardTexts[card].title}.\n
-      The guess is correct! ${targetName} is eliminated!`;
+${userName} guesses ${targetName} has a ${cardTexts[card].title}.\n
+The guess is correct! ${targetName} is eliminated!`;
   },
   [messageKeys.GUARD_WRONG]: (userId, targetId, card) => {
     const userName = getPlayerName(userId);
     const targetName = getPlayerName(targetId);
     return `${userName} plays ${cardTexts[cards.GUARD].title}.\n
-      ${userName} guesses ${targetName} has a ${cardTexts[card].title}.\n
-      The guess is wrong!`;
+${userName} guesses ${targetName} has a ${cardTexts[card].title}.\n
+The guess is wrong!`;
   },
   [messageKeys.USED_PRIEST]: (userId, targetId) => {
     const userName = getPlayerName(userId);
     const targetName = getPlayerName(targetId);
     return `${userName} plays ${cardTexts[cards.PRIEST].title}.\n
-      ${userName} looks at ${targetName}'s hand.`;
+${userName} looks at ${targetName}'s hand.`;
   },
   [messageKeys.HAS_CARD]: (userId, card) => `${getPlayerName(userId)} has a ${cardTexts[card].title}.`,
   [messageKeys.BARON_SUCCESS]: (userId, targetId) => {
     const userName = getPlayerName(userId);
     const targetName = getPlayerName(targetId);
-    return `${userName} plays ${cardTexts[cards.BARON].title}.\n
-      ${userName} compares hands with ${targetName}.\n
-      ${targetName} is eliminated!`;
+    return `${userName} plays ${cardTexts[cards.BARON].title}.
+${userName} compares hands with ${targetName}.
+${targetName} is eliminated!`;
   },
   [messageKeys.BARON_FAIL]: (userId, targetId) => {
     const userName = getPlayerName(userId);
     const targetName = getPlayerName(targetId);
-    return `${userName} plays ${cardTexts[cards.BARON].title}.\n
-      ${userName} compares hands with ${targetName}.\n
-      ${userName} is eliminated!`;
+    return `${userName} plays ${cardTexts[cards.BARON].title}.
+${userName} compares hands with ${targetName}.
+${userName} is eliminated!`;
   },
   [messageKeys.BARON_DRAW]: (userId, targetId) => {
     const userName = getPlayerName(userId);
     const targetName = getPlayerName(targetId);
-    return `${userName} plays ${cardTexts[cards.BARON].title}.\n
-      ${userName} compares hands with ${targetName}.\n
-      They have the same hand!`;
+    return `${userName} plays ${cardTexts[cards.BARON].title}.
+${userName} compares hands with ${targetName}.
+They have the same hand!`;
   },
   [messageKeys.USED_HANDMAIDEN]: (userId) => {
     const userName = getPlayerName(userId);
-    return `${userName} plays ${cardTexts[cards.HANDMAIDEN].title}.\n
-      ${userName} is protected until their next turn.`;
+    return `${userName} plays ${cardTexts[cards.HANDMAIDEN].title}.
+${userName} is protected until their next turn.`;
   },
   [messageKeys.USED_PRINCE]: (userId, targetId) => {
     const userName = getPlayerName(userId);
     const targetName = getPlayerName(targetId);
-    return `${userName} plays ${cardTexts[cards.PRINCE].title}.\n
-      ${targetName} discards their hand and draws a card.`;
+    return `${userName} plays ${cardTexts[cards.PRINCE].title}.
+${targetName} discards their hand and draws a card.`;
   },
   [messageKeys.USED_PRINCE_ON_PRINCESS]: (userId, targetId) => {
     const userName = getPlayerName(userId);
     const targetName = getPlayerName(targetId);
-    return `${userName} plays ${cardTexts[cards.PRINCE].title}.\n
-      ${targetName} discards the ${cardTexts[cards.PRINCESS].title} and is eliminated!`;
+    return `${userName} plays ${cardTexts[cards.PRINCE].title}.
+${targetName} discards the ${cardTexts[cards.PRINCESS].title} and is eliminated!`;
   },
   [messageKeys.USED_KING]: (userId, targetId) => {
     const userName = getPlayerName(userId);
     const targetName = getPlayerName(targetId);
-    return `${userName} plays ${cardTexts[cards.PRINCE].title}.\n
-      ${targetName} discards their hand and draws a card.`;
+    return `${userName} plays ${cardTexts[cards.PRINCE].title}.
+${targetName} discards their hand and draws a card.`;
   },
   [messageKeys.USED_COUNTESS]: userId =>
     `${getPlayerName(userId)} plays ${cardTexts[cards.COUNTESS].title}.`,
