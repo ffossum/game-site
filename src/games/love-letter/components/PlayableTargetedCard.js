@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import {Button, Overlay, Popover} from 'react-bootstrap';
 import Card from './Card';
-import {every, omit} from 'lodash';
+import {every, includes, omit} from 'lodash';
 import GuardForm from './GuardForm';
 import CardTargetForm from './CardTargetForm';
 import PlayableCard from './PlayableCard';
@@ -10,6 +10,13 @@ import {cards} from '../constants/cards';
 
 function mayTargetSelf(card) {
   return card === cards.PRINCE;
+}
+
+function mayPlayCard(game, login, card) {
+  const mayAct = login.id === game.state.toAct;
+
+  const hand = game.state.players[login.id].hand;
+  return mayAct && !(includes([cards.PRINCE, cards.KING], card) && includes(hand, cards.COUNTESS));
 }
 
 export default class PlayableTargetedCard extends React.Component {
@@ -39,7 +46,11 @@ export default class PlayableTargetedCard extends React.Component {
     const allTargetsProtected = every(targets, target => target.protected);
 
     if (allTargetsProtected) {
-      return <PlayableCard card={card} playCard={playCard} />;
+      return <PlayableCard
+        login={login}
+        card={card}
+        game={game}
+        playCard={playCard} />;
     }
 
     const hidePopoverAndPlayCard = (...args) => {
@@ -49,7 +60,10 @@ export default class PlayableTargetedCard extends React.Component {
 
     return (
       <span>
-        <Button ref="cardButton" onClick={this.showPopover}>
+        <Button
+          ref="cardButton"
+          onClick={this.showPopover}
+          disabled={!mayPlayCard(game, login, card)}>
           <Card card={card} />
         </Button>
 

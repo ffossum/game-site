@@ -4,14 +4,16 @@ import Card from './Card';
 
 export default class PlayableCard extends React.Component {
   render() {
-    const {card, playCard} = this.props;
+    const {login, card, game, playCard} = this.props;
 
     const onCardClicked = event => {
       playCard(card);
     };
 
     return (
-      <Button onClick={onCardClicked}>
+      <Button
+        onClick={onCardClicked}
+        disabled={login.id !== game.state.toAct}>
         <Card card={card} />
       </Button>
     );

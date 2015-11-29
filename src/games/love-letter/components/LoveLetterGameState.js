@@ -29,7 +29,7 @@ export default class LoveLetterGameState extends React.Component {
           <span> {_.isEmpty(playerState.hand) ? 'DEAD' : 'ALIVE'}</span>
           {' '}
           <span>
-            <label>Discards:</label> {_(playerState.discards).join(', ')}
+            <label>Discards:</label> {playerState.discards.join(', ')}
           </span>
         </Panel>
       );

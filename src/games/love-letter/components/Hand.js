@@ -32,7 +32,9 @@ export default class Hand extends React.Component {
             } else {
               return <span key={card+index}>
                 <PlayableCard
+                  login={login}
                   card={card}
+                  game={game}
                   playCard={playCard} />
               </span>;
             }
