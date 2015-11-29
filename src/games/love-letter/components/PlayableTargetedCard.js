@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import {Button, Overlay, Popover} from 'react-bootstrap';
 import Card from './Card';
-import {every, includes, omit} from 'lodash';
+import {every, includes, isEmpty, omit} from 'lodash';
 import GuardForm from './GuardForm';
 import CardTargetForm from './CardTargetForm';
 import PlayableCard from './PlayableCard';
@@ -42,7 +42,10 @@ export default class PlayableTargetedCard extends React.Component {
     const {id, login, card, game, players, playCard} = this.props;
     const otherPlayerStates = omit(game.state.players, login.id);
 
-    const targets = mayTargetSelf(card) ? game.state.players : otherPlayerStates;
+    let targets = mayTargetSelf(card) ? game.state.players : otherPlayerStates;
+    targets = omit(targets, target => {
+      return isEmpty(target.hand);
+    });
     const allTargetsProtected = every(targets, target => target.protected);
 
     if (allTargetsProtected) {
