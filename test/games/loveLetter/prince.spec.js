@@ -1,6 +1,7 @@
 import * as loveLetter from '../../../src/server/loveLetter';
 import {cards} from '../../../src/games/love-letter/constants/cards';
 import {expect} from 'chai';
+import _ from 'lodash';
 
 describe('love letter - prince', () => {
   it('player must have prince card to perform prince action', () => {
@@ -123,5 +124,51 @@ describe('love letter - prince', () => {
     expect(state.toAct).to.equal('Jill');
     expect(state.players['Jack'].hand).to.be.empty;
     expect(state.players['Jack'].discards).to.deep.equal([cards.PRINCESS]);
+  });
+
+  describe('if there are no cards left in the deck', () => {
+    const previousState = {
+      toAct: 'Bob',
+      players: {
+        'Bob': {
+          score: 0,
+          hand: [cards.PRINCE, cards.HANDMAIDEN],
+          discards: []
+        },
+        'Jack': {
+          score: 0,
+          hand: [cards.GUARD],
+          discards: []
+        },
+        'Jill': {
+          score: 0,
+          hand: [cards.KING],
+          discards: []
+        }
+      },
+      order: ['Bob', 'Jack', 'Jill'],
+      deck: [],
+      discard: cards.PRIEST,
+      info: []
+    };
+
+    const action = {
+      card: cards.PRINCE,
+      acting: 'Bob',
+      target: 'Jack'
+    };
+
+    it('target draws the card discarded at beginning of round', () => {
+      const state = loveLetter.useCard(previousState, action);
+      expect(state.players['Jill'].score).to.equal(1);
+      expect(state.players['Jack'].score).to.equal(0);
+    });
+
+    it('target wins if the drawn discarded card is the highest', () => {
+      const modifiedPreviousState = _.extend({}, previousState, {discard: cards.COUNTESS});
+      const state = loveLetter.useCard(modifiedPreviousState, action);
+      expect(state.players['Jill'].score).to.equal(0);
+      expect(state.players['Jack'].score).to.equal(1);
+    });
   });
 });

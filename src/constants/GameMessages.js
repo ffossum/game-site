@@ -14,6 +14,7 @@ export const BARON_DRAW = 'BARON_DRAW';
 export const USED_HANDMAIDEN = 'USED_HANDMAIDEN';
 export const USED_PRINCE = 'USED_PRINCE';
 export const USED_PRINCE_ON_PRINCESS = 'USED_PRINCE_ON_PRINCESS';
+export const DREW_DISCARD = 'DREW_DISCARD';
 export const USED_KING = 'USED_KING';
 export const USED_COUNTESS = 'USED_COUNTESS';
 export const USED_PRINCESS = 'USED_PRINCESS';

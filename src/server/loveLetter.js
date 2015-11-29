@@ -62,7 +62,14 @@ function getAlivePlayers(imState) {
 }
 
 function drawCard(imState, playerId) {
+  if (imState.get('deck').isEmpty()) {
+    imState = addPublicInfo(imState, messageKeys.DREW_DISCARD, [playerId]);
+    const discard = imState.get('discard');
+    return imState.updateIn(['players', playerId, 'hand'], hand => hand.push(discard));
+  }
+
   const topCard = imState.get('deck').last();
+
   return imState
     .update('deck', deck => deck.pop())
     .updateIn(['players', playerId, 'hand'], hand => hand.push(topCard));
@@ -116,7 +123,7 @@ function prepareNextRound(imState) {
   const nextDeck = getNewDeck();
 
   //First card is discarded
-  nextDeck.pop();
+  imState = imState.set('discard', nextDeck.pop());
 
   imState = imState.update('players', players => {
     return players.map(player => {
@@ -275,7 +282,7 @@ export function createInitialState(players) {
   const deck = getNewDeck();
 
   //First card is discarded
-  deck.pop();
+  const discard = deck.pop();
 
   const playerStates = {};
   players.forEach(player => {
@@ -292,8 +299,9 @@ export function createInitialState(players) {
   return {
     toAct: order[0],
     players: playerStates,
-    order: order,
-    deck: deck,
+    order,
+    deck,
+    discard,
     info: []
   };
 }

@@ -126,11 +126,15 @@ ${targetName} discards their hand and draws a card.`;
     return `${userName} plays ${cardTexts[cards.PRINCE].title}.
 ${targetName} discards the ${cardTexts[cards.PRINCESS].title} and is eliminated!`;
   },
+  [messageKeys.DREW_DISCARD]: (userId) => {
+    const userName = getPlayerName(userId);
+    return `There were no cards in the deck, so ${userName} instead drew the card discarded at the beginning of the round.`;
+  },
   [messageKeys.USED_KING]: (userId, targetId) => {
     const userName = getPlayerName(userId);
     const targetName = getPlayerName(targetId);
-    return `${userName} plays ${cardTexts[cards.PRINCE].title}.
-${targetName} discards their hand and draws a card.`;
+    return `${userName} plays ${cardTexts[cards.KING].title}.
+${userName} switches hands with ${targetName}.`;
   },
   [messageKeys.USED_COUNTESS]: userId =>
     `${getPlayerName(userId)} plays ${cardTexts[cards.COUNTESS].title}.`,
