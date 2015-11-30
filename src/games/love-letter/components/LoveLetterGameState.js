@@ -6,6 +6,8 @@ import Icon from '../../../components/common/Icon';
 import WaitingIcon from '../../../components/common/WaitingIcon';
 import Hand from './Hand';
 import ProtectedIcon from './ProtectedIcon';
+import classnames from 'classnames';
+import '../stylesheets/love-letter.scss';
 
 export default class LoveLetterGameState extends React.Component {
   render() {
@@ -30,18 +32,17 @@ export default class LoveLetterGameState extends React.Component {
       .map(playerState => {
         const id = playerState.id;
         return (
-          <Panel key={id}>
-            <Icon type="heart" /> {playerState.score}
-            {' '}
-            <ProtectedIcon protect={playerState.protected} /> <Avatar players={players} id={id} size="S" />
-            {' '}
-            {players[id].name}
-            {game.state.toAct === id ? <span> <WaitingIcon /></span> : null}
-            <span> {_.isEmpty(playerState.hand) ? 'DEAD' : 'ALIVE'}</span>
-            {' '}
-            <span>
-              <label>Discards:</label> {playerState.discards.join(', ')}
-            </span>
+          <Panel key={id} className={classnames({'player-state': true, 'eliminated': _.isEmpty(playerState.hand)})}>
+            <Avatar players={players} id={id} size="S" /> {players[id].name}
+            {game.state.toAct === id ? <span className='waiting-icon'><WaitingIcon /></span> : null}
+            <div>
+              <hr />
+              <Icon type="heart" /> {playerState.score} <ProtectedIcon protect={playerState.protected} />
+            </div>
+            <div>
+              <label>Discards:</label>
+              <div>{playerState.discards.join(', ')}</div>
+            </div>
           </Panel>
         );
       })
@@ -49,7 +50,9 @@ export default class LoveLetterGameState extends React.Component {
 
     return (
       <div>
-        {playerStates}
+        <div className="love-letter-player-states">
+          {playerStates}
+        </div>
         <div>Deck: {game.state.deck}</div>
         <Hand
           login={login}

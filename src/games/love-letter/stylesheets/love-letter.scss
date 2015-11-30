@@ -1,0 +1,25 @@
+.love-letter-player-states {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .player-state {
+    width: 30rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+
+    hr {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .waiting-icon {
+      float: right;
+    }
+  }
+
+  .eliminated {
+    -webkit-filter: opacity(0.6) brightness(0.9);
+    filter: opacity(0.6) brightness(0.9);
+  }
+}
