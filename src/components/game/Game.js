@@ -37,20 +37,18 @@ export default class Game extends React.Component {
                       startGame={this.props.startGame} />,
                     <div key='game-player-list' className='game-player-list'>
                       <PlayerList players={players} game={game} />
-                    </div>
+                    </div>,
+                    inGame ?
+                      <Panel key='game-chat'>
+                        <Chat
+                          login={this.props.login}
+                          messages={messages}
+                          users={players}
+                          sendMessage={_.partial(this.props.sendGameMessage, game.id)} />
+                      </Panel> : null
                   ];
               }
             }()
-          }
-          {
-            inGame ?
-              <Panel>
-                <Chat
-                  login={this.props.login}
-                  messages={messages}
-                  users={players}
-                  sendMessage={_.partial(this.props.sendGameMessage, game.id)} />
-              </Panel> : null
           }
         </div>
       );

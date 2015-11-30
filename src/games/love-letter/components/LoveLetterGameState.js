@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import {Alert, Panel} from 'react-bootstrap';
+import Chat from '../../../components/chat/Chat';
 import Avatar from '../../../components/common/Avatar';
 import Icon from '../../../components/common/Icon';
 import WaitingIcon from '../../../components/common/WaitingIcon';
@@ -49,7 +50,7 @@ export default class LoveLetterGameState extends React.Component {
       .value();
 
     return (
-      <div>
+      <div className="love-letter-game">
         <div className="love-letter-player-states">
           {playerStates}
         </div>
@@ -59,6 +60,13 @@ export default class LoveLetterGameState extends React.Component {
           players={players}
           game={game}
           playCard={_.partial(playCard, login.id, game.id)} />
+        <Panel>
+          <Chat
+            login={this.props.login}
+            messages={game.messages}
+            users={players}
+            sendMessage={_.partial(this.props.sendGameMessage, game.id)} />
+        </Panel>
       </div>
     );
   }
