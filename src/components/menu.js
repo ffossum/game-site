@@ -43,7 +43,7 @@ class Menu extends React.Component {
     const {logOut} = this.props;
 
     return (
-      <Navbar inverse>
+      <Navbar inverse fluid>
         <Navbar.Header>
           <Navbar.Brand>
             <Link to="/">Game Site</Link>
