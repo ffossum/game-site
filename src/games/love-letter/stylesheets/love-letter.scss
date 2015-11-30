@@ -1,25 +1,51 @@
-.love-letter-player-states {
+.love-letter-game {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
 
-  .player-state {
-    width: 30rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
+  .love-letter-player-states {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 
-    hr {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
+    .player-state {
+      width: 30rem;
+      margin-left: 1rem;
+      margin-right: 1rem;
+
+      hr {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .waiting-icon {
+        float: right;
+      }
     }
 
-    .waiting-icon {
-      float: right;
+    .eliminated {
+      -webkit-filter: opacity(0.6) brightness(0.9);
+      filter: opacity(0.6) brightness(0.9);
     }
   }
 
-  .eliminated {
-    -webkit-filter: opacity(0.6) brightness(0.9);
-    filter: opacity(0.6) brightness(0.9);
+  .love-letter-deck {
+    font-size: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .love-letter-game-controls {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+
+    .love-letter-player-hand {
+      flex: 3 50rem;
+    }
+    .love-letter-game-chat {
+      flex: 2 40rem;
+    }
   }
 }

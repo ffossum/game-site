@@ -54,19 +54,25 @@ export default class LoveLetterGameState extends React.Component {
         <div className="love-letter-player-states">
           {playerStates}
         </div>
-        <div>Deck: {game.state.deck}</div>
-        <Hand
-          login={login}
-          players={players}
-          game={game}
-          playCard={_.partial(playCard, login.id, game.id)} />
-        <Panel>
-          <Chat
-            login={this.props.login}
-            messages={game.messages}
-            users={players}
-            sendMessage={_.partial(this.props.sendGameMessage, game.id)} />
-        </Panel>
+        <div className="love-letter-deck">
+          Deck: {game.state.deck}
+        </div>
+        <div className="love-letter-game-controls">
+          <Hand
+            login={login}
+            players={players}
+            game={game}
+            playCard={_.partial(playCard, login.id, game.id)} />
+          <div className="love-letter-game-chat">
+            <Panel>
+              <Chat
+                login={this.props.login}
+                messages={game.messages}
+                users={players}
+                sendMessage={_.partial(this.props.sendGameMessage, game.id)} />
+            </Panel>
+          </div>
+        </div>
       </div>
     );
   }
