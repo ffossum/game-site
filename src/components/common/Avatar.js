@@ -17,5 +17,5 @@ export default props => {
 
   const pixels = getPixels(size);
 
-  return <Image circle src={`http://www.gravatar.com/avatar/${player.avatar}?d=mystery&s=${pixels}`} />;
+  return <Image circle src={`http://www.gravatar.com/avatar/${player.avatar}?d=retro&s=${pixels}`} />;
 };
