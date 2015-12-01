@@ -38,7 +38,7 @@ export default class LoveLetterGameState extends React.Component {
             {game.state.toAct === id ? <span className='waiting-icon'><WaitingIcon /></span> : null}
             <div>
               <hr />
-              <Icon type="heart" /> {playerState.score} <ProtectedIcon protect={playerState.protected} />
+              <span className="score-icon"><Icon type="heart" /></span> {playerState.score} <ProtectedIcon protect={playerState.protected} />
             </div>
             <div>
               <label>Discards:</label>
