@@ -1,14 +1,19 @@
 .love-letter-player-hand {
   margin-bottom: 20px;
+
   button {
-    margin-top: 1rem;
+    padding: 0;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
-  }
 
-  .love-letter-card {
-    white-space: normal;
-    width: 18rem;
-    height: 24rem;
+    border-radius: 12px;
+
+    &:hover {
+      box-shadow: 0 0 2rem 0 #47a1e6;
+
+      &:disabled {
+        box-shadow: none;
+      }
+    }
   }
 }

@@ -6,14 +6,18 @@ export default class PlayableCard extends React.Component {
   render() {
     const {login, card, game, playCard} = this.props;
 
+    const mayPlayCard = login.id === game.state.toAct;
+
     const onCardClicked = event => {
-      playCard(card);
+      if (mayPlayCard) {
+        playCard(card);
+      }
     };
 
     return (
       <Button
         onClick={onCardClicked}
-        disabled={login.id !== game.state.toAct}>
+        disabled={!mayPlayCard}>
         <Card card={card} />
       </Button>
     );
