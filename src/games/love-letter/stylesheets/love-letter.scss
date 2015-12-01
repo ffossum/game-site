@@ -24,8 +24,8 @@
     }
 
     .eliminated {
-      -webkit-filter: opacity(0.6) brightness(0.9);
-      filter: opacity(0.6) brightness(0.9);
+      -webkit-filter: opacity(0.6) brightness(0.9) grayscale(1);
+      filter: opacity(0.6) brightness(0.9) grayscale(1);
     }
   }
 
