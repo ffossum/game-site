@@ -1,5 +1,6 @@
 html {
   box-sizing: border-box;
+  height: 100%;
 }
 *, *:before, *:after {
   box-sizing: inherit;
@@ -10,4 +11,10 @@ body {
 .main-content {
   margin-left: 2rem;
   margin-right: 2rem;
+}
+
+body {
+  background: #DAE2F8;
+  background: -webkit-linear-gradient(to left, #DAE2F8 , #D6A4A4);
+  background: linear-gradient(to left, #DAE2F8 , #D6A4A4);
 }

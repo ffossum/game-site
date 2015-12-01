@@ -7,10 +7,11 @@ class FrontPage extends React.Component {
   render() {
     return (
       <DocumentTitle title="Game Site">
-        <div>
-          <h1>Welcome</h1>
-          <p>Good luck, have fun!</p>
-          <Panel>
+        <div className="container">
+        <Panel>
+            <h1>Welcome</h1>
+            <p>Good luck, have fun!</p>
+            <hr />
             <Chat />
           </Panel>
         </div>
