@@ -19,7 +19,7 @@ function userMayTakeAction(state, action, cardName) {
 
   const mustTargetOpponent = _.includes([cards.GUARD, cards.PRIEST, cards.BARON, cards.KING], cardName);
   const nonProtectedOpponents = _.pick(state.players, (playerState, playerId) => {
-    return playerId !== action.acting && !playerState.protected;
+    return (playerId !== action.acting && !playerState.protected) && !_.isEmpty(playerState.hand);
   });
 
   if (mustTargetOpponent && !_.isEmpty(nonProtectedOpponents) && !action.target) {

@@ -159,7 +159,7 @@ describe('love letter - handmaiden', () => {
     expect(state.players['Jack'].hand).to.be.empty;
   });
 
-  it('can use guard with no effect if all other players are protected', () => {
+  it('can use guard with no effect if all other players are protected or eliminated', () => {
     const previousState = {
       toAct: 'Bob',
       players: {
@@ -173,9 +173,8 @@ describe('love letter - handmaiden', () => {
           protected: true
         },
         'Jill': {
-          hand: [cards.KING],
-          discards: [],
-          protected: true
+          hand: [],
+          discards: []
         }
       },
       order: ['Bob', 'Jack', 'Jill'],
