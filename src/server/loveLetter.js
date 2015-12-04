@@ -111,12 +111,25 @@ function getWinnerId(imState) {
     return alivePlayers.keys().next().value;
   }
 
-  const winner = alivePlayers.maxBy(player => {
-    const card = player.get('hand').first();
-    return values[card];
-  });
+  const highCard = alivePlayers
+    .map(player => player.get('hand').first())
+    .maxBy(card => values[card]);
 
-  return alivePlayers.keyOf(winner);
+  const highCardHolders = alivePlayers.filter(player => player.get('hand').first() === highCard);
+
+  if (highCardHolders.count() === 1) {
+    const winner = highCardHolders.first();
+    return alivePlayers.keyOf(winner);
+  } else {
+    const winner = highCardHolders.maxBy(player => getDiscardSum(player));
+    return alivePlayers.keyOf(winner);
+  }
+}
+
+function getDiscardSum(imPlayerState) {
+  return imPlayerState
+    .get('discards')
+    .reduce((sum, card) => sum + values[card], 0);
 }
 
 function prepareNextRound(imState) {

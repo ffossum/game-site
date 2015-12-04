@@ -147,4 +147,56 @@ describe('love letter', () => {
       expect(state.players['Jack'].hand.length).to.equal(1);
     });
   });
+
+  describe('end of round with multiple players remaining', () => {
+    let previousState;
+    let action;
+    let state;
+
+    beforeEach(() => {
+      previousState = {
+        toAct: 'Bob',
+        players: {
+          'Bob': {
+            score: 0,
+            hand: [cards.GUARD, cards.GUARD],
+            discards: [cards.HANDMAIDEN],
+            protected: true
+          },
+          'Jack': {
+            score: 0,
+            hand: [cards.PRINCE],
+            discards: [cards.BARON]
+          }
+        },
+        order: ['Bob', 'Jack'],
+        deck: [],
+        info: []
+      };
+
+      action = {
+        card: cards.GUARD,
+        acting: 'Bob',
+        target: 'Jack',
+        guess: cards.PRIEST
+      };
+    });
+
+    it('player with highest value card wins round', () => {
+      state = loveLetter.useCard(previousState, action);
+
+      expect(state.players['Bob'].score).to.equal(0);
+      expect(state.players['Jack'].score).to.equal(1);
+    });
+
+    describe('when players have same value card', () => {
+      it('player with highest sum discards win the round', () => {
+        previousState.players['Jack'].hand = [cards.GUARD];
+        state = loveLetter.useCard(previousState, action);
+
+        expect(state.players['Bob'].score).to.equal(1);
+        expect(state.players['Jack'].score).to.equal(0);
+      });
+    });
+  });
 });
