@@ -1,5 +1,6 @@
 import * as types from '../constants/ActionTypes';
 import gameReducer from './game';
+import {mapValues} from 'lodash';
 
 const initialState = {};
 
@@ -33,6 +34,9 @@ export default function games(state = initialState, action) {
         [action.payload.game.id]: gameReducer(state[action.payload.game.id], action)
       };
     }
+
+    case types.LOG_OUT:
+      return mapValues(state, game => gameReducer(game, action));
 
     default:
       return state;

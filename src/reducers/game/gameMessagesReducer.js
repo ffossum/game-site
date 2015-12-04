@@ -62,6 +62,9 @@ export default function gameMessages(state = initialState, action) {
       }
     }
 
+    case actions.LOG_OUT:
+      return initialState;
+
     default:
       return state;
   }
