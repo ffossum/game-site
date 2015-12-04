@@ -21,7 +21,19 @@ const values = {
   [cards.PRINCESS]: 8
 };
 
+const images = {
+  [cards.GUARD]: '/static/love-letter/guard.jpg',
+  [cards.PRIEST]: '/static/love-letter/priest.jpg',
+  [cards.BARON]: '/static/love-letter/baron.jpg',
+  [cards.HANDMAIDEN]: '/static/love-letter/handmaid.jpg',
+  [cards.PRINCE]: '/static/love-letter/prince.jpg',
+  [cards.KING]: '/static/love-letter/king.jpg',
+  [cards.COUNTESS]: '/static/love-letter/countess.jpg',
+  [cards.PRINCESS]: '/static/love-letter/princess.jpg'
+};
+
 module.exports = {
   cards,
-  values
+  values,
+  images
 };

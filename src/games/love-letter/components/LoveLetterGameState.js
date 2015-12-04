@@ -6,6 +6,7 @@ import Avatar from '../../../components/common/Avatar';
 import Icon from '../../../components/common/Icon';
 import WaitingIcon from '../../../components/common/WaitingIcon';
 import Hand from './Hand';
+import MiniCard from './MiniCard';
 import ProtectedIcon from './ProtectedIcon';
 import classnames from 'classnames';
 import '../stylesheets/love-letter.scss';
@@ -42,7 +43,17 @@ export default class LoveLetterGameState extends React.Component {
             </div>
             <div>
               <label>Discards:</label>
-              <div>{playerState.discards.join(', ')}</div>
+              <div className="player-state-discards">
+                {
+                  _.map(playerState.discards, (discard, i) => {
+                    return (
+                      <div className="discard">
+                        <MiniCard key={discard + i} card={discard} />
+                      </div>
+                    );
+                  })
+                }
+              </div>
             </div>
           </Panel>
         );
@@ -55,7 +66,9 @@ export default class LoveLetterGameState extends React.Component {
           {playerStates}
         </div>
         <div className="love-letter-deck">
-          Deck: {game.state.deck}
+          <Panel>
+            Deck: {game.state.deck}
+          </Panel>
         </div>
         <div className="love-letter-game-controls">
           <Hand
