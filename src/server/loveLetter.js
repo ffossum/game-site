@@ -165,6 +165,7 @@ function prepareNextTurn(imState) {
 const cardEffect = {
   [cards.GUARD]: (imState, action) => {
     if (!action.target) {
+      imState = addPublicInfo(imState, messageKeys.NO_EFFECT, [action.acting, cards.GUARD]);
       return imState;
     }
     const targetPlayer = imState.getIn(['players', action.target]);
@@ -179,6 +180,7 @@ const cardEffect = {
   },
   [cards.PRIEST]: (imState, action) => {
     if (!action.target) {
+      imState = addPublicInfo(imState, messageKeys.NO_EFFECT, [action.acting, cards.PRIEST]);
       return imState;
     }
 
@@ -189,6 +191,7 @@ const cardEffect = {
   },
   [cards.BARON]: (imState, action) => {
     if (!action.target) {
+      imState = addPublicInfo(imState, messageKeys.NO_EFFECT, [action.acting, cards.BARON]);
       return imState;
     }
     const actingPlayerCardValue = values[imState.getIn(['players', action.acting, 'hand', 0])];
@@ -223,6 +226,7 @@ const cardEffect = {
   },
   [cards.KING]: (imState, action) => {
     if (!action.target) {
+      imState = addPublicInfo(imState, messageKeys.NO_EFFECT, [action.acting, cards.KING]);
       return imState;
     }
     imState = addPublicInfo(imState, messageKeys.USED_KING, [action.acting, action.target]);

@@ -140,6 +140,8 @@ ${userName} switches hands with ${targetName}.`;
     `${getPlayerName(userId)} plays ${cardTexts[cards.COUNTESS].title}.`,
   [messageKeys.USED_PRINCESS]: userId =>
     `${getPlayerName(userId)} plays ${cardTexts[cards.PRINCESS].title} and is eliminated.`,
+  [messageKeys.NO_EFFECT]: (userId, card) =>
+    `${getPlayerName(userId)} plays ${cardTexts[card].title}, but the effect is ignored by Handmaiden.`
 };
 
 export function getMessageText(key, args = []) {

@@ -18,3 +18,4 @@ export const DREW_DISCARD = 'DREW_DISCARD';
 export const USED_KING = 'USED_KING';
 export const USED_COUNTESS = 'USED_COUNTESS';
 export const USED_PRINCESS = 'USED_PRINCESS';
+export const NO_EFFECT = 'NO_EFFECT';
