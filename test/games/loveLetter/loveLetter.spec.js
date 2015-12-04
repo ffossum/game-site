@@ -52,6 +52,7 @@ describe('love letter', () => {
         },
         order: ['Bob', 'Jack', 'Jill'],
         deck: [cards.BARON, cards.PRINCE],
+        discard: cards.HANDMAIDEN,
         info: []
       };
     });

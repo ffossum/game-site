@@ -316,6 +316,8 @@ export function createInitialState(players) {
 }
 
 export function asVisibleBy(state, playerId) {
+  state = _.omit(state, 'discard');
+
   const players = _.mapValues(state.players, (player, name) => ({
     ...player,
     hand: (name === playerId) ? player.hand : _.map(player.hand, card => cards.FACE_DOWN)
