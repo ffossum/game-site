@@ -16,6 +16,7 @@ export default class PlayableCard extends React.Component {
 
     return (
       <Button
+        className="card-button"
         onClick={onCardClicked}
         disabled={!mayPlayCard}>
         <Card card={card} />

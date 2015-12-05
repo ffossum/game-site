@@ -19,25 +19,26 @@ export default class Hand extends React.Component {
       <div className='love-letter-player-hand'>
         {
           _.map(hand, (card, index) => {
-            if (requiresTarget(card)) {
-                return <span key={card + index}>
-                  <PlayableTargetedCard
-                    id={card + index}
-                    login={login}
-                    card={card}
-                    players={players}
-                    game={game}
-                    playCard={playCard} />
-                </span>;
-            } else {
-              return <span key={card+index}>
-                <PlayableCard
-                  login={login}
-                  card={card}
-                  game={game}
-                  playCard={playCard} />
-              </span>;
-            }
+            return (
+              <div key={card + index}>
+                {
+                  requiresTarget(card) ?
+                    <PlayableTargetedCard
+                      id={card + index}
+                      login={login}
+                      card={card}
+                      players={players}
+                      game={game}
+                      playCard={playCard} />
+                    :
+                    <PlayableCard
+                      login={login}
+                      card={card}
+                      game={game}
+                      playCard={playCard} />
+                }
+              </div>
+            );
           })
         }
       </div>

@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
-import {Button, Overlay, Popover} from 'react-bootstrap';
+import {Button, Overlay, Panel} from 'react-bootstrap';
 import Card from './Card';
 import {every, includes, isEmpty, omit} from 'lodash';
 import GuardForm from './GuardForm';
@@ -62,8 +62,9 @@ export default class PlayableTargetedCard extends React.Component {
     };
 
     return (
-      <span>
+      <div className="targeted-card-container">
         <Button
+          className="card-button"
           ref="cardButton"
           onClick={this.showPopover}
           disabled={!mayPlayCard(game, login, card)}>
@@ -72,18 +73,20 @@ export default class PlayableTargetedCard extends React.Component {
 
         <Overlay
           show={this.state.showPopover}
+          placement="bottom"
+          container={this}
           rootClose
           onHide={this.hidePopover}
           target={() => ReactDOM.findDOMNode(this.refs.cardButton)}>
-          <Popover id={id} >
+          <Panel className="targeted-card-form" id={id} >
             {
               card === cards.GUARD ?
               <GuardForm players={players} targets={targets} playCard={hidePopoverAndPlayCard} /> :
               <CardTargetForm card={card} players={players} targets={targets} playCard={hidePopoverAndPlayCard} />
             }
-          </Popover>
+          </Panel>
         </Overlay>
-      </span>
+      </div>
     );
   }
 }
