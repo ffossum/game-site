@@ -133,6 +133,7 @@ function getDiscardSum(imPlayerState) {
 function prepareNextRound(imState) {
   const winnerId = getWinnerId(imState);
 
+  imState = addRoundSummary(imState, winnerId);
   imState = imState.updateIn(['players', winnerId, 'score'], score => score + 1);
   imState = imState.set('toAct', winnerId);
 
@@ -159,6 +160,26 @@ function prepareNextRound(imState) {
   imState = imState.set('deck', Immutable.fromJS(nextDeck));
 
   return imState;
+}
+
+function addRoundSummary(imState, winnerId) {
+  const playerStates = imState.get('players').toJS();
+  const summary = {
+    winner: winnerId,
+    players: _.mapValues(playerStates, playerState => {
+      return _.pick(playerState, ['score', 'hand', 'discards']);
+    })
+  };
+
+  const newInfo = {
+    public: true,
+    modal: {
+      key: 'ROUND_SUMMARY',
+      args: summary
+    }
+  };
+
+  return imState.update('info', info => info.push(Immutable.fromJS(newInfo)));
 }
 
 let discardHand = eliminatePlayer;

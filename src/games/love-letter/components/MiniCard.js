@@ -6,10 +6,10 @@ import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 
 export default class MiniCard extends React.Component {
   render() {
-    const {card} = this.props;
+    const {card, tooltipId} = this.props;
     const text = texts[card];
 
-    const tooltip = <Tooltip>{text.value} - {text.title}</Tooltip>;
+    const tooltip = <Tooltip id={tooltipId}>{text.value} - {text.title}</Tooltip>;
 
     return (
       <div className="love-letter-mini-card">

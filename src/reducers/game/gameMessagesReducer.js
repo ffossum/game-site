@@ -1,6 +1,6 @@
 import * as actions from '../../constants/ActionTypes';
 import * as messageKeys from '../../constants/GameMessages';
-import {isEmpty, map} from 'lodash';
+import _ from 'lodash';
 
 const initialState = [];
 
@@ -53,8 +53,11 @@ export default function gameMessages(state = initialState, action) {
 
     case actions.UPDATE_GAME_STATE: {
       const stateInfo = action.payload.game.state.info;
-      if (!isEmpty(stateInfo)) {
-        const infoMessages = map(stateInfo, info => info.msg);
+      if (!_.isEmpty(stateInfo)) {
+        const infoMessages = _(stateInfo)
+          .filter(info => info.msg)
+          .map(info => info.msg)
+          .value();
 
         return [...state, ...infoMessages];
       } else {

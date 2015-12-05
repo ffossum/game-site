@@ -3,17 +3,18 @@ import _ from 'lodash';
 import {Alert, Panel} from 'react-bootstrap';
 import Chat from '../../../components/chat/Chat';
 import Avatar from '../../../components/common/Avatar';
-import Icon from '../../../components/common/Icon';
 import WaitingIcon from '../../../components/common/WaitingIcon';
+import RoundSummary from './RoundSummary';
 import Hand from './Hand';
 import MiniCard from './MiniCard';
 import ProtectedIcon from './ProtectedIcon';
+import ScoreIcon from './ScoreIcon';
 import classnames from 'classnames';
 import '../stylesheets/love-letter.scss';
 
 export default class LoveLetterGameState extends React.Component {
   render() {
-    const {game, login, players, playCard} = this.props;
+    const {game, login, players, playCard, dismissModal} = this.props;
 
     const inGame = _.contains(game.players, login.id);
 
@@ -39,16 +40,16 @@ export default class LoveLetterGameState extends React.Component {
             {game.state.toAct === id ? <span className='waiting-icon'><WaitingIcon /></span> : null}
             <div>
               <hr />
-              <span className="score-icon"><Icon type="heart" /></span> {playerState.score} <ProtectedIcon protect={playerState.protected} />
+              <ScoreIcon /> {playerState.score} <ProtectedIcon protect={playerState.protected} />
             </div>
             <div>
               <label>Discards:</label>
-              <div className="player-state-discards">
+              <div className="love-letter-mini-card-list">
                 {
                   _.map(playerState.discards, (discard, i) => {
                     return (
-                      <div className="discard">
-                        <MiniCard key={discard + i} card={discard} />
+                      <div key={discard + i} className="mini-card-list-item">
+                        <MiniCard tooltipId={discard + i} card={discard} />
                       </div>
                     );
                   })
@@ -62,6 +63,7 @@ export default class LoveLetterGameState extends React.Component {
 
     return (
       <div className="love-letter-game">
+        <RoundSummary game={game} players={players} dismissModal={dismissModal} />
         <div className="love-letter-player-states">
           {playerStates}
         </div>

@@ -16,3 +16,14 @@ export function updateGameState(payload) {
     payload
   };
 };
+
+export function dismissModal(gameId) {
+  return {
+    type: types.DISMISS_MODAL,
+    payload: {
+      game: {
+        id: gameId
+      }
+    }
+  };
+}

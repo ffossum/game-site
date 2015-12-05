@@ -1,7 +1,7 @@
-import {performGameAction} from '../../../actions/gameActions';
+import * as gameActions from '../../../actions/gameActions';
 
 export function playCard(userId, gameId, card, options = {}) {
-  return performGameAction({
+  return gameActions.performGameAction({
     user: {id: userId},
     game: {id: gameId},
     action: {
@@ -10,3 +10,5 @@ export function playCard(userId, gameId, card, options = {}) {
     }
   });
 };
+
+export const dismissModal = gameActions.dismissModal;

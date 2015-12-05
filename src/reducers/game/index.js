@@ -4,6 +4,7 @@ import messages from './gameMessagesReducer';
 import state from './gameStateReducer';
 import identity from '../identityReducer';
 import status from './gameStatusReducer';
+import modal from './gameModalReducer';
 
 export default combineReducers({
   id: identity,
@@ -11,5 +12,6 @@ export default combineReducers({
   players,
   messages,
   state,
-  status
+  status,
+  modal
 });
