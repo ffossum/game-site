@@ -68,7 +68,7 @@ function getAlivePlayers(imState) {
 
 function drawCard(imState, playerId) {
   if (imState.get('deck').isEmpty()) {
-    imState = addPublicInfo(imState, messageKeys.DREW_DISCARD, [playerId]);
+    imState = addPublicMessage(imState, messageKeys.DREW_DISCARD, [playerId]);
     const discard = imState.get('discard');
     return imState.updateIn(['players', playerId, 'hand'], hand => hand.push(discard));
   }
@@ -117,13 +117,11 @@ function getWinnerId(imState) {
 
   const highCardHolders = alivePlayers.filter(player => player.get('hand').first() === highCard);
 
-  if (highCardHolders.count() === 1) {
-    const winner = highCardHolders.first();
-    return alivePlayers.keyOf(winner);
-  } else {
-    const winner = highCardHolders.maxBy(player => getDiscardSum(player));
-    return alivePlayers.keyOf(winner);
-  }
+  const winner = highCardHolders.count() === 1 ?
+    highCardHolders.first() :
+    highCardHolders.maxBy(player => getDiscardSum(player));
+
+  return alivePlayers.keyOf(winner);
 }
 
 function getDiscardSum(imPlayerState) {
@@ -178,51 +176,51 @@ function prepareNextTurn(imState) {
 const cardEffect = {
   [cards.GUARD]: (imState, action) => {
     if (!action.target) {
-      imState = addPublicInfo(imState, messageKeys.NO_EFFECT, [action.acting, cards.GUARD]);
+      imState = addPublicMessage(imState, messageKeys.NO_EFFECT, [action.acting, cards.GUARD]);
       return imState;
     }
     const targetPlayer = imState.getIn(['players', action.target]);
     const targetPlayerCard = targetPlayer.get('hand').first();
     if (targetPlayerCard === action.guess) {
-      imState = addPublicInfo(imState, messageKeys.GUARD_CORRECT, [action.acting, action.target, action.guess]);
+      imState = addPublicMessage(imState, messageKeys.GUARD_CORRECT, [action.acting, action.target, action.guess]);
       return eliminatePlayer(imState, action.target);
     } else {
-      imState = addPublicInfo(imState, messageKeys.GUARD_WRONG, [action.acting, action.target, action.guess]);
+      imState = addPublicMessage(imState, messageKeys.GUARD_WRONG, [action.acting, action.target, action.guess]);
       return imState;
     }
   },
   [cards.PRIEST]: (imState, action) => {
     if (!action.target) {
-      imState = addPublicInfo(imState, messageKeys.NO_EFFECT, [action.acting, cards.PRIEST]);
+      imState = addPublicMessage(imState, messageKeys.NO_EFFECT, [action.acting, cards.PRIEST]);
       return imState;
     }
 
     const revealedCard = imState.getIn(['players', action.target, 'hand', 0]);
-    imState = addPublicInfo(imState, messageKeys.USED_PRIEST, [action.acting, action.target]);
-    imState = addSecretInfo(imState, [action.acting], messageKeys.HAS_CARD, [action.target, revealedCard]);
+    imState = addPublicMessage(imState, messageKeys.USED_PRIEST, [action.acting, action.target]);
+    imState = addSecretMessage(imState, [action.acting], messageKeys.HAS_CARD, [action.target, revealedCard]);
     return imState;
   },
   [cards.BARON]: (imState, action) => {
     if (!action.target) {
-      imState = addPublicInfo(imState, messageKeys.NO_EFFECT, [action.acting, cards.BARON]);
+      imState = addPublicMessage(imState, messageKeys.NO_EFFECT, [action.acting, cards.BARON]);
       return imState;
     }
     const actingPlayerCardValue = values[imState.getIn(['players', action.acting, 'hand', 0])];
     const targetPlayerCardValue = values[imState.getIn(['players', action.target, 'hand', 0])];
 
     if (actingPlayerCardValue > targetPlayerCardValue) {
-      imState = addPublicInfo(imState, messageKeys.BARON_SUCCESS, [action.acting, action.target]);
+      imState = addPublicMessage(imState, messageKeys.BARON_SUCCESS, [action.acting, action.target]);
       imState = eliminatePlayer(imState, action.target);
     } else if (actingPlayerCardValue < targetPlayerCardValue) {
-      imState = addPublicInfo(imState, messageKeys.BARON_FAIL, [action.acting, action.target]);
+      imState = addPublicMessage(imState, messageKeys.BARON_FAIL, [action.acting, action.target]);
       imState = eliminatePlayer(imState, action.acting);
     } else {
-      imState = addPublicInfo(imState, messageKeys.BARON_DRAW, [action.acting, action.target]);
+      imState = addPublicMessage(imState, messageKeys.BARON_DRAW, [action.acting, action.target]);
     }
     return imState;
   },
   [cards.HANDMAIDEN]: (imState, action) => {
-    imState = addPublicInfo(imState, messageKeys.USED_HANDMAIDEN, [action.acting]);
+    imState = addPublicMessage(imState, messageKeys.USED_HANDMAIDEN, [action.acting]);
     return imState.setIn(['players', action.acting, 'protected'], true);
   },
   [cards.PRINCE]: (imState, action) => {
@@ -230,27 +228,27 @@ const cardEffect = {
 
     const targetDiscards = imState.getIn(['players', action.target, 'discards']);
     if (targetDiscards.includes(cards.PRINCESS)) {
-      imState = addPublicInfo(imState, messageKeys.USED_PRINCE_ON_PRINCESS, [action.acting, action.target]);
+      imState = addPublicMessage(imState, messageKeys.USED_PRINCE_ON_PRINCESS, [action.acting, action.target]);
       return imState;
     }
 
-    imState = addPublicInfo(imState, messageKeys.USED_PRINCE, [action.acting, action.target]);
+    imState = addPublicMessage(imState, messageKeys.USED_PRINCE, [action.acting, action.target]);
     return drawCard(imState, action.target);
   },
   [cards.KING]: (imState, action) => {
     if (!action.target) {
-      imState = addPublicInfo(imState, messageKeys.NO_EFFECT, [action.acting, cards.KING]);
+      imState = addPublicMessage(imState, messageKeys.NO_EFFECT, [action.acting, cards.KING]);
       return imState;
     }
-    imState = addPublicInfo(imState, messageKeys.USED_KING, [action.acting, action.target]);
+    imState = addPublicMessage(imState, messageKeys.USED_KING, [action.acting, action.target]);
     return switchCards(imState, action.acting, action.target);
   },
   [cards.COUNTESS]: (imState, action) => {
-    imState = addPublicInfo(imState, messageKeys.USED_COUNTESS, [action.acting]);
+    imState = addPublicMessage(imState, messageKeys.USED_COUNTESS, [action.acting]);
     return imState;
   },
   [cards.PRINCESS]: (imState, action) => {
-    imState = addPublicInfo(imState, messageKeys.USED_PRINCESS, [action.acting]);
+    imState = addPublicMessage(imState, messageKeys.USED_PRINCESS, [action.acting]);
     return eliminatePlayer(imState, action.acting);
   }
 };
@@ -259,7 +257,7 @@ function clearInfo(imState) {
   return imState.update('info', info => info.clear());
 }
 
-function addPublicInfo(imState, key, args) {
+function addPublicMessage(imState, key, args) {
   const newInfo = {
     public: true,
     msg: {
@@ -271,7 +269,7 @@ function addPublicInfo(imState, key, args) {
   return imState.update('info', info => info.push(Immutable.fromJS(newInfo)));
 }
 
-function addSecretInfo(imState, forPlayers, key, args) {
+function addSecretMessage(imState, forPlayers, key, args) {
   const newInfo = {
     for: forPlayers,
     msg: {
