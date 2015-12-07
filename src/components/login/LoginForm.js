@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import {Input, Button} from 'react-bootstrap';
 import texts from '../../constants/Texts';
-import {isEmpty} from 'underscore';
+import {isEmpty} from 'lodash';
 import Spinner from '../common/Spinner';
 
 export default class Login extends React.Component {
