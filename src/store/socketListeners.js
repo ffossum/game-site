@@ -4,7 +4,7 @@ import * as lobbyActions from '../actions/lobbyActions';
 import * as playersActions from '../actions/playersActions';
 import * as gameActions from '../actions/gameActions';
 import * as types from '../constants/ActionTypes';
-import {each} from 'underscore';
+import {each} from 'lodash';
 
 const actions = {
   [types.LOG_IN_SUCCESS]: (data) => loginActions.logInSuccess(data),
