@@ -115,7 +115,7 @@ io.on('connection', socket => {
       game.players.push(socket.user.id);
 
       socket.emit('JOIN_GAME_SUCCESS', game);
-      socket.broadcast.to(gameId).emit('PLAYER_JOINED', {
+      socket.broadcast.emit('PLAYER_JOINED', {
         game: {id: gameId},
         user: {id: socket.user.id}
       });
@@ -133,7 +133,7 @@ io.on('connection', socket => {
       game.players = _.without(game.players, socket.user.id);
 
       socket.emit('LEAVE_GAME_SUCCESS', game);
-      socket.broadcast.to(gameId).emit('PLAYER_LEFT', {
+      socket.broadcast.emit('PLAYER_LEFT', {
         game: {id: gameId},
         user: {id: socket.user.id}
       });
