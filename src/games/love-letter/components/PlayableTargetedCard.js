@@ -73,7 +73,6 @@ export default class PlayableTargetedCard extends React.Component {
 
         <Overlay
           show={this.state.showPopover}
-          placement="bottom"
           container={this}
           rootClose
           onHide={this.hidePopover}
