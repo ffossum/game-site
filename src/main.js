@@ -4,8 +4,15 @@ import {Provider} from 'react-redux';
 import {ReduxRouter} from 'redux-router';
 import store from './store/store';
 import routes from './routes';
+import {logIn} from './actions/loginActions';
 
 import './stylesheets/main.scss';
+
+const storedLogin = localStorage.getItem('login');
+if (storedLogin) {
+  const username = JSON.parse(storedLogin).name;
+  store.dispatch(logIn(username));
+}
 
 ReactDOM.render((
   <div>

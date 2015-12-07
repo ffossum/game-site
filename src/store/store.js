@@ -4,6 +4,7 @@ import createHistory from 'history/lib/createBrowserHistory';
 import {reduxReactRouter} from 'redux-router';
 import socketMiddleware from './socketMiddleware';
 import historyMiddleware from './historyMiddleware';
+import localStorageMiddleware from './localStorageMiddleware';
 import * as socketListeners from './socketListeners';
 import socket from './socket';
 import globals from './globals';
@@ -16,7 +17,8 @@ let storeEnhancers = [
   }),
   applyMiddleware(
     socketMiddleware(socket),
-    historyMiddleware(globals)
+    historyMiddleware(globals),
+    localStorageMiddleware
   )
 ];
 
