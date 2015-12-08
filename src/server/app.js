@@ -224,7 +224,7 @@ io.on('connection', socket => {
   });
 });
 
-server.listen(8080, 'localhost', err => {
+server.listen(8080, '0.0.0.0', err => {
   if (err) {
     console.log(err);
     return;
