@@ -233,5 +233,5 @@ server.listen(8080, '0.0.0.0', err => {
   var environment = process.env.NODE_ENV === 'production' ? 'Production' : 'Development';
   console.log(environment + ' environment');
 
-  console.log('Listening at localhost:8080');
+  console.log('Listening on port 8080');
 });
