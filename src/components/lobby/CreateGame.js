@@ -1,6 +1,6 @@
 import React from 'react';
-import {Panel, Button, Alert} from 'react-bootstrap';
-import {LinkContainer} from 'react-router-bootstrap';
+import {Panel, Alert} from 'react-bootstrap';
+import {Button, LinkContainer} from '../common';
 
 export default class CreateGame extends React.Component {
   constructor(props) {
@@ -36,12 +36,12 @@ export default class CreateGame extends React.Component {
               </Alert>
               <Button
                 type='submit'
-                bsStyle='primary'>
+                btnStyle='primary'>
                 Create game
               </Button>
               {' '}
               <LinkContainer to='/lobby'>
-                <Button>Cancel</Button>
+                <Button type='button'>Cancel</Button>
               </LinkContainer>
             </form>
           </Panel>
