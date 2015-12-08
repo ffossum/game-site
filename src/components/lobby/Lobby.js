@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Panel} from 'react-bootstrap';
-import {LinkContainer} from 'react-router-bootstrap';
+import {LinkContainer} from '../common';
 import GameList from './GameList';
 
 export default class Lobby extends React.Component {

@@ -1,8 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {Navbar, Nav, NavItem, NavDropdown, MenuItem, Modal} from 'react-bootstrap';
-import {LinkContainer} from 'react-router-bootstrap';
-import Icon from './common/Icon';
+import {LinkContainer, Icon} from './common';
 import _ from 'lodash';
 import LoginContainer from '../containers/LoginContainer';
 

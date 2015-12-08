@@ -1,35 +1,37 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
+import {Link} from 'react-router';
 
 export default class LinkContainer extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.onClick = this.onClick.bind(this);
-  }
-
-  onClick(event) {
-    if (this.props.disabled) {
-      event.preventDefault();
-      return;
-    }
-
-    const {to} = this.props;
-    const {history} = this.context;
-
-    history.pushState(null, to);
-  }
-
   render() {
-    const {to} = this.props;
+    const {to, children, ...props} = this.props;
     const {history} = this.context;
 
-    const props = {
-      onClick: this.onClick,
-      active: history.isActive(to)
+    const onClick = event => {
+      if (this.props.disabled) {
+        event.preventDefault();
+        return;
+      }
+
+      if (children.props.onClick) {
+        children.props.onClick(event);
+      }
+
+      Link.prototype.handleClick.call(this, event);
     };
+
+    props.onClick = onClick;
+    props.active = history.isActive(to);
+
     return React.cloneElement(this.props.children, props);
   }
 }
 
 LinkContainer.contextTypes = {
-  history: React.PropTypes.object
+  history: PropTypes.object
+};
+
+LinkContainer.propTypes = {
+  to: React.PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+  children: React.PropTypes.node.isRequired
 };

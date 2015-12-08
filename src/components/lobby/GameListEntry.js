@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {ListGroupItem} from 'react-bootstrap';
-import {LinkContainer} from 'react-router-bootstrap';
+import {LinkContainer} from '../common';
 import PlayerList from '../game/PlayerList';
 
 export default class GameListEntry extends React.Component {
