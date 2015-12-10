@@ -1,12 +1,12 @@
 import {combineReducers} from 'redux';
-import {routerStateReducer} from 'redux-router';
+import {routeReducer as routing} from 'redux-simple-router';
 import login from './loginReducer';
 import chat from './chatReducer';
 import games from './lobbyReducer';
 import players from './playersReducer';
 
 const reducer = combineReducers({
-  router: routerStateReducer,
+  routing,
   chat,
   games,
   login,

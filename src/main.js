@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {ReduxRouter} from 'redux-router';
+import {Router} from 'react-router';
 import store from './store/store';
+import history from './history';
 import routes from './routes';
 import {logIn} from './actions/loginActions';
 
@@ -17,9 +18,9 @@ if (storedLogin) {
 ReactDOM.render((
   <div>
     <Provider store={store}>
-      <ReduxRouter>
+      <Router history={history}>
         {routes}
-      </ReduxRouter>
+      </Router>
     </Provider>
     {
       () => {

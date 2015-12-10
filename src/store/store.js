@@ -1,23 +1,17 @@
 import {compose, createStore, applyMiddleware} from 'redux';
 import reducer from '../reducers';
-import createHistory from 'history/lib/createBrowserHistory';
-import {reduxReactRouter} from 'redux-router';
+import {syncReduxAndRouter} from 'redux-simple-router';
 import socketMiddleware from './socketMiddleware';
 import historyMiddleware from './historyMiddleware';
 import localStorageMiddleware from './localStorageMiddleware';
 import * as socketListeners from './socketListeners';
-import socket from './socket';
-import globals from './globals';
-import routes from '../routes';
+import history from '../history';
+import socket from '../socket';
 
 let storeEnhancers = [
-  reduxReactRouter({
-    routes,
-    createHistory
-  }),
   applyMiddleware(
     socketMiddleware(socket),
-    historyMiddleware(globals),
+    historyMiddleware(history),
     localStorageMiddleware
   )
 ];
@@ -34,7 +28,7 @@ if (__DEVELOPMENT__) {
 const finalCreateStore = compose(...storeEnhancers)(createStore);
 const store = finalCreateStore(reducer);
 
-globals.history = store.history;
+syncReduxAndRouter(history, store);
 
 socketListeners.addAll(socket, store);
 
