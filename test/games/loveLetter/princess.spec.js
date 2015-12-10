@@ -32,14 +32,14 @@ describe('love letter - princess', () => {
 
   it('player using princess is eliminated', () => {
     const previousState = {
-      toAct: 'Bob',
+      toAct: 'Jack',
       players: {
         'Bob': {
-          hand: [cards.PRINCESS, cards.BARON],
+          hand: [cards.BARON],
           discards: []
         },
         'Jack': {
-          hand: [cards.KING],
+          hand: [cards.PRINCESS, cards.KING],
           discards: []
         },
         'Jill': {
@@ -54,12 +54,13 @@ describe('love letter - princess', () => {
 
     const action = {
       card: cards.PRINCESS,
-      acting: 'Bob'
+      acting: 'Jack'
     };
 
     const state = loveLetter.useCard(previousState, action);
-    expect(state.toAct).to.equal('Jack');
-    expect(state.players['Bob'].hand).to.be.empty;
-    expect(state.players['Bob'].discards).to.deep.equal([cards.PRINCESS, cards.BARON]);
+
+    expect(state.toAct).to.equal('Jill');
+    expect(state.players['Jack'].hand).to.be.empty;
+    expect(state.players['Jack'].discards).to.deep.equal([cards.PRINCESS, cards.KING]);
   });
 });

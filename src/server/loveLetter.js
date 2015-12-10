@@ -52,7 +52,7 @@ function getNextPlayerId(imState) {
 
   const filteredOrder = imState
     .get('order')
-    .filter(player => alivePlayers.has(player));
+    .filter(playerId => alivePlayers.has(playerId) || playerId === imState.get('toAct'));
 
   const actingPlayerIndex = filteredOrder.indexOf(imState.get('toAct'));
   const nextPlayerIndex = (actingPlayerIndex + 1) % filteredOrder.size;
