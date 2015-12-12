@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {Alert, Panel} from 'react-bootstrap';
+import {Alert, Panel} from '../common';
 import Chat from '../chat/Chat';
 import GameLobbyButtons from './GameLobbyButtons';
 import _ from 'lodash';
@@ -14,7 +14,7 @@ export default class Game extends React.Component {
     const {game, players} = this.props;
 
     if (!game) {
-      return <Alert bsStyle='danger'>Invalid game id</Alert>;
+      return <Alert alertStyle='danger'>Invalid game id</Alert>;
     } else if (game.status === status.IN_PROGRESS) {
       return <LoveLetterContainer game={game} />;
     } else {

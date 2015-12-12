@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
-import {Button} from 'react-bootstrap';
+import {Button, Spinner} from '../common';
 import _ from 'lodash';
-import Spinner from '../common/Spinner';
 import * as status from '../../constants/GameStatus';
 
 export default class GameLobbyButtons extends React.Component {
@@ -64,7 +63,7 @@ export default class GameLobbyButtons extends React.Component {
                 <Button
                   onClick={this.startGame}
                   disabled={game.players.length < 2 || game.status === status.STARTING}
-                  bsStyle="success">
+                  btnStyle="success">
                   {game.status === status.STARTING ? <span><Spinner /> Starting game...</span> : 'Start game'}
                 </Button>
                 :

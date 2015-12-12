@@ -1,6 +1,5 @@
 import React from 'react';
-import Icon from '../common/Icon';
-import Avatar from '../common/Avatar';
+import {Avatar, Icon} from '../common';
 
 import '../../stylesheets/playerList.scss';
 
