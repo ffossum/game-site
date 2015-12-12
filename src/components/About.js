@@ -1,5 +1,5 @@
 import React from 'react';
-import {Panel} from 'react-bootstrap';
+import {Panel} from './common';
 import DocumentTitle from 'react-document-title';
 
 class About extends React.Component {

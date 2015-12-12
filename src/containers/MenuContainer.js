@@ -1,7 +1,7 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Menu from '../components/Menu';
+import Menu from '../components/nav/Menu';
 import * as actions from '../actions/loginActions';
 
 class MenuContainer extends React.Component {

@@ -1,9 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {Navbar, Nav, NavItem, NavDropdown, MenuItem, Modal} from 'react-bootstrap';
-import {LinkContainer, Icon} from './common';
+import Nav from 'react-bootstrap/lib/Nav';
+import Navbar from 'react-bootstrap/lib/Navbar';
+import NavItem from 'react-bootstrap/lib/NavItem';
+import NavDropdown from 'react-bootstrap/lib/NavDropdown';
+import MenuItem from 'react-bootstrap/lib/MenuItem';
+import {Icon, LinkContainer, Modal} from '../common';
+import GamesDropdown from './GamesDropdown';
 import _ from 'lodash';
-import LoginContainer from '../containers/LoginContainer';
+import LoginContainer from '../../containers/LoginContainer';
 
 class Menu extends React.Component {
   constructor(props) {
@@ -14,15 +19,12 @@ class Menu extends React.Component {
 
     this.state = {showLogin: false};
   }
-
   closeLogin() {
     this.setState({showLogin: false});
   }
-
   openLogin() {
     this.setState({showLogin: true});
   }
-
   componentWillReceiveProps(nextProps) {
     const {loggedIn} = nextProps.login;
 
@@ -32,11 +34,18 @@ class Menu extends React.Component {
   }
 
   render() {
-
     const links = [
       {href: '/lobby', text: 'Play'},
       {href: '/about', text: 'About'}
     ];
+
+    const linkComponents = _.map(links, link => {
+      return (
+         <LinkContainer key={link.href} to={link.href}>
+           <NavItem>{link.text}</NavItem>
+         </LinkContainer>
+      );
+    });
 
     const {id, username, loggedIn} = this.props.login;
     const {logOut} = this.props;
@@ -51,15 +60,7 @@ class Menu extends React.Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
-            {
-              links.map(link => {
-                return (
-                   <LinkContainer key={link.href} to={link.href}>
-                     <NavItem>{link.text}</NavItem>
-                   </LinkContainer>
-                );
-              })
-            }
+            {linkComponents}
           </Nav>
           {
             () => {
@@ -70,20 +71,7 @@ class Menu extends React.Component {
 
                 return (
                   <Nav pullRight>
-                    {
-                      !_.isEmpty(myGames) ?
-                      <NavDropdown title="My games" id="nav-games-dropdown">
-                        {
-                          _.map(myGames, (game, gameId) => {
-                            return (
-                              <LinkContainer key={gameId} to={`/game/${gameId}`}>
-                                <MenuItem>{gameId}</MenuItem>
-                              </LinkContainer>
-                            );
-                          })
-                        }
-                      </NavDropdown> : null
-                    }
+                    <GamesDropdown games={myGames} title="My games" />
                     <NavDropdown title={username} id="nav-profile-dropdown">
                       <MenuItem onSelect={logOut}><Icon type='sign-out'/> Log out</MenuItem>
                     </NavDropdown>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Panel} from 'react-bootstrap';
+import {Panel} from './common';
 import Chat from '../containers/ChatContainer';
 import DocumentTitle from 'react-document-title';
 
