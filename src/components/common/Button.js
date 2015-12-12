@@ -1,12 +1,14 @@
 import React, {PropTypes} from 'react';
-import {Button as BsButton} from 'react-bootstrap';
+import BsButton from 'react-bootstrap/lib/Button';
 
 export default class Button extends React.Component {
   render() {
-    const {type, btnStyle, onClick} = this.props;
+    const props = {...this.props};
+    props.bsStyle = props.btnStyle;
+    delete props.btnStyle;
 
     return (
-      <BsButton type={type} bsStyle={btnStyle} onClick={onClick}>
+      <BsButton {...props} >
         {this.props.children}
       </BsButton>
     );
@@ -16,5 +18,6 @@ export default class Button extends React.Component {
 Button.propTypes = {
   type: PropTypes.string,
   btnStyle: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  disabled: PropTypes.bool
 };

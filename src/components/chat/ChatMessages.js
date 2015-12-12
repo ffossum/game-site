@@ -2,13 +2,11 @@ import React, {PropTypes} from 'react';
 import ChatMessage from './ChatMessage';
 
 class ChatMessages extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.scrollBottom = this.scrollBottom.bind(this);
   }
-
   componentWillUpdate() {
     const node = this.refs.chatMessages;
     this.shouldScrollBottom = node.scrollTop + node.offsetHeight - node.scrollHeight > -10;

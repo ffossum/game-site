@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {Button, Input} from 'react-bootstrap';
+import {Button, Input} from '../common';
 
 class ChatControls extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class ChatControls extends React.Component {
     const sendButton = (
       <Button
         type='submit'
-        bsStyle='primary'
+        btnStyle='primary'
         disabled={!loggedIn}>
         Send
       </Button>
