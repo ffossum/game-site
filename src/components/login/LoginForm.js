@@ -1,40 +1,45 @@
 import React, {PropTypes} from 'react';
-import {Input, Button} from 'react-bootstrap';
+import {Input, Button, Spinner} from '../common';
 import texts from '../../constants/Texts';
 import {isEmpty} from 'lodash';
-import Spinner from '../common/Spinner';
 
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {username: props.username};
+
+    this.onUsernameChange = this.onUsernameChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
-
-  onSubmit(e) {
-    e.preventDefault();
+  onUsernameChange(event) {
+    this.setState({username: event.target.value});
+  }
+  onSubmit(event) {
+    event.preventDefault();
 
     const {logIn} = this.props;
-    const username = this.refs.username.getValue().trim();
+    const username = this.state.username.trim();
 
     if (!isEmpty(username)) {
       logIn(username);
     }
   }
-
   render() {
-    const {username, waiting, error} = this.props;
+    const {waiting, error} = this.props;
+    const {username} = this.state;
     return (
       <form onSubmit={this.onSubmit}>
         <Input
           autoFocus
-          ref="username"
+          onChange={this.onUsernameChange}
           type="text"
           label="Username"
           placeholder="Username"
-          defaultValue={username}
+          value={username}
           readOnly={waiting}
           help={error ? texts[error] : null}
-          bsStyle={error ? 'error' : null} />
+          inputStyle={error ? 'error' : null} />
 
         <Button
           type="submit"
