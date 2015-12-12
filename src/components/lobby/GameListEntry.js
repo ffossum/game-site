@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react';
-import {ListGroupItem} from 'react-bootstrap';
-import {LinkContainer} from '../common';
+import {LinkContainer, Button} from '../common';
 import PlayerList from '../game/PlayerList';
 
 export default class GameListEntry extends React.Component {
@@ -8,11 +7,13 @@ export default class GameListEntry extends React.Component {
     const {game, players} = this.props;
 
     return (
-      <LinkContainer to={`/game/${game.id}`}>
-        <ListGroupItem>
-          <PlayerList players={players} game={game} />
-        </ListGroupItem>
-      </LinkContainer>
+      <div className='lobby-game-list-entry'>
+        <LinkContainer to={`/game/${game.id}`}>
+          <Button>
+            <PlayerList players={players} game={game} />
+          </Button>
+        </LinkContainer>
+      </div>
     );
   }
 };

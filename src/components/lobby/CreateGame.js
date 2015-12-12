@@ -1,6 +1,5 @@
 import React from 'react';
-import {Panel, Alert} from 'react-bootstrap';
-import {Button, LinkContainer} from '../common';
+import {Alert, Button, LinkContainer, Panel} from '../common';
 
 export default class CreateGame extends React.Component {
   constructor(props) {
@@ -25,13 +24,13 @@ export default class CreateGame extends React.Component {
       <div className="container">
         {
           !loggedIn ?
-          <Alert bsStyle='warning'>
+          <Alert alertStyle='warning'>
             You must be logged in to create a game.
           </Alert>
           :
           <Panel>
             <form onSubmit={this.createGame}>
-              <Alert bsStyle='warning'>
+              <Alert alertStyle='info'>
                 Game options are coming soon.
               </Alert>
               <Button

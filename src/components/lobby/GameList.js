@@ -1,12 +1,11 @@
 import React from 'react';
 import _ from 'lodash';
 import GameListEntry from './GameListEntry';
-import {ListGroup} from 'react-bootstrap';
 
 export default class GameList extends React.Component {
   render() {
     return (
-      <ListGroup>
+      <div className='lobby-game-list'>
         {
           _.map(this.props.games, (game, id) => {
             return (
@@ -14,7 +13,7 @@ export default class GameList extends React.Component {
             );
           })
         }
-      </ListGroup>
+      </div>
     );
   }
 }
