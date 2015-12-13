@@ -44,7 +44,7 @@ io.on('connection', socket => {
 
   socket.emit('UPDATE_PLAYERS', _.extend({}, users, getUsersInGames(games)));
   socket.emit('UPDATE_GAMES', _.mapValues(games, game => {
-    return _.pick(game, ['id', 'host', 'players', 'status']);
+    return _.pick(game, ['id', 'host', 'players', 'status', 'settings']);
   }));
 
   socket.on('SEND_MESSAGE', data => {
@@ -91,14 +91,15 @@ io.on('connection', socket => {
     }
   });
 
-  socket.on('CREATE_GAME_REQUEST', () => {
+  socket.on('CREATE_GAME_REQUEST', settings => {
     const gameId = shortid.generate();
     _.each(userSockets[socket.user.id], userSocket => userSocket.join(gameId));
 
     const game = {
       id: gameId,
       host: socket.user.id,
-      players: [socket.user.id]
+      players: [socket.user.id],
+      settings
     };
 
     games[gameId] = game;

@@ -1,8 +1,9 @@
 import * as types from '../constants/ActionTypes';
 
-export function createGame() {
+export function createGame(settings) {
   return {
     type: types.CREATE_GAME_REQUEST,
+    payload: settings,
     meta: {
       socket: true
     }

@@ -1,24 +1,64 @@
 import React from 'react';
-import {Alert, Button, LinkContainer, Panel} from '../common';
+import {Alert, Button, IncrementInput, LinkContainer, Panel} from '../common';
+import PlayerList from '../game/PlayerList';
+import _ from 'lodash';
+
+import '../../stylesheets/create-game.scss';
+
+const inc = x => x + 1;
+const dec = y => y - 1;
+
+const gamePlayerCounts = [2, 3, 4];
+const gamePlayersMax = _.max(gamePlayerCounts);
+const gamePlayersMin = _.min(gamePlayerCounts);
 
 export default class CreateGame extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      players: {
+        required: 3,
+        optional: 1
+      }
+    };
     this.createGame = this.createGame.bind(this);
+    this.onChangePlayers = this.onChangePlayers.bind(this);
   }
+  onChangePlayers(func, key, event) {
+    const players = this.state.players;
+    players[key] = func(players[key]);
+
+    this.setState({
+      players
+    });
+  }
+
   createGame(e) {
     e.preventDefault();
 
     const {createGame} = this.props;
     const {loggedIn} = this.props.login;
 
+    const settings = {
+      players: this.state.players
+    };
+
     if (loggedIn) {
-      createGame();
+      createGame(settings);
     }
   }
   render() {
     const {loggedIn} = this.props.login;
+    const {players} = this.props;
+    const {required, optional} = this.state.players;
+
+    const game = {
+      settings: {
+        players: this.state.players
+      },
+      host: this.props.login.id,
+      players: [this.props.login.id]
+    };
 
     return (
       <div className="container">
@@ -33,6 +73,27 @@ export default class CreateGame extends React.Component {
               <Alert alertStyle='info'>
                 Game options are coming soon.
               </Alert>
+
+              <IncrementInput
+                label="Required players"
+                value={this.state.players.required}
+                minValue={gamePlayersMin}
+                maxValue={gamePlayersMax - optional}
+                onDecrement={_.partial(this.onChangePlayers, dec, 'required')}
+                onIncrement={_.partial(this.onChangePlayers, inc, 'required')} />
+
+              <IncrementInput
+                label="Optional players"
+                value={this.state.players.optional}
+                minValue={0}
+                maxValue={gamePlayersMax - required}
+                onDecrement={_.partial(this.onChangePlayers, dec, 'optional')}
+                onIncrement={_.partial(this.onChangePlayers, inc, 'optional')} />
+
+              <div className="create-game-player-list">
+                <PlayerList game={game} players={players} />
+              </div>
+
               <Button
                 type='submit'
                 btnStyle='primary'>
