@@ -39,6 +39,15 @@ function getUsersInGames(games) {
   return usersInGames;
 }
 
+function isStartable(game) {
+  return game.players.length >= game.settings.players.required;
+}
+
+function isJoinable(game) {
+  const {required, optional} = game.settings.players;
+  return game.players.length < required + optional;
+}
+
 io.on('connection', socket => {
   let loggedIn = false;
 
@@ -111,7 +120,7 @@ io.on('connection', socket => {
   socket.on('JOIN_GAME_REQUEST', gameId => {
     const game = games[gameId];
 
-    if (game) {
+    if (game && isJoinable(game)) {
       _.each(userSockets[socket.user.id], userSocket => userSocket.join(gameId));
       game.players.push(socket.user.id);
 
@@ -152,21 +161,24 @@ io.on('connection', socket => {
   socket.on('START_GAME_REQUEST', data => {
     const gameId = data.game.id;
     const game = games[gameId];
-    game.status = 'IN_PROGRESS';
-    game.state = loveLetter.createInitialState(game.players);
-    _.each(game.players, userId => {
-      _.each(userSockets[userId], userSocket => {
-        userSocket.emit('UPDATE_GAME_STATE', {
-          game: {
-            id: gameId,
-            state: loveLetter.asVisibleBy(game.state, userId)
-          }
+
+    if (game && isStartable(game)) {
+      game.status = 'IN_PROGRESS';
+      game.state = loveLetter.createInitialState(game.players);
+      _.each(game.players, userId => {
+        _.each(userSockets[userId], userSocket => {
+          userSocket.emit('UPDATE_GAME_STATE', {
+            game: {
+              id: gameId,
+              state: loveLetter.asVisibleBy(game.state, userId)
+            }
+          });
         });
       });
-    });
 
-    socket.emit('START_GAME_SUCCESS', data);
-    socket.broadcast.to(gameId).emit('GAME_STARTED', data);
+      socket.emit('START_GAME_SUCCESS', data);
+      socket.broadcast.to(gameId).emit('GAME_STARTED', data);
+    }
   });
 
   socket.on('PERFORM_GAME_ACTION', data => {

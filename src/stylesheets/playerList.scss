@@ -1,3 +1,19 @@
+.player-list {
+  display: flex;
+  flex-wrap: wrap;
+}
 .player-list-item {
   margin-right: 1rem;
+  width: 12rem;
+
+  .player-avatar {
+    float: left;
+    margin-right: 1rem;
+  }
+  .player-description {
+    position: relative;
+    top: -0.5rem;
+    color: gray;
+    font-size: 12px;
+  }
 }

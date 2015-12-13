@@ -9,6 +9,7 @@ import modal from './gameModalReducer';
 export default combineReducers({
   id: identity,
   host: identity,
+  settings: identity,
   players,
   messages,
   state,

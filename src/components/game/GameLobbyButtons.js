@@ -3,6 +3,15 @@ import {Button, Spinner} from '../common';
 import _ from 'lodash';
 import * as status from '../../constants/GameStatus';
 
+function isStartable(game) {
+  return game.players.length >= game.settings.players.required;
+}
+
+function isJoinable(game) {
+  const {required, optional} = game.settings.players;
+  return game.players.length < required + optional;
+}
+
 export default class GameLobbyButtons extends React.Component {
   constructor(props) {
     super(props);
@@ -33,21 +42,22 @@ export default class GameLobbyButtons extends React.Component {
 
   render() {
     const {game} = this.props;
-    const {id, loggedIn}= this.props.login;
-    const inGame = _.contains(game.players, id);
-    const host = game.host === id;
     const inProgress = game.status === status.IN_PROGRESS;
 
     if (inProgress) {
       return null;
     }
 
+    const {id, loggedIn}= this.props.login;
+    const inGame = _.contains(game.players, id);
+    const host = game.host === id;
+
     if (!inGame) {
       return (
         <div className="form-group">
           <Button
             onClick={this.joinGame}
-            disabled={!loggedIn}>
+            disabled={!loggedIn || !isJoinable(game)}>
             Join game
           </Button>
         </div>
@@ -62,7 +72,7 @@ export default class GameLobbyButtons extends React.Component {
               return host ?
                 <Button
                   onClick={this.startGame}
-                  disabled={game.players.length < 2 || game.status === status.STARTING}
+                  disabled={!isStartable(game) || game.status === status.STARTING}
                   btnStyle="success">
                   {game.status === status.STARTING ? <span><Spinner /> Starting game...</span> : 'Start game'}
                 </Button>

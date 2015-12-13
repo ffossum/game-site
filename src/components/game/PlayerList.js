@@ -1,5 +1,5 @@
 import React from 'react';
-import {Avatar, Icon} from '../common';
+import {Avatar, OptionalPlayerAvatar, RequiredPlayerAvatar} from '../common';
 import _ from 'lodash';
 import {CREATED} from '../../constants/GameStatus';
 
@@ -11,11 +11,14 @@ export default class PlayerList extends React.Component {
     const playerIds = game.players;
     const playerComponents = _.map(playerIds, id => {
       const host = this.props.game.host === id;
-
       return (
-        <span className='player-list-item' key={id}>
-          <Avatar players={players} id={id} size='S' /> {players[id].name} {host ? <Icon type='star' /> : null}
-        </span>
+        <div className='player-list-item' key={id}>
+          <div className='player-avatar'><Avatar players={players} id={id} size='S' /></div>
+          <div className='player-name-container'>
+            <div className='player-name'>{players[id].name}</div>
+            <div className='player-description'>{host ? 'Host' : null}</div>
+          </div>
+        </div>
       );
     });
 
@@ -23,13 +26,25 @@ export default class PlayerList extends React.Component {
       const {required, optional} = game.settings.players;
       for (let i = playerIds.length; i < required; i++) {
         playerComponents.push(
-          <span className='player-list-item' key={'req'+i}>required</span>
+          <div className='player-list-item' key={'req'+i}>
+            <div className='player-avatar'><RequiredPlayerAvatar size='S' /></div>
+            <div className='player-name-container'>
+              <div className='player-name'>Open</div>
+              <div className='player-description'>Required</div>
+            </div>
+          </div>
         );
       }
 
       for (let i = required; i < required + optional; i++) {
         playerComponents.push(
-          <span className='player-list-item' key={'opt'+i}>optional</span>
+          <div className='player-list-item' key={'opt'+i}>
+            <div className='player-avatar'><OptionalPlayerAvatar size='S' /></div>
+            <div className='player-name-container'>
+              <div className='player-name'>Open</div>
+              <div className='player-description'>Optional</div>
+            </div>
+          </div>
         );
       }
     }
