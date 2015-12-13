@@ -19,7 +19,6 @@ export default class Lobby extends React.Component {
               <Button>Create game</Button>
             </LinkContainer>
           </div>
-          <hr />
           <GameList players={players} games={games} />
         </Panel>
       </div>
