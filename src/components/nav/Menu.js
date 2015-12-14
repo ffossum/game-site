@@ -56,7 +56,7 @@ class Menu extends React.Component {
       <Navbar inverse fluid>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to="/">Game Site</Link>
+            <Link to="/"><strong>Game Site</strong></Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
