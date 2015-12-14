@@ -5,10 +5,12 @@ import Navbar from 'react-bootstrap/lib/Navbar';
 import NavItem from 'react-bootstrap/lib/NavItem';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
-import {Icon, LinkContainer, Modal} from '../common';
+import {Avatar, Icon, LinkContainer, Modal} from '../common';
 import GamesDropdown from './GamesDropdown';
 import _ from 'lodash';
 import LoginContainer from '../../containers/LoginContainer';
+
+import '../../stylesheets/nav.scss';
 
 class Menu extends React.Component {
   constructor(props) {
@@ -69,10 +71,17 @@ class Menu extends React.Component {
                   return _.contains(game.players, id);
                 });
 
+                const profileDropdownTitle = (
+                  <span className="nav-profile-dropdown-title">
+                    <Avatar players={this.props.players} id={id} size='S' />{username}
+                  </span>
+                );
+
                 return (
                   <Nav pullRight>
                     <GamesDropdown games={myGames} title="My games" />
-                    <NavDropdown title={username} id="nav-profile-dropdown">
+
+                    <NavDropdown title={profileDropdownTitle} id="nav-profile-dropdown">
                       <MenuItem onSelect={logOut}><Icon type='sign-out'/> Log out</MenuItem>
                     </NavDropdown>
                   </Nav>
