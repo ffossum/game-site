@@ -9,6 +9,7 @@ import {Avatar, Icon, LinkContainer, Modal} from '../common';
 import GamesDropdown from './GamesDropdown';
 import _ from 'lodash';
 import LoginContainer from '../../containers/LoginContainer';
+import RegisterUserForm from '../login/RegisterUserForm';
 
 import '../../stylesheets/nav.scss';
 
@@ -18,14 +19,25 @@ class Menu extends React.Component {
 
     this.closeLogin = this.closeLogin.bind(this);
     this.openLogin = this.openLogin.bind(this);
+    this.closeRegister = this.closeRegister.bind(this);
+    this.openRegister = this.openRegister.bind(this);
 
-    this.state = {showLogin: false};
+    this.state = {
+      showLogin: false,
+      showRegister: false,
+    };
   }
   closeLogin() {
     this.setState({showLogin: false});
   }
   openLogin() {
     this.setState({showLogin: true});
+  }
+  closeRegister() {
+    this.setState({showRegister: false});
+  }
+  openRegister() {
+    this.setState({showRegister: true});
   }
   componentWillReceiveProps(nextProps) {
     const {loggedIn} = nextProps.login;
@@ -90,6 +102,7 @@ class Menu extends React.Component {
               } else {
                 return (
                   <Nav pullRight>
+                    <NavItem onClick={this.openRegister}><Icon type='user-plus' /> Register</NavItem>
                     <NavItem onClick={this.openLogin}><Icon type='sign-in'/> Log in</NavItem>
                   </Nav>
                 );
@@ -103,6 +116,14 @@ class Menu extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <LoginContainer />
+          </Modal.Body>
+        </Modal>
+        <Modal show={this.state.showRegister} onHide={this.closeRegister}>
+          <Modal.Header closeButton>
+            <Modal.Title>Register</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <RegisterUserForm />
           </Modal.Body>
         </Modal>
       </Navbar>
