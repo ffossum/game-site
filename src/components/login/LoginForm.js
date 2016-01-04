@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import {Input, Button, Spinner} from '../common';
 import texts from '../../constants/Texts';
 import {isEmpty} from 'lodash';
+import fetch from 'isomorphic-fetch';
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -22,7 +23,21 @@ export default class Login extends React.Component {
     const username = this.state.username.trim();
 
     if (!isEmpty(username)) {
-      logIn(username);
+      fetch('/login', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,
+          password: 'asdf'
+        })
+      }).then(response => {
+        if (response.status === 200) {
+          logIn(username);
+        }
+      });
     }
   }
   render() {

@@ -6,6 +6,9 @@ import shortid from 'shortid';
 import _ from 'lodash';
 import db from './db';
 import * as loveLetter from './loveLetter';
+import passport from 'passport';
+import {Strategy as LocalStrategy} from 'passport-local';
+import bodyParser from 'body-parser';
 
 const app = express();
 const server = Server(app);
@@ -13,6 +16,37 @@ const io = require('socket.io')(server);
 
 app.use(express.static('public'));
 app.use(favicon(path.join('public','static','meeple.png')));
+
+passport.serializeUser((name, done) => {
+  const user = _.findWhere(db.users, {name});
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  done(null, db.users[id].name);
+});
+
+passport.use(new LocalStrategy({
+    session: false
+  },
+  (username, password, done) => {
+    const user = _.findWhere(db.users, {name: username});
+    if (!user) {
+      return done(null, false);
+    }
+    return done(null, username);
+  }
+));
+
+app.use(bodyParser.json());
+app.use(passport.initialize());
+
+app.post('/login',
+  passport.authenticate('local'),
+  (req, res) => {
+    res.status(200).json({user: {name: req.body.username}});
+  }
+);
 
 app.get('*', (req, res) => {
   res.render(path.join(__dirname, 'views', 'index.jade'), {
