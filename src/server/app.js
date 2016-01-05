@@ -10,6 +10,7 @@ import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
 import bodyParser from 'body-parser';
 import crypto from 'crypto';
+import bcrypt from 'bcrypt';
 
 const app = express();
 const server = Server(app);
@@ -31,10 +32,14 @@ passport.use(new LocalStrategy({
   },
   (username, password, done) => {
     const user = _.findWhere(db.users, {name: username});
-    if (!user || user.password !== password) {
+
+    if (!user) {
       return done(null, false);
     }
-    return done(null, user);
+
+    bcrypt.compare(password, user.password, (err, res) => {
+      return done(null, res && user);
+    });
   }
 ));
 
@@ -52,15 +57,18 @@ app.post('/register',
       res.status(403).send('Already exists');
     } else {
       const userId = shortid.generate();
-      db.users[userId] = {
-        id: userId,
-        name: username,
-        email,
-        password, //TODO hash
-        avatar: crypto.createHash('md5').update(email).digest('hex')
-      };
-
-      res.status(200).json({user: {id: userId, name: username}});
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(password, salt, (err, hash) => {
+          db.users[userId] = {
+            id: userId,
+            name: username,
+            email,
+            password: hash,
+            avatar: crypto.createHash('md5').update(email).digest('hex')
+          };
+          res.status(200).json({user: {id: userId, name: username}});
+        });
+      });
     }
   }
 );
