@@ -1,6 +1,7 @@
 import React from 'react';
 import {Input, Button} from '../common';
 import fetch from 'isomorphic-fetch';
+import {isEmpty} from 'lodash';
 
 export default class RegisterUserForm extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ export default class RegisterUserForm extends React.Component {
     email = email.trim();
     username = username.trim();
 
-    if (!email || !username || password !== repeat) {
+    if (isEmpty(email) || isEmpty(username) || isEmpty(password) || password !== repeat) {
       //TODO show validation errors
       return;
     }

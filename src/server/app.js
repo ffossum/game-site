@@ -31,7 +31,7 @@ passport.use(new LocalStrategy({
   },
   (username, password, done) => {
     const user = _.findWhere(db.users, {name: username});
-    if (!user) {
+    if (!user || user.password !== password) {
       return done(null, false);
     }
     return done(null, user);

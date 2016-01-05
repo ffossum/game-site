@@ -8,41 +8,48 @@ export default class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {username: props.username};
+    this.state = {
+      username: props.username,
+      password: ''
+    };
 
-    this.onUsernameChange = this.onUsernameChange.bind(this);
+    this.onUsernameChange = this.onChange.bind(this, 'username');
+    this.onPasswordChange = this.onChange.bind(this, 'password');
     this.onSubmit = this.onSubmit.bind(this);
   }
-  onUsernameChange(event) {
-    this.setState({username: event.target.value});
+  onChange(property, event) {
+    this.setState({[property]: event.target.value});
   }
   onSubmit(event) {
     event.preventDefault();
 
     const {logIn} = this.props;
     const username = this.state.username.trim();
+    const password = this.state.password.trim();
 
-    if (!isEmpty(username)) {
-      fetch('/login', {
-        method: 'post',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username,
-          password: 'asdf'
-        })
-      }).then(response => {
-        if (response.status === 200) {
-          logIn(username);
-        }
-      });
+    if (isEmpty(username) || isEmpty(password)) {
+      //TODO show validation errors
+      return;
     }
+
+    fetch('/login', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username,
+        password
+      })
+    }).then(response => {
+      if (response.status === 200) {
+        logIn(username);
+      }
+    });
   }
   render() {
     const {waiting, error} = this.props;
-    const {username} = this.state;
     return (
       <form onSubmit={this.onSubmit}>
         <Input
@@ -51,10 +58,19 @@ export default class Login extends React.Component {
           type="text"
           label="Username"
           placeholder="Username"
-          value={username}
+          value={this.state.username}
           readOnly={waiting}
           help={error ? texts[error] : null}
-          inputStyle={error ? 'error' : null} />
+          inputStyle={error ? 'error' : null}
+          required />
+
+        <Input
+          value={this.state.password}
+          onChange={this.onPasswordChange}
+          type="password"
+          label="Password"
+          placeholder="Password"
+          required />
 
         <Button
           type="submit"
