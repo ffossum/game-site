@@ -9,6 +9,7 @@ import * as loveLetter from './loveLetter';
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
 import bodyParser from 'body-parser';
+import crypto from 'crypto';
 
 const app = express();
 const server = Server(app);
@@ -17,13 +18,12 @@ const io = require('socket.io')(server);
 app.use(express.static('public'));
 app.use(favicon(path.join('public','static','meeple.png')));
 
-passport.serializeUser((name, done) => {
-  const user = _.findWhere(db.users, {name});
+passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-  done(null, db.users[id].name);
+  done(null, db.users[id]);
 });
 
 passport.use(new LocalStrategy({
@@ -34,17 +34,41 @@ passport.use(new LocalStrategy({
     if (!user) {
       return done(null, false);
     }
-    return done(null, username);
+    return done(null, user);
   }
 ));
 
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
+app.post('/register',
+  (req, res) => {
+    const {email, username, password} = req.body;
+    const existing = _.find(db.users, user => {
+      return user.name === username || user.email === email;
+    });
+
+    if (existing) {
+      res.status(403).send('Already exists');
+    } else {
+      const userId = shortid.generate();
+      db.users[userId] = {
+        id: userId,
+        name: username,
+        email,
+        password, //TODO hash
+        avatar: crypto.createHash('md5').update(email).digest('hex')
+      };
+
+      res.status(200).json({user: {id: userId, name: username}});
+    }
+  }
+);
+
 app.post('/login',
   passport.authenticate('local'),
   (req, res) => {
-    res.status(200).json({user: {name: req.body.username}});
+    res.status(200).json({user: {id: req.user.id, name: req.user.name}});
   }
 );
 

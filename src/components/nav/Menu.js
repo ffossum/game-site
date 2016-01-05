@@ -7,9 +7,9 @@ import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 import {Avatar, Icon, LinkContainer, Modal} from '../common';
 import GamesDropdown from './GamesDropdown';
-import _ from 'lodash';
+import {contains, map, pick} from 'lodash';
 import LoginContainer from '../../containers/LoginContainer';
-import RegisterUserForm from '../login/RegisterUserForm';
+import RegisterContainer from '../../containers/RegisterContainer';
 
 import '../../stylesheets/nav.scss';
 
@@ -44,6 +44,7 @@ class Menu extends React.Component {
 
     if (loggedIn) {
       this.closeLogin();
+      this.closeRegister();
     }
   }
 
@@ -53,7 +54,7 @@ class Menu extends React.Component {
       {href: '/about', text: 'About'}
     ];
 
-    const linkComponents = _.map(links, link => {
+    const linkComponents = map(links, link => {
       return (
          <LinkContainer key={link.href} to={link.href}>
            <NavItem>{link.text}</NavItem>
@@ -79,8 +80,8 @@ class Menu extends React.Component {
           {
             () => {
               if (loggedIn) {
-                const myGames = _.pick(this.props.games, (game, gameId) => {
-                  return _.contains(game.players, id);
+                const myGames = pick(this.props.games, (game, gameId) => {
+                  return contains(game.players, id);
                 });
 
                 const profileDropdownTitle = (
@@ -123,7 +124,7 @@ class Menu extends React.Component {
             <Modal.Title>Register</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <RegisterUserForm />
+            <RegisterContainer />
           </Modal.Body>
         </Modal>
       </Navbar>
