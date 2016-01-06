@@ -1,4 +1,10 @@
-import {LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT} from '../constants/ActionTypes';
+import {
+  REGISTER_USER_REQUEST,
+  LOG_IN_REQUEST,
+  LOG_IN_SUCCESS,
+  LOG_IN_FAILURE,
+  LOG_OUT
+} from '../constants/ActionTypes';
 
 const initialState = {
   loggedIn: false
@@ -6,11 +12,14 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case REGISTER_USER_REQUEST:
+      return {
+        waiting: true
+      };
+
     case LOG_IN_REQUEST:
       return {
-        loggedIn: state.loggedIn,
-        waiting: true,
-        username: action.payload
+        waiting: true
       };
 
     case LOG_IN_SUCCESS:
@@ -24,8 +33,7 @@ export default function(state = initialState, action) {
     case LOG_IN_FAILURE:
       return {
         loggedIn: state.loggedIn,
-        error: action.payload,
-        username: state.username
+        error: action.payload
       };
 
     case LOG_OUT:

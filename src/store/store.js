@@ -4,12 +4,14 @@ import {syncReduxAndRouter} from 'redux-simple-router';
 import socketMiddleware from './socketMiddleware';
 import historyMiddleware from './historyMiddleware';
 import localStorageMiddleware from './localStorageMiddleware';
+import thunk from 'redux-thunk';
 import * as socketListeners from './socketListeners';
 import history from '../history';
 import socket from '../socket';
 
 let storeEnhancers = [
   applyMiddleware(
+    thunk,
     socketMiddleware(socket),
     historyMiddleware(history),
     localStorageMiddleware

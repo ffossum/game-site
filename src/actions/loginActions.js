@@ -1,4 +1,32 @@
 import * as type from '../constants/ActionTypes';
+import fetch from 'isomorphic-fetch';
+
+export function registerUser(email, username, password) {
+  return dispatch => {
+    dispatch(registerUserRequest());
+    fetch('/register', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({email, username, password})
+    }).then(response => {
+      if (response.status === 200) {
+        return response.json();
+      }
+    }).then(json => {
+      localStorage.setItem('token', json.token);
+      dispatch(logIn(json.token));
+    });
+  };
+}
+
+function registerUserRequest() {
+  return {
+    type: type.REGISTER_USER_REQUEST
+  };
+}
 
 export function logIn(token) {
   return {

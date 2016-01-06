@@ -1,6 +1,5 @@
 import React from 'react';
-import {Input, Button} from '../common';
-import fetch from 'isomorphic-fetch';
+import {Input, Button, Spinner} from '../common';
 import {isEmpty} from 'lodash';
 
 export default class RegisterUserForm extends React.Component {
@@ -33,26 +32,11 @@ export default class RegisterUserForm extends React.Component {
       return;
     }
 
-    const formData = {email, username, password};
-    const {logIn} = this.props;
-
-    fetch('/register', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    }).then(response => {
-      if (response.status === 200) {
-        return response.json();
-      }
-    }).then(json => {
-      localStorage.setItem('token', json.token);
-      logIn(json.token);
-    });
+    const {registerUser} = this.props;
+    registerUser(email, username, password);
   }
   render() {
+    const {waiting} = this.props;
     return (
       <form onSubmit={this.onSubmit}>
         <Input
@@ -62,6 +46,7 @@ export default class RegisterUserForm extends React.Component {
           type="email"
           label="Email"
           placeholder="Email"
+          disabled={waiting}
           required />
 
         <Input
@@ -70,6 +55,7 @@ export default class RegisterUserForm extends React.Component {
           type="text"
           label="Username"
           placeholder="Username"
+          disabled={waiting}
           required />
 
         <Input
@@ -78,6 +64,7 @@ export default class RegisterUserForm extends React.Component {
           type="password"
           label="Password"
           placeholder="Password"
+          disabled={waiting}
           required />
 
         <Input
@@ -86,11 +73,13 @@ export default class RegisterUserForm extends React.Component {
           type="password"
           label="Repeat password"
           placeholder="Repeat password"
+          disabled={waiting}
           required />
 
         <Button
-          type="submit" >
-          Register
+          type="submit"
+          disabled={waiting}>
+          {waiting ? <span><Spinner /> Registering...</span> : 'Register'}
         </Button>
       </form>
     );
