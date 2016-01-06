@@ -4,13 +4,13 @@ export default store => next => action => {
 
   switch(action.type) {
     case actions.LOG_IN_SUCCESS: {
-      const {id, name} = action.payload;
-      localStorage.setItem('login', JSON.stringify({id, name}));
+      const {token} = action.payload;
+      localStorage.setItem('token', token);
       break;
     }
 
     case actions.LOG_OUT: {
-      localStorage.removeItem('login');
+      localStorage.removeItem('token');
       break;
     }
   }

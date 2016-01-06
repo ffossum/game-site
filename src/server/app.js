@@ -11,6 +11,8 @@ import {Strategy as LocalStrategy} from 'passport-local';
 import bodyParser from 'body-parser';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import {secret} from './config';
 
 const app = express();
 const server = Server(app);
@@ -66,7 +68,10 @@ app.post('/register',
             password: hash,
             avatar: crypto.createHash('md5').update(email).digest('hex')
           };
-          res.status(200).json({user: {id: userId, name: username}});
+
+          jwt.sign({id: userId}, secret, {expiresIn: '7d'}, token => {
+            res.status(200).json({token});
+          });
         });
       });
     }
@@ -76,7 +81,9 @@ app.post('/register',
 app.post('/login',
   passport.authenticate('local'),
   (req, res) => {
-    res.status(200).json({user: {id: req.user.id, name: req.user.name}});
+    jwt.sign({id: req.user.id}, secret, {expiresIn: '7d'}, token => {
+      res.status(200).json({token});
+    });
   }
 );
 
@@ -115,8 +122,6 @@ function isJoinable(game) {
 }
 
 io.on('connection', socket => {
-  let loggedIn = false;
-
   socket.emit('UPDATE_PLAYERS', _.extend({}, users, getUsersInGames(games)));
   socket.emit('UPDATE_GAMES', _.mapValues(games, game => {
     return _.pick(game, ['id', 'host', 'players', 'status', 'settings']);
@@ -126,44 +131,46 @@ io.on('connection', socket => {
     socket.broadcast.emit('NEW_MESSAGE', data);
   });
 
-  socket.on('LOG_IN_REQUEST', username => {
+  socket.on('LOG_IN_REQUEST', token => {
+    jwt.verify(token, secret, (err, decoded) => {
+      if (decoded) {
+        const userId = decoded.id;
+        const user = db.users[userId];
 
-    if (loggedIn) {
-      delete users[socket.user.id];
-    }
+        if (!user) {
+          socket.emit('LOG_IN_FAILURE', 'USER_NOT_FOUND');
+        } else {
+          socket.user = _.pick(user, ['id', 'name', 'avatar']);
+          users[user.id] = socket.user;
+          userSockets[user.id] = _.union(userSockets[user.id], [socket]);
 
-    const user = _.findWhere(db.users, {name: username});
-    if (!user) {
-      socket.emit('LOG_IN_FAILURE', 'USER_NOT_FOUND');
-    } else {
-      socket.user = _.pick(user, ['id', 'name', 'avatar']);
-      users[user.id] = socket.user;
-      userSockets[user.id] = _.union(userSockets[user.id], [socket]);
+          _.each(games, (game, gameId) => {
+            if (_.contains(game.players, user.id)) {
+              socket.join(gameId);
+              socket.broadcast.to(gameId).emit('PLAYER_RECONNECTED', {
+                game: {id: gameId},
+                user: {id: user.id}
+              });
 
-      loggedIn = true;
-
-      _.each(games, (game, gameId) => {
-        if (_.contains(game.players, user.id)) {
-          socket.join(gameId);
-          socket.broadcast.to(gameId).emit('PLAYER_RECONNECTED', {
-            game: {id: gameId},
-            user: {id: user.id}
+              if (game.status === 'IN_PROGRESS') {
+                socket.emit('UPDATE_GAME_STATE', {
+                  game: {
+                    id: gameId,
+                    state: loveLetter.asVisibleBy(game.state, user.id)
+                  }
+                });
+              }
+            }
           });
 
-          if (game.status === 'IN_PROGRESS') {
-            socket.emit('UPDATE_GAME_STATE', {
-              game: {
-                id: gameId,
-                state: loveLetter.asVisibleBy(game.state, user.id)
-              }
-            });
-          }
-        }
-      });
+          socket.broadcast.emit('UPDATE_PLAYERS', {[socket.user.id]: socket.user});
 
-      socket.broadcast.emit('UPDATE_PLAYERS', {[socket.user.id]: socket.user});
-      socket.emit('LOG_IN_SUCCESS', socket.user);
-    }
+          jwt.sign({id: user.id}, secret, {expiresIn: '7d'}, newToken => {
+            socket.emit('LOG_IN_SUCCESS', {user: socket.user, token: newToken});
+          });
+        }
+      }
+    });
   });
 
   socket.on('CREATE_GAME_REQUEST', settings => {
@@ -267,8 +274,6 @@ io.on('connection', socket => {
   });
 
   socket.on('LOG_OUT', () => {
-    loggedIn = false;
-
     if (socket.user) {
       _.each(games, (game, gameId) => {
         if (_.contains(game.players, socket.user.id)) {
@@ -281,12 +286,13 @@ io.on('connection', socket => {
       });
 
       userSockets[socket.user.id] = _.without(userSockets[socket.user.id], socket);
-      delete users[socket.user.id];
+      if (_.isEmpty(userSockets[socket.user.id])) {
+        delete users[socket.user.id];
+      }
     }
   });
 
   socket.on('disconnect', () => {
-
     if (socket.user) {
       _.each(games, (game, gameId) => {
         if (_.contains(game.players, socket.user.id)) {
@@ -298,7 +304,9 @@ io.on('connection', socket => {
       });
 
       userSockets[socket.user.id] = _.without(userSockets[socket.user.id], socket);
-      delete users[socket.user.id];
+      if (_.isEmpty(userSockets[socket.user.id])) {
+        delete users[socket.user.id];
+      }
     }
   });
 });

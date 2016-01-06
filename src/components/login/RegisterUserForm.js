@@ -45,8 +45,11 @@ export default class RegisterUserForm extends React.Component {
       body: JSON.stringify(formData)
     }).then(response => {
       if (response.status === 200) {
-        logIn(username);
+        return response.json();
       }
+    }).then(json => {
+      localStorage.setItem('token', json.token);
+      logIn(json.token);
     });
   }
   render() {

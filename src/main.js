@@ -9,10 +9,9 @@ import {logIn} from './actions/loginActions';
 
 import './stylesheets/main.scss';
 
-const storedLogin = localStorage.getItem('login');
-if (storedLogin) {
-  const username = JSON.parse(storedLogin).name;
-  store.dispatch(logIn(username));
+const token = localStorage.getItem('token');
+if (token) {
+  store.dispatch(logIn(token));
 }
 
 ReactDOM.render((

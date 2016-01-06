@@ -10,7 +10,7 @@ export default function players(state = initialState, action) {
     }
 
     case types.LOG_IN_SUCCESS: {
-      const user = action.payload;
+      const {user} = action.payload;
       return _.extend({}, state, {
         [user.id]: user
       });

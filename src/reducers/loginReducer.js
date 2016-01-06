@@ -14,10 +14,11 @@ export default function(state = initialState, action) {
       };
 
     case LOG_IN_SUCCESS:
+      const {user} = action.payload;
       return {
         loggedIn: true,
-        username: action.payload.name,
-        id: action.payload.id
+        username: user.name,
+        id: user.id
       };
 
     case LOG_IN_FAILURE:
