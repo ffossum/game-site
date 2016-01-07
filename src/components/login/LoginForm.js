@@ -2,14 +2,13 @@ import React, {PropTypes} from 'react';
 import {Input, Button, Spinner} from '../common';
 import texts from '../../constants/Texts';
 import {isEmpty} from 'lodash';
-import fetch from 'isomorphic-fetch';
 
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      username: props.username,
+      username: '',
       password: ''
     };
 
@@ -23,7 +22,7 @@ export default class Login extends React.Component {
   onSubmit(event) {
     event.preventDefault();
 
-    const {logIn} = this.props;
+    const {logInWithUsernameAndPassword} = this.props;
     const username = this.state.username.trim();
     const password = this.state.password.trim();
 
@@ -32,24 +31,7 @@ export default class Login extends React.Component {
       return;
     }
 
-    fetch('/login', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username,
-        password
-      })
-    }).then(response => {
-      if (response.status === 200) {
-        return response.json();
-      }
-    }).then(json => {
-      localStorage.setItem('token', json.token);
-      logIn(json.token);
-    });
+    logInWithUsernameAndPassword(username, password);
   }
   render() {
     const {waiting, error} = this.props;
@@ -73,6 +55,7 @@ export default class Login extends React.Component {
           type="password"
           label="Password"
           placeholder="Password"
+          readOnly={waiting}
           required />
 
         <Button
@@ -86,7 +69,7 @@ export default class Login extends React.Component {
 };
 
 Login.propTypes = {
-  logIn: PropTypes.func.isRequired,
+  logInWithUsernameAndPassword: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool,
   username: PropTypes.string,
   waiting: PropTypes.bool

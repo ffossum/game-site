@@ -18,14 +18,10 @@ describe('login reducer', () => {
       loggedIn: false
     };
 
-    const action = actions.logIn('Jack');
+    const action = actions.logInWithToken('token');
     const state = reducer(previousState, action);
 
-    expect(state).to.deep.equal({
-      loggedIn: false,
-      waiting: true,
-      username: 'Jack'
-    });
+    expect(state.waiting).to.be.true;
   });
 
   it('handles login success correctly', () => {
@@ -35,8 +31,10 @@ describe('login reducer', () => {
     };
 
     const action = actions.logInSuccess({
-      id: 'userId',
-      name: 'Jack'
+      user: {
+        id: 'userId',
+        name: 'Jack'
+      }
     });
     const state = reducer(previousState, action);
 
@@ -57,11 +55,7 @@ describe('login reducer', () => {
     const action = actions.logInFailure(errors.USERNAME_TAKEN);
     const state = reducer(previousState, action);
 
-    expect(state).to.deep.equal({
-      loggedIn: false,
-      username: 'Jack',
-      error: errors.USERNAME_TAKEN
-    });
+    expect(state.error).to.equal(errors.USERNAME_TAKEN);
   });
 
   it('handles logout correctly', () => {

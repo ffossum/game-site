@@ -46,7 +46,7 @@ export default class RegisterUserForm extends React.Component {
           type="email"
           label="Email"
           placeholder="Email"
-          disabled={waiting}
+          readOnly={waiting}
           required />
 
         <Input
@@ -55,7 +55,7 @@ export default class RegisterUserForm extends React.Component {
           type="text"
           label="Username"
           placeholder="Username"
-          disabled={waiting}
+          readOnly={waiting}
           required />
 
         <Input
@@ -64,7 +64,7 @@ export default class RegisterUserForm extends React.Component {
           type="password"
           label="Password"
           placeholder="Password"
-          disabled={waiting}
+          readOnly={waiting}
           required />
 
         <Input
@@ -73,7 +73,7 @@ export default class RegisterUserForm extends React.Component {
           type="password"
           label="Repeat password"
           placeholder="Repeat password"
-          disabled={waiting}
+          readOnly={waiting}
           required />
 
         <Button

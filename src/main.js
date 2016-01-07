@@ -5,13 +5,13 @@ import {Router} from 'react-router';
 import store from './store/store';
 import history from './history';
 import routes from './routes';
-import {logIn} from './actions/loginActions';
+import {logInWithToken} from './actions/loginActions';
 
 import './stylesheets/main.scss';
 
 const token = localStorage.getItem('token');
 if (token) {
-  store.dispatch(logIn(token));
+  store.dispatch(logInWithToken(token));
 }
 
 ReactDOM.render((
