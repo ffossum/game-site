@@ -51,12 +51,19 @@ app.use(passport.initialize());
 app.post('/register',
   (req, res) => {
     const {email, username, password} = req.body;
-    const existing = _.find(db.users, user => {
-      return user.name === username || user.email === email;
-    });
+    const emailTaken = _.findWhere(db.users, {email});
+    const usernameTaken = _.findWhere(db.users, {name: username});
 
-    if (existing) {
-      res.status(403).send('Already exists');
+    const errors = {};
+    if (emailTaken) {
+      errors.email = 'EMAIL_TAKEN';
+    }
+    if (usernameTaken) {
+      errors.username = 'USERNAME_TAKEN';
+    }
+
+    if (!_.isEmpty(errors)) {
+      res.status(403).json(errors);
     } else {
       const userId = shortid.generate();
       bcrypt.genSalt(10, function(err, salt) {
@@ -133,12 +140,14 @@ io.on('connection', socket => {
 
   socket.on('LOG_IN_REQUEST', token => {
     jwt.verify(token, secret, (err, decoded) => {
-      if (decoded) {
+      if (err) {
+        socket.emit('LOG_IN_FAILURE', 'AUTHENTICATION_FAILURE');
+      } else {
         const userId = decoded.id;
         const user = db.users[userId];
 
         if (!user) {
-          socket.emit('LOG_IN_FAILURE', 'USER_NOT_FOUND');
+          socket.emit('LOG_IN_FAILURE', 'AUTHENTICATION_FAILURE');
         } else {
           socket.user = _.pick(user, ['id', 'name', 'avatar']);
           users[user.id] = socket.user;

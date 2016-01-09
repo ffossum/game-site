@@ -1,5 +1,6 @@
 import * as type from '../constants/ActionTypes';
 import fetch from 'isomorphic-fetch';
+import * as errorType from '../constants/Errors';
 
 export function registerUser(email, username, password) {
   return dispatch => {
@@ -43,11 +44,14 @@ export function logInWithUsernameAndPassword(username, password) {
       })
     }).then(response => {
       if (response.status === 200) {
-        return response.json();
+        response.json().then(json => {
+          const token = json.token;
+          localStorage.setItem('token', token);
+          dispatch(logInWithToken(token));
+        });
+      } else {
+        dispatch(logInFailure(errorType.AUTHENTICATION_FAILURE));
       }
-    }).then(json => {
-      localStorage.setItem('token', json.token);
-      dispatch(logInWithToken(json.token));
     });
   };
 }

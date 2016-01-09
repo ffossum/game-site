@@ -22,16 +22,8 @@ export default class Login extends React.Component {
   onSubmit(event) {
     event.preventDefault();
 
-    const {logInWithUsernameAndPassword} = this.props;
-    const username = this.state.username.trim();
-    const password = this.state.password.trim();
-
-    if (isEmpty(username) || isEmpty(password)) {
-      //TODO show validation errors
-      return;
-    }
-
-    logInWithUsernameAndPassword(username, password);
+    const {username, password} = this.state;
+    this.props.logInWithUsernameAndPassword(username.trim(), password.trim());
   }
   render() {
     const {waiting, error} = this.props;
@@ -45,7 +37,6 @@ export default class Login extends React.Component {
           placeholder="Username"
           value={this.state.username}
           readOnly={waiting}
-          help={error ? texts[error] : null}
           inputStyle={error ? 'error' : null}
           required />
 
@@ -55,6 +46,8 @@ export default class Login extends React.Component {
           type="password"
           label="Password"
           placeholder="Password"
+          help={error ? texts[error] : null}
+          inputStyle={error ? 'error' : null}
           readOnly={waiting}
           required />
 
