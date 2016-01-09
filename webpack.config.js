@@ -3,16 +3,30 @@ var webpack = require('webpack');
 
 module.exports = {
   devtool: 'source-map',
-  entry: [
-    'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
-    './src/main.js'
-  ],
+  entry: {
+    vendor: [
+      'classnames',
+      'history',
+      'isomorphic-fetch',
+      'lodash',
+      'react-bootstrap',
+      'react-document-title',
+      'react-redux',
+      'react-router',
+      'redux',
+      'redux-simple-router',
+      'redux-thunk',
+      'socket.io-client'
+    ],
+    bundle: ['./src/main.js', 'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr']
+  },
   output: {
     path: path.join(__dirname, 'public', 'static'),
     publicPath: 'http://localhost:3000/static',
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.bundle.js"),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
