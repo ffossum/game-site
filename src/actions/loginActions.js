@@ -2,30 +2,45 @@ import * as type from '../constants/ActionTypes';
 import fetch from 'isomorphic-fetch';
 import * as errorType from '../constants/Errors';
 
-export function registerUser(email, username, password) {
+export function registerUser(email, username, password, repeat) {
   return dispatch => {
-    dispatch(registerUserRequest());
-    fetch('/register', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({email, username, password})
-    }).then(response => {
-      if (response.status === 200) {
-        return response.json();
-      }
-    }).then(json => {
-      localStorage.setItem('token', json.token);
-      dispatch(logInWithToken(json.token));
-    });
+    if (password !== repeat) {
+      dispatch(registerUserFailure({password: errorType.PASSWORDS_DO_NOT_MATCH}));
+    } else {
+      dispatch(registerUserRequest());
+      fetch('/register', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email, username, password})
+      }).then(response => {
+        if (response.status === 200) {
+          response.json().then(json => {
+            localStorage.setItem('token', json.token);
+            dispatch(logInWithToken(json.token));
+          });
+        } else {
+          response.json().then(json => {
+            dispatch(registerUserFailure(json));
+          });
+        }
+      });
+    }
   };
 }
 
 function registerUserRequest() {
   return {
     type: type.REGISTER_USER_REQUEST
+  };
+}
+
+function registerUserFailure(error) {
+  return {
+    type: type.REGISTER_USER_FAILURE,
+    payload: error
   };
 }
 

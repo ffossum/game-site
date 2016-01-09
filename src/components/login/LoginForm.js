@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Input, Button, Spinner} from '../common';
 import texts from '../../constants/Texts';
-import {isEmpty} from 'lodash';
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -26,7 +25,7 @@ export default class Login extends React.Component {
     this.props.logInWithUsernameAndPassword(username.trim(), password.trim());
   }
   render() {
-    const {waiting, error} = this.props;
+    const {waiting, error = {}} = this.props;
     return (
       <form onSubmit={this.onSubmit}>
         <Input
@@ -37,7 +36,7 @@ export default class Login extends React.Component {
           placeholder="Username"
           value={this.state.username}
           readOnly={waiting}
-          inputStyle={error ? 'error' : null}
+          inputStyle={error.login ? 'error' : null}
           required />
 
         <Input
@@ -46,8 +45,8 @@ export default class Login extends React.Component {
           type="password"
           label="Password"
           placeholder="Password"
-          help={error ? texts[error] : null}
-          inputStyle={error ? 'error' : null}
+          help={error.login ? texts[error.login] : null}
+          inputStyle={error.login ? 'error' : null}
           readOnly={waiting}
           required />
 

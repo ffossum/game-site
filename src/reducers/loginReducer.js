@@ -2,6 +2,7 @@ import {
   OPEN_LOGIN_MODAL,
   OPEN_REGISTER_MODAL,
   REGISTER_USER_REQUEST,
+  REGISTER_USER_FAILURE,
   GET_TOKEN_REQUEST,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -30,6 +31,14 @@ export default function(state = initialState, action) {
       };
     }
 
+    case REGISTER_USER_FAILURE: {
+      return {
+        ...state,
+        error: {registerUser: action.payload},
+        waiting: false
+      };
+    }
+
     case LOG_IN_REQUEST:
       return {
         loggedIn: false,
@@ -47,7 +56,7 @@ export default function(state = initialState, action) {
     case LOG_IN_FAILURE:
       return {
         ...state,
-        error: action.payload,
+        error: {login: action.payload},
         waiting: false
       };
 

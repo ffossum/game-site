@@ -50,8 +50,9 @@ The player with the lower value is out of the round.`
 };
 
 export default {
-  [errors.EMAIL_ALREADY_EXISTS]: 'A user with this email address already exists.',
+  [errors.EMAIL_TAKEN]: 'A user with this email address already exists.',
   [errors.USERNAME_TAKEN]: 'Username already taken.',
+  [errors.PASSWORDS_DO_NOT_MATCH]: 'Passwords do not match.',
   [errors.AUTHENTICATION_FAILURE]: 'Incorrect username and/or password.',
 
   ...cardTexts

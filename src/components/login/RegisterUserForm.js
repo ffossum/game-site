@@ -1,6 +1,6 @@
 import React from 'react';
 import {Input, Button, Spinner} from '../common';
-import {isEmpty} from 'lodash';
+import texts from '../../constants/Texts';
 
 export default class RegisterUserForm extends React.Component {
   constructor(props) {
@@ -23,20 +23,14 @@ export default class RegisterUserForm extends React.Component {
   }
   onSubmit(event) {
     event.preventDefault();
-    let {email, username, password, repeat} = this.state;
-    email = email.trim();
-    username = username.trim();
+    const {email, username, password, repeat} = this.state;
 
-    if (isEmpty(email) || isEmpty(username) || isEmpty(password) || password !== repeat) {
-      //TODO show validation errors
-      return;
-    }
-
-    const {registerUser} = this.props;
-    registerUser(email, username, password);
+    this.props.registerUser(email.trim(), username.trim(), password, repeat);
   }
   render() {
-    const {waiting} = this.props;
+    const {waiting, error = {}} = this.props;
+    const registerUserError = error.registerUser || {};
+
     return (
       <form onSubmit={this.onSubmit}>
         <Input
@@ -47,6 +41,8 @@ export default class RegisterUserForm extends React.Component {
           label="Email"
           placeholder="Email"
           readOnly={waiting}
+          inputStyle={registerUserError.email ? 'error' : null}
+          help={registerUserError.email ? texts[registerUserError.email] : null}
           required />
 
         <Input
@@ -56,6 +52,8 @@ export default class RegisterUserForm extends React.Component {
           label="Username"
           placeholder="Username"
           readOnly={waiting}
+          inputStyle={registerUserError.username ? 'error' : null}
+          help={registerUserError.username ? texts[registerUserError.username] : null}
           required />
 
         <Input
@@ -65,6 +63,7 @@ export default class RegisterUserForm extends React.Component {
           label="Password"
           placeholder="Password"
           readOnly={waiting}
+          inputStyle={registerUserError.password ? 'error' : null}
           required />
 
         <Input
@@ -74,6 +73,8 @@ export default class RegisterUserForm extends React.Component {
           label="Repeat password"
           placeholder="Repeat password"
           readOnly={waiting}
+          inputStyle={registerUserError.password ? 'error' : null}
+          help={registerUserError.password ? texts[registerUserError.password] : null}
           required />
 
         <Button
