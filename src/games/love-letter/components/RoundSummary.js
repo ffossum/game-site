@@ -6,14 +6,17 @@ import ScoreIcon from './ScoreIcon';
 import '../stylesheets/round-summary.scss';
 
 export default class RoundSummary extends React.Component {
-
+  constructor(props) {
+    super(props);
+    this.onHide = this.onHide.bind(this);
+  }
+  onHide() {
+    const {game} = this.props;
+    this.props.onHide(game.id);
+  }
   render() {
-    const {game, players, dismissModal} = this.props;
+    const {game, players} = this.props;
     const showModal = this.props.game.modal && this.props.game.modal.key === 'ROUND_SUMMARY';
-
-    const onHide = event => {
-      dismissModal(game.id);
-    };
 
     const modalBody = showModal ?
       <Modal.Body>
@@ -68,10 +71,10 @@ export default class RoundSummary extends React.Component {
     return (
       <Modal
         show={showModal}
-        onHide={onHide}>
+        onHide={this.onHide}>
         {modalBody}
         <Modal.Footer>
-          <Button onClick={onHide}>Close</Button>
+          <Button onClick={this.onHide}>Close</Button>
         </Modal.Footer>
       </Modal>
     );
@@ -81,5 +84,5 @@ export default class RoundSummary extends React.Component {
 RoundSummary.propTypes = {
   game: PropTypes.object.isRequired,
   players: PropTypes.object.isRequired,
-  dismissModal: PropTypes.func.isRequired
+  onHide: PropTypes.func.isRequired
 };

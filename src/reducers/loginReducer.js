@@ -14,11 +14,13 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case REGISTER_USER_REQUEST:
       return {
+        ...state,
         waiting: true
       };
 
     case LOG_IN_REQUEST:
       return {
+        ...state,
         waiting: true
       };
 
@@ -32,6 +34,7 @@ export default function(state = initialState, action) {
 
     case LOG_IN_FAILURE:
       return {
+        ...state,
         loggedIn: state.loggedIn,
         error: action.payload
       };

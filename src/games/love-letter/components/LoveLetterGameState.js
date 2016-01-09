@@ -14,7 +14,7 @@ import '../stylesheets/love-letter.scss';
 
 export default class LoveLetterGameState extends React.Component {
   render() {
-    const {game, login, players, playCard, dismissModal} = this.props;
+    const {game, login, players, playCard, closeGameModal} = this.props;
 
     const inGame = _.contains(game.players, login.id);
 
@@ -63,7 +63,7 @@ export default class LoveLetterGameState extends React.Component {
 
     return (
       <div className="love-letter-game">
-        <RoundSummary game={game} players={players} dismissModal={dismissModal} />
+        <RoundSummary game={game} players={players} onHide={closeGameModal} />
         <div className="love-letter-player-states">
           {playerStates}
         </div>

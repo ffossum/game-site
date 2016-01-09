@@ -2,7 +2,8 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Menu from '../components/nav/Menu';
-import * as actions from '../actions/loginActions';
+import * as loginActions from '../actions/loginActions';
+import * as modalActions from '../actions/modalActions';
 
 class MenuContainer extends React.Component {
   render() {
@@ -14,7 +15,8 @@ export default connect(
   state => ({
     players: state.players,
     login: state.login,
-    games: state.games
+    games: state.games,
+    modal: state.modal
   }),
-  dispatch => bindActionCreators(actions, dispatch)
+  dispatch => bindActionCreators({...loginActions, ...modalActions}, dispatch)
 )(MenuContainer);

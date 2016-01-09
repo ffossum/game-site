@@ -11,4 +11,4 @@ export function playCard(userId, gameId, card, options = {}) {
   });
 };
 
-export const dismissModal = gameActions.dismissModal;
+export const closeGameModal = gameActions.closeGameModal;

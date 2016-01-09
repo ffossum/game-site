@@ -29,7 +29,7 @@ export default function games(state = initialState, action) {
     case types.START_GAME_SUCCESS:
     case types.GAME_STARTED:
     case types.UPDATE_GAME_STATE:
-    case types.DISMISS_MODAL: {
+    case types.CLOSE_GAME_MODAL: {
       return {
         ...state,
         [action.payload.game.id]: gameReducer(state[action.payload.game.id], action)

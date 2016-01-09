@@ -4,13 +4,15 @@ import login from './loginReducer';
 import chat from './chatReducer';
 import games from './lobbyReducer';
 import players from './playersReducer';
+import modal from './modalReducer';
 
 const reducer = combineReducers({
   routing,
   chat,
   games,
   login,
-  players
+  players,
+  modal
 });
 
 export default reducer;

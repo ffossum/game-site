@@ -10,44 +10,11 @@ import GamesDropdown from './GamesDropdown';
 import {contains, map, pick} from 'lodash';
 import LoginContainer from '../../containers/LoginContainer';
 import RegisterContainer from '../../containers/RegisterContainer';
+import * as modalTypes from '../../constants/ModalTypes';
 
 import '../../stylesheets/nav.scss';
 
 class Menu extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.closeLogin = this.closeLogin.bind(this);
-    this.openLogin = this.openLogin.bind(this);
-    this.closeRegister = this.closeRegister.bind(this);
-    this.openRegister = this.openRegister.bind(this);
-
-    this.state = {
-      showLogin: false,
-      showRegister: false,
-    };
-  }
-  closeLogin() {
-    this.setState({showLogin: false});
-  }
-  openLogin() {
-    this.setState({showLogin: true});
-  }
-  closeRegister() {
-    this.setState({showRegister: false});
-  }
-  openRegister() {
-    this.setState({showRegister: true});
-  }
-  componentWillReceiveProps(nextProps) {
-    const {loggedIn} = nextProps.login;
-
-    if (loggedIn) {
-      this.closeLogin();
-      this.closeRegister();
-    }
-  }
-
   render() {
     const links = [
       {href: '/lobby', text: 'Play'},
@@ -103,15 +70,15 @@ class Menu extends React.Component {
               } else {
                 return (
                   <Nav pullRight>
-                    <NavItem onClick={this.openRegister}><Icon type='user-plus' /> Register</NavItem>
-                    <NavItem onClick={this.openLogin}><Icon type='sign-in'/> Log in</NavItem>
+                    <NavItem onClick={this.props.openRegisterModal}><Icon type='user-plus' /> Register</NavItem>
+                    <NavItem onClick={this.props.openLoginModal}><Icon type='sign-in'/> Log in</NavItem>
                   </Nav>
                 );
               }
             }()
           }
         </Navbar.Collapse>
-        <Modal show={this.state.showLogin} onHide={this.closeLogin}>
+        <Modal show={this.props.modal === modalTypes.LOGIN} onHide={this.props.closeModal}>
           <Modal.Header closeButton>
             <Modal.Title>Log in</Modal.Title>
           </Modal.Header>
@@ -119,7 +86,7 @@ class Menu extends React.Component {
             <LoginContainer />
           </Modal.Body>
         </Modal>
-        <Modal show={this.state.showRegister} onHide={this.closeRegister}>
+        <Modal show={this.props.modal === modalTypes.REGISTER} onHide={this.props.closeModal}>
           <Modal.Header closeButton>
             <Modal.Title>Register</Modal.Title>
           </Modal.Header>

@@ -17,9 +17,9 @@ export function updateGameState(payload) {
   };
 };
 
-export function dismissModal(gameId) {
+export function closeGameModal(gameId) {
   return {
-    type: types.DISMISS_MODAL,
+    type: types.CLOSE_GAME_MODAL,
     payload: {
       game: {
         id: gameId

@@ -17,7 +17,7 @@ export default function gameModal(state = initialState, action) {
       }
     }
 
-    case types.DISMISS_MODAL:
+    case types.CLOSE_GAME_MODAL:
       return initialState;
 
     default:
