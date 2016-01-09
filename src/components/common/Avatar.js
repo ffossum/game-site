@@ -1,5 +1,5 @@
 import React from 'react';
-import BsImage from 'react-bootstrap/lib/Image';
+import {Image as BsImage} from 'react-bootstrap';
 
 import '../../stylesheets/common/avatar.scss';
 

@@ -14,13 +14,17 @@ module.exports = {
   },
   externals: {
     'react': 'React',
-    'react-dom': 'ReactDOM'
+    'react-dom': 'ReactDOM',
+    'react-bootstrap': 'ReactBootstrap'
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.bundle.js"),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      __DEVELOPMENT__: false
+      __DEVELOPMENT__: false,
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
     })
   ],
   module: {

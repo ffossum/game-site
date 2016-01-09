@@ -1,5 +1,5 @@
 import React from 'react';
-import BsAlert from 'react-bootstrap/lib/Alert';
+import {BsAlert} from 'react-bootstrap';
 
 export default class Alert extends React.Component {
   render() {

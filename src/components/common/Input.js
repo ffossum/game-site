@@ -1,5 +1,5 @@
 import React from 'react';
-import BsInput from 'react-bootstrap/lib/Input';
+import {Input as BsInput} from 'react-bootstrap';
 
 export default class Input extends React.Component {
   getValue() {

@@ -9,6 +9,8 @@ module.exports = {
       'history',
       'isomorphic-fetch',
       'lodash',
+      'react',
+      'react-dom',
       'react-bootstrap',
       'react-document-title',
       'react-redux',

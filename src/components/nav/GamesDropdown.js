@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react';
-import NavDropdown from 'react-bootstrap/lib/NavDropdown';
-import MenuItem from 'react-bootstrap/lib/MenuItem';
+import {MenuItem, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from '../common';
 import _ from 'lodash';
 

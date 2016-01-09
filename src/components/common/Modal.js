@@ -1,3 +1,3 @@
-import Modal from 'react-bootstrap/lib/Modal';
+import {Modal} from 'react-bootstrap';
 
 export default Modal;

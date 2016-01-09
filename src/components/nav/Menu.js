@@ -1,10 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router';
-import Nav from 'react-bootstrap/lib/Nav';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import NavItem from 'react-bootstrap/lib/NavItem';
-import NavDropdown from 'react-bootstrap/lib/NavDropdown';
-import MenuItem from 'react-bootstrap/lib/MenuItem';
+import {
+  Nav,
+  Navbar,
+  NavItem,
+  NavDropdown,
+  MenuItem
+} from 'react-bootstrap';
 import {Avatar, Icon, LinkContainer, Modal} from '../common';
 import GamesDropdown from './GamesDropdown';
 import {contains, map, pick} from 'lodash';
