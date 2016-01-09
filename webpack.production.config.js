@@ -13,6 +13,7 @@ module.exports = {
     filename: '[name].js'
   },
   externals: {
+    'lodash': '_',
     'react': 'React',
     'react-dom': 'ReactDOM',
     'react-bootstrap': 'ReactBootstrap'
