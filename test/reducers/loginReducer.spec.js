@@ -55,7 +55,7 @@ describe('login reducer', () => {
     const action = actions.logInFailure(errors.USERNAME_TAKEN);
     const state = reducer(previousState, action);
 
-    expect(state.error).to.equal(errors.USERNAME_TAKEN);
+    expect(state.error).to.deep.equal({login: errors.USERNAME_TAKEN});
   });
 
   it('handles logout correctly', () => {
