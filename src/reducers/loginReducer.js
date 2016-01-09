@@ -1,5 +1,6 @@
 import {
   REGISTER_USER_REQUEST,
+  GET_TOKEN_REQUEST,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
   LOG_IN_FAILURE,
@@ -12,6 +13,7 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case GET_TOKEN_REQUEST:
     case REGISTER_USER_REQUEST:
       return {
         ...state,
