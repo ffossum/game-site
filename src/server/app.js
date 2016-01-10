@@ -13,6 +13,8 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {secret} from './config';
+import graphQLHTTP from 'express-graphql';
+import {Schema} from './graphql/schema';
 
 const app = express();
 const server = Server(app);
@@ -20,6 +22,13 @@ const io = require('socket.io')(server);
 
 app.use(express.static('public'));
 app.use(favicon(path.join('public','static','meeple.png')));
+
+const graphQLOptions = {schema: Schema};
+if (process.env.NODE_ENV !== 'production') {
+  graphQLOptions.graphiql = true;
+  graphQLOptions.pretty = true;
+}
+app.use('/graphql', graphQLHTTP(graphQLOptions));
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
