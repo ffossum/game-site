@@ -6,6 +6,8 @@ module.exports = {
   entry: {
     vendor: [
       'classnames',
+      'falcor',
+      'falcor-http-datasource',
       'history',
       'isomorphic-fetch',
       'lodash',

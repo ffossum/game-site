@@ -13,6 +13,8 @@ module.exports = {
     filename: '[name].js'
   },
   externals: {
+    'falcor': 'falcor',
+    'falcor-http-datasource': 'falcor.HttpDataSource',
     'lodash': '_',
     'react': 'React',
     'react-dom': 'ReactDOM',

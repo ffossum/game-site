@@ -1,7 +1,7 @@
 class User extends Object {}
 
 export function getUser(id) {
-  return users[id];
+  return new Promise(resolve => resolve(users[id]));
 }
 
 const qwer = new User();

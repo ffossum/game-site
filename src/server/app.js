@@ -15,6 +15,8 @@ import jwt from 'jsonwebtoken';
 import {secret} from './config';
 import graphQLHTTP from 'express-graphql';
 import {Schema} from './graphql/schema';
+import falcorExpress from 'falcor-express';
+import falcorRouter from './falcor/falcorRouter';
 
 const app = express();
 const server = Server(app);
@@ -22,6 +24,8 @@ const io = require('socket.io')(server);
 
 app.use(express.static('public'));
 app.use(favicon(path.join('public','static','meeple.png')));
+
+app.use('/model.json', falcorExpress.dataSourceRoute((req, res) => falcorRouter));
 
 const graphQLOptions = {schema: Schema};
 if (process.env.NODE_ENV !== 'production') {
