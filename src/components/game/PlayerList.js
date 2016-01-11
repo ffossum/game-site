@@ -10,13 +10,13 @@ export default class PlayerList extends React.Component {
     const {players, game} = this.props;
     const playerIds = game.players;
     const playerComponents = _.map(playerIds, id => {
-      const host = this.props.game.host === id;
+      const isHost = this.props.game.host === id;
       return (
         <div className='player-list-item' key={id}>
-          <div className='player-avatar'><Avatar players={players} id={id} size='S' /></div>
+          <div className='player-avatar'><Avatar hash={players[id].avatar} id={id} size='S' /></div>
           <div className='player-name-container'>
             <div className='player-name'>{players[id].name}</div>
-            <div className='player-description'>{host ? 'Host' : null}</div>
+            <div className='player-description'>{isHost ? 'Host' : null}</div>
           </div>
         </div>
       );

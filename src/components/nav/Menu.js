@@ -55,7 +55,7 @@ class Menu extends React.Component {
 
                 const profileDropdownTitle = (
                   <span className="nav-profile-dropdown-title">
-                    <Avatar players={this.props.players} id={id} size='S' />{username}
+                    <Avatar hash={this.props.players[id].avatar} size='S' />{username}
                   </span>
                 );
 

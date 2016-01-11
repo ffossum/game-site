@@ -36,7 +36,7 @@ export default class LoveLetterGameState extends React.Component {
         const id = playerState.id;
         return (
           <Panel key={id} className={classnames({'player-state': true, 'eliminated': _.isEmpty(playerState.hand)})}>
-            <Avatar players={players} id={id} size="S" /> {players[id].name}
+            <Avatar hash={players[id].avatar} size="S" /> {players[id].name}
             {game.state.toAct === id ? <span className='waiting-icon'><WaitingIcon /></span> : null}
             <div>
               <hr />

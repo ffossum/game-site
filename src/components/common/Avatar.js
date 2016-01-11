@@ -1,26 +1,28 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {Image as BsImage} from 'react-bootstrap';
 
 import '../../stylesheets/common/avatar.scss';
 
 function getPixels(size) {
   switch(size) {
-    case 'S': return 25;
+    case 'S': return 24;
     case 'M': return 40;
     case 'L': return 60;
 
-    default: return 40;
+    default: return 24;
   }
 }
 
-export default class Image extends React.Component {
+export default class Avatar extends React.Component {
+  static propTypes = {
+    hash: PropTypes.string.isRequired,
+    size: PropTypes.string
+  }
   render() {
-    const {players, id, size} = this.props;
-    const player = players[id];
-
+    const {hash, size} = this.props;
     const pixels = getPixels(size);
 
-    return <BsImage circle src={`http://www.gravatar.com/avatar/${player.avatar}?d=retro&s=${pixels}`} />;
+    return <BsImage circle src={`http://www.gravatar.com/avatar/${hash}?d=retro&s=${pixels}`} />;
   }
 };
 
