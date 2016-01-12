@@ -12,12 +12,11 @@ export class FalcorUsername extends React.Component {
   static propTypes = {
     userId: PropTypes.string.isRequired
   }
-  componentWillMount() {
+  componentDidMount() {
     const {userId} = this.props;
-    falcorModel.get(['users', userId, 'name'])
-      .then(response => {
-        this.setState({username: response.json.users[userId].name});
-      });
+    falcorModel.get(['users', userId, 'name']).then(response => {
+      this.setState({username: response.json.users[userId].name});
+    });
   }
   render() {
     const username = this.state && this.state.username;

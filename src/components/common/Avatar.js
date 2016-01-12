@@ -32,12 +32,11 @@ export class FalcorAvatar extends React.Component {
     userId: PropTypes.string.isRequired,
     size: PropTypes.string
   }
-  componentWillMount() {
+  componentDidMount() {
     const {userId} = this.props;
-    falcorModel.get(['users', userId, 'avatar'])
-      .then(response => {
-        this.setState({hash: response.json.users[userId].avatar});
-      });
+    falcorModel.get(['users', userId, 'avatar']).then(response => {
+      this.setState({hash: response.json.users[userId].avatar});
+    });
   }
   render() {
     const hash = this.state && this.state.hash;
