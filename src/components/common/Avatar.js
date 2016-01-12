@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Image as BsImage} from 'react-bootstrap';
+import falcorModel from '../../falcorModel';
 
 import '../../stylesheets/common/avatar.scss';
 
@@ -25,6 +26,28 @@ export default class Avatar extends React.Component {
     return <BsImage circle src={`http://www.gravatar.com/avatar/${hash}?d=retro&s=${pixels}`} />;
   }
 };
+
+export class FalcorAvatar extends React.Component {
+  static propTypes = {
+    userId: PropTypes.string.isRequired,
+    size: PropTypes.string
+  }
+  componentWillMount() {
+    const {userId} = this.props;
+    falcorModel.get(['users', userId, 'avatar'])
+      .then(response => {
+        this.setState({hash: response.json.users[userId].avatar});
+      });
+  }
+  render() {
+    const hash = this.state && this.state.hash;
+    const {size} = this.props;
+    if (hash) {
+      return <Avatar hash={hash} size={size} />;
+    }
+    return null;
+  }
+}
 
 export class RequiredPlayerAvatar extends React.Component {
   render() {
