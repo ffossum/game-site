@@ -7,7 +7,7 @@ import {
   NavDropdown,
   MenuItem
 } from 'react-bootstrap';
-import {Avatar, Icon, LinkContainer, Modal} from '../common';
+import {FalcorAvatar, FalcorUsername, Icon, LinkContainer, Modal} from '../common';
 import GamesDropdown from './GamesDropdown';
 import {contains, map, pick} from 'lodash';
 import LoginContainer from '../../containers/LoginContainer';
@@ -31,7 +31,7 @@ class Menu extends React.Component {
       );
     });
 
-    const {id, username, loggedIn} = this.props.login;
+    const {id, loggedIn} = this.props.login;
     const {logOut} = this.props;
 
     return (
@@ -55,7 +55,7 @@ class Menu extends React.Component {
 
                 const profileDropdownTitle = (
                   <span className="nav-profile-dropdown-title">
-                    <Avatar hash={this.props.players[id].avatar} size='S' />{username}
+                    <FalcorAvatar userId={id} size='S' /> <FalcorUsername userId={id} />
                   </span>
                 );
 

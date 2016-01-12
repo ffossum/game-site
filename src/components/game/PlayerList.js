@@ -1,5 +1,5 @@
 import React from 'react';
-import {Avatar, OptionalPlayerAvatar, RequiredPlayerAvatar} from '../common';
+import {FalcorAvatar, OptionalPlayerAvatar, RequiredPlayerAvatar, FalcorUsername} from '../common';
 import _ from 'lodash';
 import {CREATED} from '../../constants/GameStatus';
 
@@ -7,15 +7,15 @@ import '../../stylesheets/playerList.scss';
 
 export default class PlayerList extends React.Component {
   render() {
-    const {players, game} = this.props;
+    const {game} = this.props;
     const playerIds = game.players;
     const playerComponents = _.map(playerIds, id => {
       const isHost = this.props.game.host === id;
       return (
         <div className='player-list-item' key={id}>
-          <div className='player-avatar'><Avatar hash={players[id].avatar} id={id} size='S' /></div>
+          <div className='player-avatar'><FalcorAvatar userId={id} size='S' /></div>
           <div className='player-name-container'>
-            <div className='player-name'>{players[id].name}</div>
+            <div className='player-name'><FalcorUsername userId={id} /></div>
             <div className='player-description'>{isHost ? 'Host' : null}</div>
           </div>
         </div>
