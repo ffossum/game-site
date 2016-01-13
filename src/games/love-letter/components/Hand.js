@@ -4,7 +4,9 @@ import PlayableCard from './PlayableCard';
 import PlayableTargetedCard from './PlayableTargetedCard';
 import {cards} from '../constants/cards';
 
-import '../stylesheets/hand.scss';
+if (process.env.APP_ENV === 'browser') {
+  require('../stylesheets/hand.scss');
+}
 
 function requiresTarget(card) {
   return _.includes([cards.GUARD, cards.PRIEST, cards.BARON, cards.PRINCE, cards.KING], card);

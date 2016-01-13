@@ -22,8 +22,14 @@ html
       href='https://fonts.googleapis.com/css?family=Lato'
       type='text/css')
 
+    script.
+      window.__INITIAL_STATE__ = !{initialState};
+
   body
-    #root
+    #root!= renderedApp
+
+    if env !== 'production'
+      #dev-tools
 
     if env === 'production'
       script(src="https://cdnjs.cloudflare.com/ajax/libs/falcor/0.1.15/falcor.browser.min.js")

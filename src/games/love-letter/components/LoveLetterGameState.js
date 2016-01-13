@@ -12,7 +12,9 @@ import classnames from 'classnames';
 import messageComponents from './messageComponents';
 import {FalcorUsername, FalcorAvatar} from '../../../components/common';
 
-import '../stylesheets/love-letter.scss';
+if (process.env.APP_ENV === 'browser') {
+  require('../stylesheets/love-letter.scss');
+}
 
 export default class LoveLetterGameState extends React.Component {
   render() {

@@ -2,7 +2,9 @@ import React, {PropTypes} from 'react';
 import ChatMessages from './ChatMessages';
 import ChatControls from './ChatControls';
 
-import '../../stylesheets/chat.scss';
+if (process.env.APP_ENV === 'browser') {
+  require('../../stylesheets/chat.scss');
+}
 
 export default class Chat extends React.Component {
   render() {

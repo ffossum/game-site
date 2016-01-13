@@ -6,7 +6,10 @@ import _ from 'lodash';
 import PlayerList from './PlayerList';
 import * as status from '../../constants/GameStatus';
 import LoveLetterContainer from '../../games/love-letter/containers/LoveLetterContainer';
-import '../../stylesheets/game.scss';
+
+if (process.env.APP_ENV === 'browser') {
+  require('../../stylesheets/game.scss');
+}
 
 export default class Game extends React.Component {
   render() {

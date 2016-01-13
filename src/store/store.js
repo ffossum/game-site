@@ -28,7 +28,7 @@ if (__DEVELOPMENT__) {
 }
 
 const finalCreateStore = compose(...storeEnhancers)(createStore);
-const store = finalCreateStore(reducer);
+const store = finalCreateStore(reducer, window.__INITIAL_STATE__);
 
 syncReduxAndRouter(history, store);
 

@@ -1,6 +1,9 @@
 import React from 'react';
 import Icon from '../../../components/common/Icon';
-import '../stylesheets/score-icon.scss';
+
+if (process.env.APP_ENV === 'browser') {
+  require('../stylesheets/score-icon.scss');
+}
 
 export default class ScoreIcon extends React.Component {
   render() {

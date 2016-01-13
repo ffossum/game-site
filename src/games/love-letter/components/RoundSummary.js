@@ -4,7 +4,10 @@ import {FalcorUsername} from '../../../components/common';
 import _ from 'lodash';
 import MiniCard from './MiniCard';
 import ScoreIcon from './ScoreIcon';
-import '../stylesheets/round-summary.scss';
+
+if (process.env.APP_ENV === 'browser') {
+  require('../stylesheets/round-summary.scss');
+}
 
 export default class RoundSummary extends React.Component {
   constructor(props) {

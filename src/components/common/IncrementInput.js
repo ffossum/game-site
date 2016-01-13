@@ -1,6 +1,9 @@
 import React, {PropTypes} from 'react';
 import {Button, Input, Icon} from './index';
-import '../../stylesheets/common/increment-input.scss';
+
+if (process.env.APP_ENV === 'browser') {
+  require('../../stylesheets/common/increment-input.scss');
+}
 
 export default class IncrementInput extends React.Component {
   render() {

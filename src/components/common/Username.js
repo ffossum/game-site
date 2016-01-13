@@ -4,7 +4,9 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as falcorActions from '../../actions/falcorActions';
 
-import '../../stylesheets/common/username.scss';
+if (process.env.APP_ENV === 'browser') {
+  require('../../stylesheets/common/username.scss');
+}
 
 export default class Username extends React.Component {
   render() {

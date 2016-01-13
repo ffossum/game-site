@@ -14,7 +14,9 @@ import LoginContainer from '../../containers/LoginContainer';
 import RegisterContainer from '../../containers/RegisterContainer';
 import * as modalTypes from '../../constants/ModalTypes';
 
-import '../../stylesheets/nav.scss';
+if (process.env.APP_ENV === 'browser') {
+  require('../../stylesheets/nav.scss');
+}
 
 class Menu extends React.Component {
   render() {

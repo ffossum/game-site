@@ -17,6 +17,13 @@ import graphQLHTTP from 'express-graphql';
 import {Schema} from './graphql/schema';
 import falcorExpress from 'falcor-express';
 import falcorRouter from './falcor/falcorRouter';
+import {match, RouterContext} from 'react-router';
+import React from 'react';
+import {renderToString} from 'react-dom/server';
+import routes from '../serverRoutes';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import reducer from '../reducers';
 
 const app = express();
 const server = Server(app);
@@ -107,9 +114,21 @@ app.post('/login',
   }
 );
 
+const initialState = reducer({}, 'INIT');
+const reduxStore = createStore(reducer, initialState);
+
 app.get('*', (req, res) => {
-  res.render(path.join(__dirname, 'views', 'index.jade'), {
-    env: process.env.NODE_ENV
+  match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
+    const renderedApp = renderToString(
+      <Provider store={reduxStore}>
+        <RouterContext {...renderProps}/>
+      </Provider>
+    );
+    res.render(path.join(__dirname, 'views', 'index.jade'), {
+      env: process.env.NODE_ENV,
+      renderedApp,
+      initialState: JSON.stringify(initialState)
+    });
   });
 });
 

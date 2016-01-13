@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {Router} from 'react-router';
 import store from './store/store';
 import history from './history';
-import routes from './routes';
+import routes from './serverRoutes';
 import {logInWithToken} from './actions/loginActions';
 
 import './stylesheets/main.scss';
@@ -15,23 +15,18 @@ if (token) {
 }
 
 ReactDOM.render((
-  <div>
-    <Provider store={store}>
-      <Router history={history}>
-        {routes}
-      </Router>
-    </Provider>
-    {
-      (() => {
-        if (__DEVELOPMENT__) {
-          const DevTools = require('./DevTools');
-          return (
-            <Provider store={store}>
-              <DevTools />
-            </Provider>
-          );
-        }
-      })()
-    }
-  </div>
+  <Provider store={store}>
+    <Router history={history}>
+      {routes}
+    </Router>
+  </Provider>
 ), document.getElementById('root'));
+
+if (__DEVELOPMENT__) {
+  const DevTools = require('./DevTools');
+  ReactDOM.render((
+    <Provider store={store}>
+      <DevTools />
+    </Provider>
+  ), document.getElementById('dev-tools'));
+}

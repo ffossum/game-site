@@ -8,7 +8,7 @@ class FrontPage extends React.Component {
     return (
       <DocumentTitle title="Game Site">
         <div className="container">
-        <Panel>
+          <Panel>
             <h1>Welcome</h1>
             <p>Good luck, have fun!</p>
             <hr />

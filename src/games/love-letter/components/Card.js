@@ -1,7 +1,10 @@
 import React from 'react';
 import cardTexts from '../constants/cardTexts';
-import '../stylesheets/card.scss';
 import {images} from '../constants/cards';
+
+if (process.env.APP_ENV === 'browser') {
+  require('../stylesheets/card.scss');
+}
 
 export default class Card extends React.Component {
   render() {

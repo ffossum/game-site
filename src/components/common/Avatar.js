@@ -5,7 +5,9 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as falcorActions from '../../actions/falcorActions';
 
-import '../../stylesheets/common/avatar.scss';
+if (process.env.APP_ENV === 'browser') {
+  require('../../stylesheets/common/avatar.scss');
+}
 
 function getPixels(size) {
   switch(size) {
