@@ -12,7 +12,7 @@ function requiresTarget(card) {
 
 export default class Hand extends React.Component {
   render() {
-    const {login, players, game, playCard} = this.props;
+    const {login, game, playCard} = this.props;
     const hand = game.state.players[login.id].hand;
 
     return (
@@ -27,7 +27,6 @@ export default class Hand extends React.Component {
                       id={card + index}
                       login={login}
                       card={card}
-                      players={players}
                       game={game}
                       playCard={playCard} />
                     :

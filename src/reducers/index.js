@@ -3,7 +3,6 @@ import {routeReducer as routing} from 'redux-simple-router';
 import login from './loginReducer';
 import chat from './chatReducer';
 import games from './lobbyReducer';
-import players from './playersReducer';
 import modal from './modalReducer';
 
 const reducer = combineReducers({
@@ -11,7 +10,6 @@ const reducer = combineReducers({
   chat,
   games,
   login,
-  players,
   modal
 });
 

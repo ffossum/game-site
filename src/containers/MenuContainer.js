@@ -13,7 +13,6 @@ class MenuContainer extends React.Component {
 
 export default connect(
   state => ({
-    players: state.players,
     login: state.login,
     games: state.games,
     modal: state.modal

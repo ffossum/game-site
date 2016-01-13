@@ -49,7 +49,6 @@ export default class CreateGame extends React.Component {
   }
   render() {
     const {loggedIn} = this.props.login;
-    const {players} = this.props;
     const {required, optional} = this.state.players;
 
     const game = {
@@ -91,7 +90,7 @@ export default class CreateGame extends React.Component {
                 onIncrement={_.partial(this.onChangePlayers, inc, 'optional')} />
 
               <div className="create-game-player-list">
-                <PlayerList game={game} players={players} />
+                <PlayerList game={game}/>
               </div>
 
               <Button

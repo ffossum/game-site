@@ -4,6 +4,7 @@ import {map} from 'lodash';
 import ProtectedIcon from './ProtectedIcon';
 import {cards} from '../constants/cards';
 import cardTexts from '../constants/cardTexts';
+import {FalcorUsername} from '../../../components/common';
 
 const guardOptions = [
   cards.PRIEST,
@@ -29,7 +30,7 @@ export default class GuardForm extends React.Component {
   }
 
   render() {
-    const {players, targets, playCard} = this.props;
+    const {targets, playCard} = this.props;
 
     return (
       <div>
@@ -57,7 +58,7 @@ export default class GuardForm extends React.Component {
                   key={'target-' + targetId}
                   disabled={targetState.protected}
                   onClick={onTargetClicked} >
-                  <ProtectedIcon protect={targetState.protected} /> {players[targetId].name}
+                  <ProtectedIcon protect={targetState.protected} /> <FalcorUsername userId={targetId} />
                 </Button>
               );
             })
@@ -69,7 +70,6 @@ export default class GuardForm extends React.Component {
 }
 
 GuardForm.propTypes = {
-  players: PropTypes.object.isRequired,
   targets: PropTypes.object.isRequired,
   playCard: PropTypes.func.isRequired
 };

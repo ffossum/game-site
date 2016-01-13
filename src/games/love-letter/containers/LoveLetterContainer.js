@@ -17,8 +17,7 @@ LoveLetter.propTypes = {
 
 export default connect(
   state => ({
-    login: state.login,
-    players: state.players
+    login: state.login
   }),
   dispatch => bindActionCreators({...actions, sendGameMessage}, dispatch)
 )(LoveLetter);

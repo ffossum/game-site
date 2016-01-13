@@ -20,7 +20,6 @@ class LobbyContainer extends React.Component {
 
 export default connect(
   state => ({
-    players: state.players,
     games: state.games,
     login: state.login
   }),

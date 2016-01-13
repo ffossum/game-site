@@ -19,7 +19,6 @@ class GameContainer extends React.Component {
 export default connect(
   state => ({
     games: state.games,
-    players: state.players,
     login: state.login
   }),
   dispatch => bindActionCreators(actions, dispatch)

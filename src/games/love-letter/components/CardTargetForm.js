@@ -2,10 +2,11 @@ import React, {PropTypes} from 'react';
 import {ButtonGroup, Button} from 'react-bootstrap';
 import {map} from 'lodash';
 import ProtectedIcon from './ProtectedIcon';
+import {FalcorUsername} from '../../../components/common';
 
 export default class GuardForm extends React.Component {
   render() {
-    const {card, players, targets, playCard} = this.props;
+    const {card, targets, playCard} = this.props;
 
     return (
       <div>
@@ -22,7 +23,7 @@ export default class GuardForm extends React.Component {
                   key={'target-' + targetId}
                   disabled={targetState.protected}
                   onClick={onTargetClicked} >
-                  <ProtectedIcon protect={targetState.protected} /> {players[targetId].name}
+                  <ProtectedIcon protect={targetState.protected} /> <FalcorUsername userId={targetId} />
                 </Button>
               );
             })
@@ -35,7 +36,6 @@ export default class GuardForm extends React.Component {
 
 GuardForm.propTypes = {
   card: PropTypes.string.isRequired,
-  players: PropTypes.object.isRequired,
   targets: PropTypes.object.isRequired,
   playCard: PropTypes.func.isRequired
 };

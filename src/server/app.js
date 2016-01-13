@@ -117,21 +117,6 @@ const users = {};
 const userSockets = {};
 const games = {};
 
-function getUsersInGames(games) {
-  const userIds = _.chain(games)
-    .map(game => game.players)
-    .flatten()
-    .uniq()
-    .value();
-
-  const usersInGames = {};
-  _.each(userIds, userId => {
-    usersInGames[userId] = _.pick(db.users[userId], ['id', 'name', 'avatar']);
-  });
-
-  return usersInGames;
-}
-
 function isStartable(game) {
   return game.players.length >= game.settings.players.required;
 }
@@ -142,7 +127,6 @@ function isJoinable(game) {
 }
 
 io.on('connection', socket => {
-  socket.emit('UPDATE_PLAYERS', _.extend({}, users, getUsersInGames(games)));
   socket.emit('UPDATE_GAMES', _.mapValues(games, game => {
     return _.pick(game, ['id', 'host', 'players', 'status', 'settings']);
   }));
@@ -184,8 +168,6 @@ io.on('connection', socket => {
               }
             }
           });
-
-          socket.broadcast.emit('UPDATE_PLAYERS', {[socket.user.id]: socket.user});
 
           jwt.sign({id: user.id}, secret, {expiresIn: '7d'}, newToken => {
             socket.emit('LOG_IN_SUCCESS', {user: socket.user, token: newToken});

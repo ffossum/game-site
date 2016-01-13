@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Button, Modal, Table} from 'react-bootstrap';
+import {FalcorUsername} from '../../../components/common';
 import _ from 'lodash';
 import MiniCard from './MiniCard';
 import ScoreIcon from './ScoreIcon';
@@ -15,12 +16,12 @@ export default class RoundSummary extends React.Component {
     this.props.onHide(game.id);
   }
   render() {
-    const {game, players} = this.props;
+    const {game} = this.props;
     const showModal = this.props.game.modal && this.props.game.modal.key === 'ROUND_SUMMARY';
 
     const modalBody = showModal ?
       <Modal.Body>
-        <h3>{players[game.modal.args.winner].name} wins the round!</h3>
+        <h3><FalcorUsername userId={game.modal.args.winner} /> wins the round!</h3>
         <Table className="love-letter-round-summary-table">
           <thead>
             <tr>
@@ -36,7 +37,7 @@ export default class RoundSummary extends React.Component {
                 const winner = game.modal.args.winner === playerId;
                 return (
                   <tr key={playerId}>
-                    <td>{players[playerId].name}</td>
+                    <td><FalcorUsername userId={playerId} /></td>
                     <td><ScoreIcon /> {winner ? <b>{playerState.score + 1}</b> : playerState.score}</td>
                     <td>
                       {
@@ -83,6 +84,5 @@ export default class RoundSummary extends React.Component {
 
 RoundSummary.propTypes = {
   game: PropTypes.object.isRequired,
-  players: PropTypes.object.isRequired,
   onHide: PropTypes.func.isRequired
 };

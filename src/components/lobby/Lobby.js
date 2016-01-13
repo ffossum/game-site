@@ -6,7 +6,7 @@ import '../../stylesheets/lobby.scss';
 
 export default class Lobby extends React.Component {
   render() {
-    const {games, players, loggedIn} = this.props;
+    const {games, loggedIn} = this.props;
 
     return (
       <div className="container">
@@ -19,7 +19,7 @@ export default class Lobby extends React.Component {
               <Button>Create game</Button>
             </LinkContainer>
           </div>
-          <GameList players={players} games={games} />
+          <GameList games={games} />
         </Panel>
       </div>
     );

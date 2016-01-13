@@ -1,7 +1,6 @@
 import * as loginActions from '../actions/loginActions';
 import * as chatActions from '../actions/chatActions';
 import * as lobbyActions from '../actions/lobbyActions';
-import * as playersActions from '../actions/playersActions';
 import * as gameActions from '../actions/gameActions';
 import * as types from '../constants/ActionTypes';
 import {each} from 'lodash';
@@ -27,8 +26,6 @@ const actions = {
 
   [types.START_GAME_SUCCESS]: data => lobbyActions.startGameSuccess(data),
   [types.GAME_STARTED]: data => lobbyActions.gameStarted(data),
-
-  [types.UPDATE_PLAYERS]: data => playersActions.updatePlayers(data),
 
   [types.UPDATE_GAME_STATE]: data => gameActions.updateGameState(data)
 };

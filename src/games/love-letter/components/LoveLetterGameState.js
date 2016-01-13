@@ -2,7 +2,6 @@ import React from 'react';
 import _ from 'lodash';
 import {Alert, Panel} from 'react-bootstrap';
 import Chat from '../../../components/chat/Chat';
-import Avatar from '../../../components/common/Avatar';
 import WaitingIcon from '../../../components/common/WaitingIcon';
 import RoundSummary from './RoundSummary';
 import Hand from './Hand';
@@ -11,12 +10,13 @@ import ProtectedIcon from './ProtectedIcon';
 import ScoreIcon from './ScoreIcon';
 import classnames from 'classnames';
 import messageComponents from './messageComponents';
+import {FalcorUsername, FalcorAvatar} from '../../../components/common';
 
 import '../stylesheets/love-letter.scss';
 
 export default class LoveLetterGameState extends React.Component {
   render() {
-    const {game, login, players, playCard, closeGameModal} = this.props;
+    const {game, login, playCard, closeGameModal} = this.props;
 
     const inGame = _.contains(game.players, login.id);
 
@@ -38,7 +38,7 @@ export default class LoveLetterGameState extends React.Component {
         const id = playerState.id;
         return (
           <Panel key={id} className={classnames({'player-state': true, 'eliminated': _.isEmpty(playerState.hand)})}>
-            <Avatar hash={players[id].avatar} size="S" /> {players[id].name}
+            <FalcorAvatar userId={id} size='S'/> <FalcorUsername userId={id} />
             {game.state.toAct === id ? <span className='waiting-icon'><WaitingIcon /></span> : null}
             <div>
               <hr />
@@ -65,7 +65,7 @@ export default class LoveLetterGameState extends React.Component {
 
     return (
       <div className="love-letter-game">
-        <RoundSummary game={game} players={players} onHide={closeGameModal} />
+        <RoundSummary game={game} onHide={closeGameModal} />
         <div className="love-letter-player-states">
           {playerStates}
         </div>
@@ -77,7 +77,6 @@ export default class LoveLetterGameState extends React.Component {
         <div className="love-letter-game-controls">
           <Hand
             login={login}
-            players={players}
             game={game}
             playCard={_.partial(playCard, login.id, game.id)} />
           <div className="love-letter-game-chat">

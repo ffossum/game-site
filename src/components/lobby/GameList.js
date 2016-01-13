@@ -4,12 +4,13 @@ import GameListEntry from './GameListEntry';
 
 export default class GameList extends React.Component {
   render() {
+    const {games} = this.props;
     return (
       <div className='lobby-game-list'>
         {
-          _.map(this.props.games, (game, id) => {
+          _.map(games, (game, id) => {
             return (
-              <GameListEntry players={this.props.players} game={game} key={id} />
+              <GameListEntry game={game} key={id} />
             );
           })
         }

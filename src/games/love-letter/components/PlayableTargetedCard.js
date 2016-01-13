@@ -81,7 +81,7 @@ export default class PlayableTargetedCard extends React.Component {
             {
               card === cards.GUARD ?
               <GuardForm players={players} targets={targets} playCard={hidePopoverAndPlayCard} /> :
-              <CardTargetForm card={card} players={players} targets={targets} playCard={hidePopoverAndPlayCard} />
+              <CardTargetForm card={card} targets={targets} playCard={hidePopoverAndPlayCard} />
             }
           </Panel>
         </Overlay>

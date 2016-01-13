@@ -4,13 +4,13 @@ import PlayerList from '../game/PlayerList';
 
 export default class GameListEntry extends React.Component {
   render() {
-    const {game, players} = this.props;
+    const {game} = this.props;
 
     return (
       <div className='lobby-game-list-entry'>
         <LinkContainer to={`/game/${game.id}`}>
           <Button>
-            <PlayerList players={players} game={game} />
+            <PlayerList game={game} />
           </Button>
         </LinkContainer>
       </div>
