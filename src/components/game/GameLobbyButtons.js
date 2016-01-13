@@ -67,7 +67,7 @@ export default class GameLobbyButtons extends React.Component {
     return (
       <div className="form-group">
         {
-          () => {
+          (() => {
             if (!inProgress) {
               return host ?
                 <Button
@@ -83,7 +83,7 @@ export default class GameLobbyButtons extends React.Component {
                   Leave game
                 </Button>;
             }
-          }()
+          })()
         }
       </div>
     );

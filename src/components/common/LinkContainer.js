@@ -4,7 +4,7 @@ import {Link} from 'react-router';
 export default class LinkContainer extends React.Component {
   render() {
     const {to, children, ...props} = this.props;
-    const {history} = this.context;
+    const {router} = this.context;
 
     const onClick = event => {
       if (this.props.disabled) {
@@ -20,14 +20,14 @@ export default class LinkContainer extends React.Component {
     };
 
     props.onClick = onClick;
-    props.active = history.isActive(to);
+    props.active = router.isActive(to);
 
     return React.cloneElement(this.props.children, props);
   }
 }
 
 LinkContainer.contextTypes = {
-  history: PropTypes.object
+  router: PropTypes.object
 };
 
 LinkContainer.propTypes = {

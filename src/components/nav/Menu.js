@@ -47,7 +47,7 @@ class Menu extends React.Component {
             {linkComponents}
           </Nav>
           {
-            () => {
+            (() => {
               if (loggedIn) {
                 const myGames = pick(this.props.games, (game, gameId) => {
                   return contains(game.players, id);
@@ -77,7 +77,7 @@ class Menu extends React.Component {
                   </Nav>
                 );
               }
-            }()
+            })()
           }
         </Navbar.Collapse>
         <Modal show={this.props.modal === modalTypes.LOGIN} onHide={this.props.closeModal}>

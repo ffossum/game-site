@@ -22,7 +22,7 @@ ReactDOM.render((
       </Router>
     </Provider>
     {
-      () => {
+      (() => {
         if (__DEVELOPMENT__) {
           const DevTools = require('./DevTools');
           return (
@@ -31,7 +31,7 @@ ReactDOM.render((
             </Provider>
           );
         }
-      }()
+      })()
     }
   </div>
 ), document.getElementById('root'));

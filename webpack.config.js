@@ -8,7 +8,6 @@ module.exports = {
       'classnames',
       'falcor',
       'falcor-http-datasource',
-      'history',
       'isomorphic-fetch',
       'lodash',
       'react',
