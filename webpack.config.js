@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'eval',
   entry: {
     vendor: [
       'classnames',
@@ -33,7 +33,10 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      __DEVELOPMENT__: true
+      __DEVELOPMENT__: true,
+      'process.env': {
+        'APP_ENV': JSON.stringify('browser')
+      }
     })
   ],
   module: {
@@ -41,7 +44,23 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
-        loaders: ['babel']
+        loader: 'babel',
+        query: {
+          stage: 0,
+          plugins: ["react-transform"],
+          extra: {
+            "react-transform": {
+              "transforms": [{
+                "transform": "react-transform-hmr",
+                "imports": ["react"],
+                "locals": ["module"]
+              }, {
+                "transform": "react-transform-catch-errors",
+                "imports": ["react", "redbox-react"]
+              }]
+            }
+          }
+        }
       },
       {
         test: /\.scss$/,
