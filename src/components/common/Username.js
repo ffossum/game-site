@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react';
-import falcorModel, {get} from '../../falcorModel';
+import {get} from '../../falcorUtils';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as falcorActions from '../../actions/falcorActions';
 
 import '../../stylesheets/common/username.scss';
 
@@ -14,11 +16,11 @@ const namePath = userId => ['users', userId, 'name'];
 
 class UsernameContainer extends React.Component {
   componentDidMount() {
-    const {falcor, userId} = this.props;
+    const {falcor, userId, fetchFalcorData} = this.props;
     const name = get(falcor, namePath(userId));
 
     if (!name) {
-      falcorModel.get(namePath(userId)).then();
+      fetchFalcorData(namePath(userId));
     }
   }
   render() {
@@ -33,7 +35,8 @@ class UsernameContainer extends React.Component {
 }
 
 export const FalcorUsername = connect(
-  state => ({falcor: state.falcor})
+  state => ({falcor: state.falcor}),
+  dispatch => bindActionCreators(falcorActions, dispatch)
 )(UsernameContainer);
 
 Username.propTypes = {

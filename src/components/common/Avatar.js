@@ -1,7 +1,9 @@
 import React, {PropTypes} from 'react';
 import {Image as BsImage} from 'react-bootstrap';
-import falcorModel, {get} from '../../falcorModel';
+import {get} from '../../falcorUtils';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as falcorActions from '../../actions/falcorActions';
 
 import '../../stylesheets/common/avatar.scss';
 
@@ -31,11 +33,11 @@ export default class Avatar extends React.Component {
 const avatarPath = userId => ['users', userId, 'avatar'];
 class AvatarContainer extends React.Component {
   componentDidMount() {
-    const {falcor, userId} = this.props;
+    const {falcor, userId, fetchFalcorData} = this.props;
     const avatar = get(falcor, avatarPath(userId));
 
     if (!avatar) {
-      falcorModel.get(avatarPath(userId)).then();
+      fetchFalcorData(avatarPath(userId));
     }
   }
   render() {
@@ -50,7 +52,8 @@ class AvatarContainer extends React.Component {
 }
 
 export const FalcorAvatar = connect(
-  state => ({falcor: state.falcor})
+  state => ({falcor: state.falcor}),
+  dispatch => bindActionCreators(falcorActions, dispatch)
 )(AvatarContainer);
 
 export class RequiredPlayerAvatar extends React.Component {
