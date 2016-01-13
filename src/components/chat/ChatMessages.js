@@ -24,13 +24,13 @@ class ChatMessages extends React.Component {
     node.scrollTop = node.scrollHeight;
   }
   render() {
-    const {users, messages} = this.props;
+    const {messages, messageComponents} = this.props;
     return (
       <div className="chat-messages-container">
         <div className="chat-messages" ref="chatMessages">
           {
             messages.map((message, index) => {
-              return <ChatMessage key={index} users={users} message={message} />;
+              return <ChatMessage key={index} message={message} messageComponents={messageComponents}/>;
             })
           }
         </div>

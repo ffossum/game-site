@@ -1,26 +1,25 @@
 import React, {PropTypes} from 'react';
-import {getMessageText} from '../../constants/Texts';
-import _ from 'lodash';
+import {FalcorUsername} from '../common/';
+import commonMessageComponents from './commonMessageComponents';
 
 class ChatMessage extends React.Component {
   render() {
-
-    const {message, users} = this.props;
-
-    let messageText = message.key ?
-      getMessageText(message.key, message.args) : message.text;
+    const {message, messageComponents} = this.props;
 
     if (message.user) {
       return (
         <div className="chat-message">
-          {users[message.user].name}: {messageText}
+          <FalcorUsername userId={message.user} />: {message.text}
         </div>
       );
-    } else {
-      const messageLines = messageText.split('\n');
+    }
+
+    const Message = commonMessageComponents[message.key] || (messageComponents && messageComponents[message.key]);
+
+    if (Message) {
       return (
         <div className="chat-info-message">
-          {_.map(messageLines, (line, index) => <div key={index}>{line}</div>)}
+          <Message args={message.args} />
         </div>
       );
     }
@@ -28,8 +27,8 @@ class ChatMessage extends React.Component {
 };
 
 ChatMessage.propTypes = {
-  users: PropTypes.object.isRequired,
-  message: PropTypes.object.isRequired
+  message: PropTypes.object.isRequired,
+  messageComponents: PropTypes.object
 };
 
 export default ChatMessage;

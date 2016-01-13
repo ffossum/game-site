@@ -1,7 +1,7 @@
 import _, {times} from 'lodash';
 import Immutable from 'immutable';
 import {cards, values} from '../games/love-letter/constants/cards';
-import * as messageKeys from '../constants/GameMessages';
+import * as messageKeys from '../games/love-letter/constants/messageKeys';
 
 function userMayTakeAction(state, action, cardName) {
   const actingPlayer = state.players[action.acting];

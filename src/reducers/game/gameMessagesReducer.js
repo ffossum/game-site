@@ -1,5 +1,5 @@
 import * as actions from '../../constants/ActionTypes';
-import * as messageKeys from '../../constants/GameMessages';
+import * as messageKeys from '../../constants/messageKeys';
 import _ from 'lodash';
 
 const initialState = [];

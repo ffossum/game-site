@@ -1,5 +1,5 @@
 import React from 'react';
-import texts from '../../../constants/Texts';
+import cardTexts from '../constants/cardTexts';
 import {images} from '../constants/cards';
 import '../stylesheets/mini-card.scss';
 import {OverlayTrigger, Tooltip} from 'react-bootstrap';
@@ -7,7 +7,7 @@ import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 export default class MiniCard extends React.Component {
   render() {
     const {card, tooltipId} = this.props;
-    const text = texts[card];
+    const text = cardTexts[card];
 
     const tooltip = <Tooltip id={tooltipId}>{text.value} - {text.title}</Tooltip>;
 

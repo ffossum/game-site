@@ -10,6 +10,8 @@ import MiniCard from './MiniCard';
 import ProtectedIcon from './ProtectedIcon';
 import ScoreIcon from './ScoreIcon';
 import classnames from 'classnames';
+import messageComponents from './messageComponents';
+
 import '../stylesheets/love-letter.scss';
 
 export default class LoveLetterGameState extends React.Component {
@@ -83,7 +85,7 @@ export default class LoveLetterGameState extends React.Component {
               <Chat
                 login={this.props.login}
                 messages={game.messages}
-                users={players}
+                messageComponents={messageComponents}
                 sendMessage={_.partial(this.props.sendGameMessage, game.id)} />
             </Panel>
           </div>

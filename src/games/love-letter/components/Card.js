@@ -1,12 +1,12 @@
 import React from 'react';
-import texts from '../../../constants/Texts';
+import cardTexts from '../constants/cardTexts';
 import '../stylesheets/card.scss';
 import {images} from '../constants/cards';
 
 export default class Card extends React.Component {
   render() {
     const {card} = this.props;
-    const text = texts[card];
+    const text = cardTexts[card];
     return (
       <div className="love-letter-card">
         <img className="card-image" src={images[card]} />

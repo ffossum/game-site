@@ -32,7 +32,7 @@ const images = {
   [cards.PRINCESS]: '/static/love-letter/princess.jpg'
 };
 
-module.exports = {
+export default {
   cards,
   values,
   images
