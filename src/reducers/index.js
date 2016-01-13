@@ -4,9 +4,11 @@ import login from './loginReducer';
 import chat from './chatReducer';
 import games from './lobbyReducer';
 import modal from './modalReducer';
+import falcor from './falcorReducer';
 
 const reducer = combineReducers({
   routing,
+  falcor,
   chat,
   games,
   login,

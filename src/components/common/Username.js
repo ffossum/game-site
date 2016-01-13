@@ -1,5 +1,7 @@
 import React, {PropTypes} from 'react';
-import falcorModel from '../../falcorModel';
+import falcorModel, {get} from '../../falcorModel';
+import {connect} from 'react-redux';
+
 import '../../stylesheets/common/username.scss';
 
 export default class Username extends React.Component {
@@ -8,24 +10,31 @@ export default class Username extends React.Component {
   }
 }
 
-export class FalcorUsername extends React.Component {
-  static propTypes = {
-    userId: PropTypes.string.isRequired
-  }
+const namePath = userId => ['users', userId, 'name'];
+
+class UsernameContainer extends React.Component {
   componentDidMount() {
-    const {userId} = this.props;
-    falcorModel.get(['users', userId, 'name']).then(response => {
-      this.setState({username: response.json.users[userId].name});
-    });
+    const {falcor, userId} = this.props;
+    const name = get(falcor, namePath(userId));
+
+    if (!name) {
+      falcorModel.get(namePath(userId)).then();
+    }
   }
   render() {
-    const username = this.state && this.state.username;
-    if (username) {
-      return <Username name={username} />;
+    const {falcor, userId} = this.props;
+    const name = get(falcor, namePath(userId));
+
+    if (name) {
+      return <Username name={name} />;
     }
     return null;
   }
 }
+
+export const FalcorUsername = connect(
+  state => ({falcor: state.falcor})
+)(UsernameContainer);
 
 Username.propTypes = {
   name: PropTypes.string.isRequired

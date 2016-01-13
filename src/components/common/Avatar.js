@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import {Image as BsImage} from 'react-bootstrap';
-import falcorModel from '../../falcorModel';
+import falcorModel, {get} from '../../falcorModel';
+import {connect} from 'react-redux';
 
 import '../../stylesheets/common/avatar.scss';
 
@@ -27,26 +28,30 @@ export default class Avatar extends React.Component {
   }
 };
 
-export class FalcorAvatar extends React.Component {
-  static propTypes = {
-    userId: PropTypes.string.isRequired,
-    size: PropTypes.string
-  }
+const avatarPath = userId => ['users', userId, 'avatar'];
+class AvatarContainer extends React.Component {
   componentDidMount() {
-    const {userId} = this.props;
-    falcorModel.get(['users', userId, 'avatar']).then(response => {
-      this.setState({hash: response.json.users[userId].avatar});
-    });
+    const {falcor, userId} = this.props;
+    const avatar = get(falcor, avatarPath(userId));
+
+    if (!avatar) {
+      falcorModel.get(avatarPath(userId)).then();
+    }
   }
   render() {
-    const hash = this.state && this.state.hash;
-    const {size} = this.props;
-    if (hash) {
-      return <Avatar hash={hash} size={size} />;
+    const {falcor, userId, size} = this.props;
+    const avatar = get(falcor, avatarPath(userId));
+
+    if (avatar) {
+      return <Avatar hash={avatar} size={size}/>;
     }
     return null;
   }
 }
+
+export const FalcorAvatar = connect(
+  state => ({falcor: state.falcor})
+)(AvatarContainer);
 
 export class RequiredPlayerAvatar extends React.Component {
   render() {
