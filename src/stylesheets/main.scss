@@ -6,12 +6,19 @@ html {
   box-sizing: inherit;
 }
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 h1 {
-  font-weight: bold;
+  font-weight: 600;
 }
+
+label,
+b,
+strong {
+  font-weight: 600;
+}
+
 
 .main-content {
   margin-left: 2rem;
