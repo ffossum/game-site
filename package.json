@@ -23,6 +23,7 @@
     "css-loader": "^0.23.1",
     "express": "^4.13.3",
     "express-graphql": "^0.4.5",
+    "extract-text-webpack-plugin": "^1.0.1",
     "falcor": "0.1.15",
     "falcor-express": "^0.1.2",
     "falcor-http-datasource": "^0.1.2",

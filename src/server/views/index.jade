@@ -25,20 +25,22 @@ html
     script.
       window.__INITIAL_STATE__ = !{initialState};
 
+    if env === 'production'
+      link(rel='stylesheet', href='/static/bundle.css')
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/falcor/0.1.15/falcor.browser.min.js" defer)
+      script(src="https://fb.me/react-0.14.5.min.js" defer)
+      script(src="https://fb.me/react-dom-0.14.5.min.js" defer)
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.28.2/react-bootstrap.min.js" defer)
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js" defer)
+      script(src="/static/vendor.bundle.js" defer)
+      script(src='/static/bundle.js' defer)
+    else
+      link(rel='stylesheet', href='http://localhost:3000/static/bundle.css')
+      script(src='http://localhost:3000/static/vendor.bundle.js' defer)
+      script(src='http://localhost:3000/static/bundle.js' defer)
+
   body
     #root!= renderedApp
 
     if env !== 'production'
       #dev-tools
-
-    if env === 'production'
-      script(src="https://cdnjs.cloudflare.com/ajax/libs/falcor/0.1.15/falcor.browser.min.js")
-      script(src="https://fb.me/react-0.14.5.min.js")
-      script(src="https://fb.me/react-dom-0.14.5.min.js")
-      script(src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.28.2/react-bootstrap.min.js")
-      script(src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js")
-      script(src="/static/vendor.bundle.js")
-      script(src='/static/bundle.js')
-    else
-      script(src='http://localhost:3000/static/vendor.bundle.js')
-      script(src='http://localhost:3000/static/bundle.js')
