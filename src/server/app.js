@@ -24,11 +24,13 @@ import routes from '../serverRoutes';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from '../reducers';
+import compress from 'compression';
 
 const app = express();
 const server = Server(app);
 const io = require('socket.io')(server);
 
+app.use(compress());
 app.use(express.static('public'));
 app.use(favicon(path.join('public','static','meeple.png')));
 
