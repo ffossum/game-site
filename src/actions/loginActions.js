@@ -14,6 +14,7 @@ export function registerUser(email, username, password, repeat) {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
+        credentials: 'same-origin',
         body: JSON.stringify({email, username, password})
       }).then(response => {
         if (response.status === 200) {
@@ -53,6 +54,7 @@ export function logInWithUsernameAndPassword(username, password) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
+      credentials: 'same-origin',
       body: JSON.stringify({
         username,
         password

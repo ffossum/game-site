@@ -1,7 +1,14 @@
 class User extends Object {}
 
 export function getUser(id) {
-  return new Promise(resolve => resolve(users[id]));
+  return new Promise((resolve, reject) => {
+    const user = users[id];
+    if (user) {
+      resolve(user);
+    } else {
+      reject('User not found');
+    }
+  });
 }
 
 const qwer = new User();

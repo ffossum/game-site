@@ -9,11 +9,6 @@ import {logInWithToken} from './actions/loginActions';
 
 import './stylesheets/main.scss';
 
-const token = localStorage.getItem('token');
-if (token) {
-  store.dispatch(logInWithToken(token));
-}
-
 ReactDOM.render((
   <Provider store={store}>
     <Router history={history}>
@@ -21,6 +16,11 @@ ReactDOM.render((
     </Router>
   </Provider>
 ), document.getElementById('root'));
+
+const token = localStorage.getItem('token');
+if (token) {
+  store.dispatch(logInWithToken(token));
+}
 
 if (__DEVELOPMENT__) {
   const DevTools = require('./DevTools');

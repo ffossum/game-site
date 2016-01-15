@@ -4,7 +4,7 @@ import favicon from 'serve-favicon';
 import path from 'path';
 import shortid from 'shortid';
 import _ from 'lodash';
-import db from './db';
+import db, {getUser} from './db';
 import * as loveLetter from './loveLetter';
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
@@ -12,6 +12,7 @@ import bodyParser from 'body-parser';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import expressJwt from 'express-jwt';
 import {secret} from './config';
 import graphQLHTTP from 'express-graphql';
 import {Schema} from './graphql/schema';
@@ -25,6 +26,7 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from '../reducers';
 import compress from 'compression';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const server = Server(app);
@@ -111,28 +113,62 @@ app.post('/login',
   passport.authenticate('local'),
   (req, res) => {
     jwt.sign({id: req.user.id}, secret, {expiresIn: '7d'}, token => {
+      const expires = new Date(Number(new Date()) + 604800000); // 7 days
+      res.cookie('token', token, {
+        httpOnly: true,
+        expires
+      });
       res.status(200).json({token});
     });
   }
 );
 
-const initialState = reducer({}, 'INIT');
-const reduxStore = createStore(reducer, initialState);
+app.use(cookieParser());
+const jwtMiddleware = expressJwt({
+  secret,
+  credentialsRequired: false,
+  getToken(req) {
+    return req.cookies.token;
+  }
+});
 
-app.get('*', (req, res) => {
+app.get('*',
+  jwtMiddleware,
+  (req, res) => {
+    const initialState = reducer({}, {type: '@@INIT'});
+    getUser(req.user.id)
+      .then(user => {
+        initialState.login = {
+          loggedIn: true,
+          username: user.name,
+          id: user.id
+        };
+        respondRenderedApp(req, res, initialState);
+      })
+      .catch(error => {
+        respondRenderedApp(req, res, initialState);
+      });
+  });
+
+function respondRenderedApp(req, res, initialState) {
   match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
-    const renderedApp = renderToString(
-      <Provider store={reduxStore}>
-        <RouterContext {...renderProps}/>
-      </Provider>
-    );
+    const renderedApp = renderApp(initialState, renderProps);
     res.render(path.join(__dirname, 'views', 'index.jade'), {
       env: process.env.NODE_ENV,
       renderedApp,
       initialState: JSON.stringify(initialState)
     });
   });
-});
+}
+
+function renderApp(initialState, renderProps) {
+  const reduxStore = createStore(reducer, initialState);
+  return renderToString(
+    <Provider store={reduxStore}>
+      <RouterContext {...renderProps}/>
+    </Provider>
+  );
+}
 
 const users = {};
 const userSockets = {};
