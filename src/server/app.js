@@ -125,13 +125,17 @@ function getCookieExpirationDate() {
 }
 
 function setJwtCookie(req, res, next) {
-  jwt.sign({id: req.user.id}, secret, {expiresIn: '7d'}, token => {
-    res.cookie('token', token, {
-      httpOnly: true,
-      expires: getCookieExpirationDate()
+  if (req.user && req.user.id) {
+    jwt.sign({id: req.user.id}, secret, {expiresIn: '7d'}, token => {
+      res.cookie('token', token, {
+        httpOnly: true,
+        expires: getCookieExpirationDate()
+      });
+      next();
     });
+  } else {
     next();
-  });
+  }
 }
 
 app.post('/login',
@@ -169,6 +173,7 @@ const jwtMiddleware = expressJwt({
 
 app.get('*',
   jwtMiddleware,
+  setJwtCookie,
   (req, res) => {
     const initialState = reducer({}, {type: '@@INIT'});
     if (!req.user) {
