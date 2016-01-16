@@ -97,10 +97,16 @@ export function logInFailure(error) {
 }
 
 export function logOut() {
-  return {
-    type: type.LOG_OUT,
-    meta: {
-      socket: true
-    }
+  return dispatch => {
+    fetch('/logout', {
+      method: 'post',
+      credentials: 'same-origin'
+    });
+    dispatch({
+      type: type.LOG_OUT,
+      meta: {
+        socket: true
+      }
+    });
   };
 }

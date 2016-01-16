@@ -144,6 +144,20 @@ app.post('/login',
   }
 );
 
+function lastWeek() {
+  return new Date(Number(new Date()) - 604800000); // 7 days
+}
+
+app.post('/logout',
+  (req, res) => {
+    res.cookie('token', false, {
+      httpOnly: true,
+      expires: lastWeek()
+    });
+    res.status(200).send();
+  }
+);
+
 app.use(cookieParser());
 const jwtMiddleware = expressJwt({
   secret,
