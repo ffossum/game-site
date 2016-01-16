@@ -13,17 +13,6 @@ describe('login reducer', () => {
     });
   });
 
-  it('handles login request correctly', () => {
-    const previousState = {
-      loggedIn: false
-    };
-
-    const action = actions.logInWithToken('token');
-    const state = reducer(previousState, action);
-
-    expect(state.waiting).to.be.true;
-  });
-
   it('handles login success correctly', () => {
     const previousState = {
       loggedIn: false,
@@ -31,10 +20,8 @@ describe('login reducer', () => {
     };
 
     const action = actions.logInSuccess({
-      user: {
-        id: 'userId',
-        name: 'Jack'
-      }
+      id: 'userId',
+      name: 'Jack'
     });
     const state = reducer(previousState, action);
 

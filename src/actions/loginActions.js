@@ -19,8 +19,9 @@ export function registerUser(email, username, password, repeat) {
       }).then(response => {
         if (response.status === 200) {
           response.json().then(json => {
-            localStorage.setItem('token', json.token);
-            dispatch(logInWithToken(json.token));
+            dispatch(logInSuccess(json));
+
+            require('../socket').reconnect();
           });
         } else {
           response.json().then(json => {
@@ -62,9 +63,9 @@ export function logInWithUsernameAndPassword(username, password) {
     }).then(response => {
       if (response.status === 200) {
         response.json().then(json => {
-          const token = json.token;
-          localStorage.setItem('token', token);
-          dispatch(logInWithToken(token));
+          dispatch(logInSuccess(json));
+
+          require('../socket').reconnect();
         });
       } else {
         dispatch(logInFailure(errorType.AUTHENTICATION_FAILURE));
@@ -79,20 +80,12 @@ function getTokenRequest() {
   };
 }
 
-export function logInWithToken(token) {
-  return {
-    type: type.LOG_IN_REQUEST,
-    payload: token,
-    meta: {
-      socket: true
-    }
-  };
-}
-
-export function logInSuccess(payload) {
+export function logInSuccess(user) {
   return {
     type: type.LOG_IN_SUCCESS,
-    payload
+    payload: {
+      user
+    }
   };
 }
 

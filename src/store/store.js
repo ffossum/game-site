@@ -3,18 +3,16 @@ import reducer from '../reducers';
 import {syncReduxAndRouter} from 'redux-simple-router';
 import socketMiddleware from './socketMiddleware';
 import historyMiddleware from './historyMiddleware';
-import localStorageMiddleware from './localStorageMiddleware';
 import thunk from 'redux-thunk';
 import * as socketListeners from './socketListeners';
 import history from '../history';
-import socket from '../socket';
+import {getCurrentSocket} from '../socket';
 
 let storeEnhancers = [
   applyMiddleware(
     thunk,
-    socketMiddleware(socket),
-    historyMiddleware(history),
-    localStorageMiddleware
+    socketMiddleware,
+    historyMiddleware(history)
   )
 ];
 
@@ -32,7 +30,7 @@ const store = finalCreateStore(reducer, window.__INITIAL_STATE__);
 
 syncReduxAndRouter(history, store);
 
-socketListeners.addAll(socket, store);
+socketListeners.addAll(store, getCurrentSocket());
 
 if (module.hot) {
   // Enable Webpack hot module replacement for reducers
@@ -42,9 +40,10 @@ if (module.hot) {
   });
 
   module.hot.accept('./socketListeners', () => {
+    const socket = getCurrentSocket();
     socket.off();
     const newListeners = require('./socketListeners');
-    newListeners.addAll(socket, store);
+    newListeners.addAll(store, socket);
   });
 }
 

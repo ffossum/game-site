@@ -1,4 +1,3 @@
-import * as loginActions from '../actions/loginActions';
 import * as chatActions from '../actions/chatActions';
 import * as lobbyActions from '../actions/lobbyActions';
 import * as gameActions from '../actions/gameActions';
@@ -6,9 +5,6 @@ import * as types from '../constants/ActionTypes';
 import {each} from 'lodash';
 
 const actions = {
-  [types.LOG_IN_SUCCESS]: (data) => loginActions.logInSuccess(data),
-  [types.LOG_IN_FAILURE]: error => loginActions.logInFailure(error),
-
   [types.NEW_MESSAGE]: data => chatActions.newMessage(data),
 
   [types.UPDATE_GAMES]: data => lobbyActions.updateGames(data),
@@ -30,7 +26,7 @@ const actions = {
   [types.UPDATE_GAME_STATE]: data => gameActions.updateGameState(data)
 };
 
-export function addAll(socket, store) {
+export function addAll(store, socket) {
   each(actions, (action, key) => {
     socket.on(key, data => {
       store.dispatch(action(data, store));

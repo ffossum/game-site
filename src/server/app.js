@@ -26,6 +26,7 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from '../reducers';
 import compress from 'compression';
+import cookie from 'cookie';
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -92,16 +93,26 @@ app.post('/register',
       const userId = shortid.generate();
       bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(password, salt, (err, hash) => {
+          const avatar = crypto.createHash('md5').update(email).digest('hex');
           db.users[userId] = {
             id: userId,
             name: username,
             email,
             password: hash,
-            avatar: crypto.createHash('md5').update(email).digest('hex')
+            avatar
           };
 
           jwt.sign({id: userId}, secret, {expiresIn: '7d'}, token => {
-            res.status(200).json({token});
+            res.cookie('token', token, {
+              httpOnly: true,
+              expires: getCookieExpirationDate()
+            });
+            const user = {
+              id: userId,
+              name: username,
+              avatar
+            };
+            res.status(200).json(user);
           });
         });
       });
@@ -109,17 +120,27 @@ app.post('/register',
   }
 );
 
+function getCookieExpirationDate() {
+  return new Date(Number(new Date()) + 604800000); // 7 days
+}
+
+function setJwtCookie(req, res, next) {
+  jwt.sign({id: req.user.id}, secret, {expiresIn: '7d'}, token => {
+    res.cookie('token', token, {
+      httpOnly: true,
+      expires: getCookieExpirationDate()
+    });
+    next();
+  });
+}
+
 app.post('/login',
   passport.authenticate('local'),
+  setJwtCookie,
   (req, res) => {
-    jwt.sign({id: req.user.id}, secret, {expiresIn: '7d'}, token => {
-      const expires = new Date(Number(new Date()) + 604800000); // 7 days
-      res.cookie('token', token, {
-        httpOnly: true,
-        expires
-      });
-      res.status(200).json({token});
-    });
+    const {id, name, avatar} = req.user;
+    const user = {id, name, avatar};
+    res.status(200).json(user);
   }
 );
 
@@ -136,6 +157,10 @@ app.get('*',
   jwtMiddleware,
   (req, res) => {
     const initialState = reducer({}, {type: '@@INIT'});
+    if (!req.user) {
+      respondRenderedApp(req, res, initialState);
+      return;
+    }
     getUser(req.user.id)
       .then(user => {
         initialState.login = {
@@ -184,16 +209,13 @@ function isJoinable(game) {
 }
 
 io.on('connection', socket => {
-  socket.emit('UPDATE_GAMES', _.mapValues(games, game => {
-    return _.pick(game, ['id', 'host', 'players', 'status', 'settings']);
-  }));
+  const {headers} = socket.request;
+  const cookies = headers.cookie
+    ? cookie.parse(headers.cookie)
+    : {};
 
-  socket.on('SEND_MESSAGE', data => {
-    socket.broadcast.emit('NEW_MESSAGE', data);
-  });
-
-  socket.on('LOG_IN_REQUEST', token => {
-    jwt.verify(token, secret, (err, decoded) => {
+  if (cookies.token) {
+    jwt.verify(cookies.token, secret, (err, decoded) => {
       if (err) {
         socket.emit('LOG_IN_FAILURE', 'AUTHENTICATION_FAILURE');
       } else {
@@ -225,13 +247,17 @@ io.on('connection', socket => {
               }
             }
           });
-
-          jwt.sign({id: user.id}, secret, {expiresIn: '7d'}, newToken => {
-            socket.emit('LOG_IN_SUCCESS', {user: socket.user, token: newToken});
-          });
         }
       }
     });
+  }
+
+  socket.emit('UPDATE_GAMES', _.mapValues(games, game => {
+    return _.pick(game, ['id', 'host', 'players', 'status', 'settings']);
+  }));
+
+  socket.on('SEND_MESSAGE', data => {
+    socket.broadcast.emit('NEW_MESSAGE', data);
   });
 
   socket.on('CREATE_GAME_REQUEST', settings => {
