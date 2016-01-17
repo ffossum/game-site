@@ -1,6 +1,6 @@
 import {compose, createStore, applyMiddleware} from 'redux';
 import reducer from '../reducers';
-import {syncReduxAndRouter} from 'redux-simple-router';
+import {syncHistory} from 'redux-simple-router';
 import socketMiddleware from './socketMiddleware';
 import historyMiddleware from './historyMiddleware';
 import thunk from 'redux-thunk';
@@ -8,10 +8,13 @@ import * as socketListeners from './socketListeners';
 import history from '../history';
 import {getCurrentSocket} from '../socket';
 
+const reduxRouterMiddleware = syncHistory(history);
+
 let storeEnhancers = [
   applyMiddleware(
     thunk,
     socketMiddleware,
+    reduxRouterMiddleware,
     historyMiddleware(history)
   )
 ];
@@ -28,8 +31,9 @@ if (__DEVELOPMENT__) {
 const finalCreateStore = compose(...storeEnhancers)(createStore);
 const store = finalCreateStore(reducer, window.__INITIAL_STATE__);
 
-syncReduxAndRouter(history, store);
-
+if (__DEVELOPMENT__) {
+  reduxRouterMiddleware.listenForReplays(store);
+}
 socketListeners.addAll(store, getCurrentSocket());
 
 if (module.hot) {
