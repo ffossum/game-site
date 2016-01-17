@@ -195,6 +195,11 @@ function setInitialState(req, res, next) {
       username: req.user.name,
       id: req.user.id
     };
+    res.initialState.users[req.user.id] = {
+      id: req.user.id,
+      name: req.user.name,
+      avatar: req.user.avatar
+    };
   }
   next();
 }
