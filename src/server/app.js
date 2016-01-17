@@ -176,23 +176,22 @@ app.get('*',
   setJwtCookie,
   (req, res) => {
     const initialState = reducer({}, {type: '@@INIT'});
-    if (!req.user) {
+    if (req.user) {
+      getUser(req.user.id)
+        .then(user => {
+          initialState.login = {
+            loggedIn: true,
+            username: user.name,
+            id: user.id
+          };
+        })
+        .catch(error => {}) //TODO log error stack
+        .then(() => respondRenderedApp(req, res, initialState));
+    } else {
       respondRenderedApp(req, res, initialState);
-      return;
     }
-    getUser(req.user.id)
-      .then(user => {
-        initialState.login = {
-          loggedIn: true,
-          username: user.name,
-          id: user.id
-        };
-        respondRenderedApp(req, res, initialState);
-      })
-      .catch(error => {
-        respondRenderedApp(req, res, initialState);
-      });
-  });
+  }
+);
 
 function respondRenderedApp(req, res, initialState) {
   match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
@@ -248,23 +247,23 @@ io.on('connection', socket => {
           users[user.id] = socket.user;
           userSockets[user.id] = _.union(userSockets[user.id], [socket]);
 
-          _.each(games, (game, gameId) => {
-            if (_.contains(game.players, user.id)) {
-              socket.join(gameId);
-              socket.broadcast.to(gameId).emit('PLAYER_RECONNECTED', {
-                game: {id: gameId},
-                user: {id: user.id}
-              });
+          const myGames = _.pick(games, game => _.contains(game.players, user.id));
+          _.forEach(myGames, (game, gameId) => {
+            socket.join(gameId);
+            socket.broadcast.to(gameId).emit('PLAYER_RECONNECTED', {
+              game: {id: gameId},
+              user: {id: user.id}
+            });
+          });
 
-              if (game.status === 'IN_PROGRESS') {
-                socket.emit('UPDATE_GAME_STATE', {
-                  game: {
-                    id: gameId,
-                    state: loveLetter.asVisibleBy(game.state, user.id)
-                  }
-                });
+          const myGamesInProgress = _.pick(myGames, game => game.status === 'IN_PROGRESS');
+          _.forEach(myGamesInProgress, (game, gameId) => {
+            socket.emit('UPDATE_GAME_STATE', {
+              game: {
+                id: gameId,
+                state: loveLetter.asVisibleBy(game.state, user.id)
               }
-            }
+            });
           });
         }
       }
