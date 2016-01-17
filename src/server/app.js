@@ -124,7 +124,7 @@ function getCookieExpirationDate() {
   return new Date(Number(new Date()) + 604800000); // 7 days
 }
 
-function setJwtCookie(req, res, next) {
+function refreshJwtCookie(req, res, next) {
   if (req.user && req.user.id) {
     jwt.sign({id: req.user.id}, secret, {expiresIn: '7d'}, token => {
       res.cookie('token', token, {
@@ -140,7 +140,7 @@ function setJwtCookie(req, res, next) {
 
 app.post('/login',
   passport.authenticate('local'),
-  setJwtCookie,
+  refreshJwtCookie,
   (req, res) => {
     const {id, name, avatar} = req.user;
     const user = {id, name, avatar};
@@ -163,7 +163,7 @@ app.post('/logout',
 );
 
 app.use(cookieParser());
-const jwtMiddleware = expressJwt({
+const parseJwtCookie = expressJwt({
   secret,
   credentialsRequired: false,
   getToken(req) {
@@ -171,35 +171,49 @@ const jwtMiddleware = expressJwt({
   }
 });
 
-app.get('*',
-  jwtMiddleware,
-  setJwtCookie,
-  (req, res) => {
-    const initialState = reducer({}, {type: '@@INIT'});
-    if (req.user) {
-      getUser(req.user.id)
-        .then(user => {
-          initialState.login = {
-            loggedIn: true,
-            username: user.name,
-            id: user.id
-          };
-        })
-        .catch(error => {}) //TODO log error stack
-        .then(() => respondRenderedApp(req, res, initialState));
-    } else {
-      respondRenderedApp(req, res, initialState);
-    }
+function getUserFromJwt(req, res, next) {
+  if (req.user && req.user.id) {
+    getUser(req.user.id)
+      .then(user => {
+        req.user = user;
+      })
+      .catch(error => {
+        delete req.user;
+      })
+      .then(() => next());
+  } else {
+    delete req.user;
+    next();
   }
+}
+
+function setInitialState(req, res, next) {
+  res.initialState = reducer({}, {type: '@@INIT'});
+  if (req.user) {
+    res.initialState.login = {
+      loggedIn: true,
+      username: req.user.name,
+      id: req.user.id
+    };
+  }
+  next();
+}
+
+app.get('*',
+  parseJwtCookie,
+  getUserFromJwt,
+  refreshJwtCookie,
+  setInitialState,
+  (req, res) => respondRenderedApp(req, res)
 );
 
-function respondRenderedApp(req, res, initialState) {
+function respondRenderedApp(req, res) {
   match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
-    const renderedApp = renderApp(initialState, renderProps);
+    const renderedApp = renderApp(res.initialState, renderProps);
     res.render(path.join(__dirname, 'views', 'index.jade'), {
       env: process.env.NODE_ENV,
       renderedApp,
-      initialState: JSON.stringify(initialState)
+      initialState: JSON.stringify(res.initialState)
     });
   });
 }
