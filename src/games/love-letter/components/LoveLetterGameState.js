@@ -1,8 +1,14 @@
 import React from 'react';
 import _ from 'lodash';
-import {Alert, Panel} from 'react-bootstrap';
 import Chat from '../../../components/chat/Chat';
-import WaitingIcon from '../../../components/common/WaitingIcon';
+import {
+  Alert,
+  Panel,
+  WaitingIcon,
+  Spinner,
+  FalcorUsername,
+  FalcorAvatar
+} from '../../../components/common/';
 import RoundSummary from './RoundSummary';
 import Hand from './Hand';
 import MiniCard from './MiniCard';
@@ -10,7 +16,6 @@ import ProtectedIcon from './ProtectedIcon';
 import ScoreIcon from './ScoreIcon';
 import classnames from 'classnames';
 import messageComponents from './messageComponents';
-import {FalcorUsername, FalcorAvatar} from '../../../components/common';
 
 if (process.env.APP_ENV === 'browser') {
   require('../stylesheets/love-letter.scss');
@@ -24,6 +29,10 @@ export default class LoveLetterGameState extends React.Component {
 
     if (!inGame) {
       return <Alert bsStyle='warning'>Game in progress. Spectating coming soon.</Alert>;
+    }
+
+    if (!game.state) {
+      return <Alert alertStyle='info' ><Spinner /> Loading game...</Alert>;
     }
 
     const playerStates = _(game.state.players)
