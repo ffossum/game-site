@@ -1,8 +1,7 @@
 import React, {PropTypes} from 'react';
-import {get} from '../../falcorUtils';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as falcorActions from '../../actions/falcorActions';
+import * as usersActions from '../../actions/usersActions';
 
 if (process.env.APP_ENV === 'browser') {
   require('../../stylesheets/common/username.scss');
@@ -14,20 +13,23 @@ export default class Username extends React.Component {
   }
 }
 
-const namePath = userId => ['users', userId, 'name'];
+function getUserName(users, userId) {
+  const user = users[userId];
+  return user && user.name;
+}
 
 class UsernameContainer extends React.Component {
   componentDidMount() {
-    const {falcor, userId, fetchFalcorData} = this.props;
-    const name = get(falcor, namePath(userId));
+    const {users, userId, fetchUserData} = this.props;
+    const name = getUserName(users, userId);
 
     if (!name) {
-      fetchFalcorData(namePath(userId));
+      fetchUserData(userId);
     }
   }
   render() {
-    const {falcor, userId} = this.props;
-    const name = get(falcor, namePath(userId));
+    const {users, userId} = this.props;
+    const name = getUserName(users, userId);
 
     if (name) {
       return <Username name={name} />;
@@ -37,8 +39,10 @@ class UsernameContainer extends React.Component {
 }
 
 export const FalcorUsername = connect(
-  state => ({falcor: state.falcor}),
-  dispatch => bindActionCreators(falcorActions, dispatch)
+  state => ({
+    users: state.users
+  }),
+  dispatch => bindActionCreators(usersActions, dispatch)
 )(UsernameContainer);
 
 Username.propTypes = {

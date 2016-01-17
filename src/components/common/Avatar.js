@@ -1,9 +1,8 @@
 import React, {PropTypes} from 'react';
 import {Image as BsImage} from 'react-bootstrap';
-import {get} from '../../falcorUtils';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as falcorActions from '../../actions/falcorActions';
+import * as usersActions from '../../actions/usersActions';
 
 if (process.env.APP_ENV === 'browser') {
   require('../../stylesheets/common/avatar.scss');
@@ -32,19 +31,23 @@ export default class Avatar extends React.Component {
   }
 };
 
-const avatarPath = userId => ['users', userId, 'avatar'];
+function getUserAvatar(users, userId) {
+  const user = users[userId];
+  return user && user.avatar;
+}
+
 class AvatarContainer extends React.Component {
   componentDidMount() {
-    const {falcor, userId, fetchFalcorData} = this.props;
-    const avatar = get(falcor, avatarPath(userId));
+    const {users, userId, fetchUserData} = this.props;
+    const avatar = getUserAvatar(users, userId);
 
     if (!avatar) {
-      fetchFalcorData(avatarPath(userId));
+      fetchUserData(userId);
     }
   }
   render() {
-    const {falcor, userId, size} = this.props;
-    const avatar = get(falcor, avatarPath(userId));
+    const {users, userId, size} = this.props;
+    const avatar = getUserAvatar(users, userId);
 
     if (avatar) {
       return <Avatar hash={avatar} size={size}/>;
@@ -54,8 +57,8 @@ class AvatarContainer extends React.Component {
 }
 
 export const FalcorAvatar = connect(
-  state => ({falcor: state.falcor}),
-  dispatch => bindActionCreators(falcorActions, dispatch)
+  state => ({users: state.users}),
+  dispatch => bindActionCreators(usersActions, dispatch)
 )(AvatarContainer);
 
 export class RequiredPlayerAvatar extends React.Component {
