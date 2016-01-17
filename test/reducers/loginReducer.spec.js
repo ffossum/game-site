@@ -45,20 +45,6 @@ describe('login reducer', () => {
     expect(state.error).to.deep.equal({login: errors.USERNAME_TAKEN});
   });
 
-  it('handles logout correctly', () => {
-    const previousState = {
-      loggedIn: true,
-      username: 'Jack'
-    };
-
-    const action = actions.logOut();
-    const state = reducer(previousState, action);
-
-    expect(state).to.deep.equal({
-      loggedIn: false
-    });
-  });
-
   it('passes through unknown action', () => {
     const previousState = {
       loggedIn: true,
