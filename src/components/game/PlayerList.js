@@ -26,7 +26,7 @@ export default class PlayerList extends React.Component {
 
     if (!game.status || game.status === CREATED) {
       const {required, optional} = game.settings.players;
-      for (let i = playerIds.length; i < required; i++) {
+      for (let i = playerComponents.length; i < required; i++) {
         playerComponents.push(
           <div className='player-list-item' key={'req'+i}>
             <div className='player-avatar'><RequiredPlayerAvatar size='S' /></div>
@@ -38,7 +38,7 @@ export default class PlayerList extends React.Component {
         );
       }
 
-      for (let i = required; i < required + optional; i++) {
+      for (let i = playerComponents.length; i < required + optional; i++) {
         playerComponents.push(
           <div className='player-list-item' key={'opt'+i}>
             <div className='player-avatar'><OptionalPlayerAvatar size='S' /></div>
