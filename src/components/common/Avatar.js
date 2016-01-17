@@ -22,7 +22,7 @@ export default class Avatar extends React.Component {
   static propTypes = {
     hash: PropTypes.string.isRequired,
     size: PropTypes.string
-  }
+  };
   render() {
     const {hash, size} = this.props;
     const pixels = getPixels(size);

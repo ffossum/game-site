@@ -14,6 +14,30 @@ const gamePlayerCounts = [2, 3, 4];
 const gamePlayersMax = _.max(gamePlayerCounts);
 const gamePlayersMin = _.min(gamePlayerCounts);
 
+function onChangePlayers(func, key, event) {
+  const players = this.state.players;
+  players[key] = func(players[key]);
+
+  this.setState({
+    players
+  });
+}
+
+function createGame(e) {
+  e.preventDefault();
+
+  const {createGame} = this.props;
+  const {loggedIn} = this.props.login;
+
+  const settings = {
+    players: this.state.players
+  };
+
+  if (loggedIn) {
+    createGame(settings);
+  }
+}
+
 export default class CreateGame extends React.Component {
   constructor(props) {
     super(props);
@@ -23,32 +47,10 @@ export default class CreateGame extends React.Component {
         optional: 1
       }
     };
-    this.createGame = this.createGame.bind(this);
-    this.onChangePlayers = this.onChangePlayers.bind(this);
-  }
-  onChangePlayers(func, key, event) {
-    const players = this.state.players;
-    players[key] = func(players[key]);
-
-    this.setState({
-      players
-    });
+    this.createGame = createGame.bind(this);
+    this.onChangePlayers = onChangePlayers.bind(this);
   }
 
-  createGame(e) {
-    e.preventDefault();
-
-    const {createGame} = this.props;
-    const {loggedIn} = this.props.login;
-
-    const settings = {
-      players: this.state.players
-    };
-
-    if (loggedIn) {
-      createGame(settings);
-    }
-  }
   render() {
     const {loggedIn} = this.props.login;
     const {required, optional} = this.state.players;

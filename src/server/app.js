@@ -28,10 +28,11 @@ import reducer from '../reducers';
 import compress from 'compression';
 import cookie from 'cookie';
 import cookieParser from 'cookie-parser';
+import socketIo from 'socket.io';
 
 const app = express();
 const server = Server(app);
-const io = require('socket.io')(server);
+const io = socketIo(server);
 
 app.use(compress());
 app.use(express.static('public'));

@@ -17,7 +17,7 @@ ReactDOM.render((
 ), document.getElementById('root'));
 
 if (__DEVELOPMENT__) {
-  const DevTools = require('./DevTools');
+  const DevTools = require('./DevTools').default;
   ReactDOM.render((
     <Provider store={store}>
       <DevTools />

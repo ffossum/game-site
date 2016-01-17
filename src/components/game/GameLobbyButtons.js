@@ -12,32 +12,32 @@ function isJoinable(game) {
   return game.players.length < required + optional;
 }
 
+function joinGame() {
+  const {game, joinGame} = this.props;
+  joinGame(game.id);
+}
+
+function leaveGame() {
+  const {game, leaveGame} = this.props;
+  leaveGame(game.id);
+};
+
+function startGame() {
+  const {game, startGame} = this.props;
+  const userId = this.props.login.id;
+
+  if (game.host === userId) {
+    startGame(game.id);
+  }
+}
+
 export default class GameLobbyButtons extends React.Component {
   constructor(props) {
     super(props);
 
-    this.joinGame = this.joinGame.bind(this);
-    this.leaveGame = this.leaveGame.bind(this);
-    this.startGame = this.startGame.bind(this);
-  }
-
-  joinGame() {
-    const {game, joinGame} = this.props;
-
-    joinGame(game.id);
-  }
-  leaveGame() {
-    const {game, leaveGame} = this.props;
-
-    leaveGame(game.id);
-  }
-  startGame() {
-    const {game, startGame} = this.props;
-    const userId = this.props.login.id;
-
-    if (game.host === userId) {
-      startGame(game.id);
-    }
+    this.joinGame = joinGame.bind(this);
+    this.leaveGame = leaveGame.bind(this);
+    this.startGame = startGame.bind(this);
   }
 
   render() {

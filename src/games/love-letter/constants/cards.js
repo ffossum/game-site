@@ -1,4 +1,4 @@
-const cards = {
+export const cards = {
   GUARD: 'GUARD',
   PRIEST: 'PRIEST',
   BARON: 'BARON',
@@ -10,7 +10,7 @@ const cards = {
   FACE_DOWN: '?'
 };
 
-const values = {
+export const values = {
   [cards.GUARD]: 1,
   [cards.PRIEST]: 2,
   [cards.BARON]: 3,
@@ -21,7 +21,7 @@ const values = {
   [cards.PRINCESS]: 8
 };
 
-const images = {
+export const images = {
   [cards.GUARD]: '/static/love-letter/guard.jpg',
   [cards.PRIEST]: '/static/love-letter/priest.jpg',
   [cards.BARON]: '/static/love-letter/baron.jpg',

@@ -17,7 +17,7 @@ let storeEnhancers = [
 ];
 
 if (__DEVELOPMENT__) {
-  const DevTools = require('../DevTools');
+  const DevTools = require('../DevTools').default;
   const {persistState} = require('redux-devtools');
   storeEnhancers = [...storeEnhancers,
     DevTools.instrument(),
@@ -35,14 +35,14 @@ socketListeners.addAll(store, getCurrentSocket());
 if (module.hot) {
   // Enable Webpack hot module replacement for reducers
   module.hot.accept('../reducers', () => {
-    const nextReducer = require('../reducers');
+    const nextReducer = require('../reducers').default;
     store.replaceReducer(nextReducer);
   });
 
   module.hot.accept('./socketListeners', () => {
     const socket = getCurrentSocket();
     socket.off();
-    const newListeners = require('./socketListeners');
+    const newListeners = require('./socketListeners').default;
     newListeners.addAll(store, socket);
   });
 }
