@@ -4,7 +4,7 @@ import favicon from 'serve-favicon';
 import path from 'path';
 import shortid from 'shortid';
 import _ from 'lodash';
-import db, {getUser} from './db';
+import {getUser, createUser, isNameAvailable, isEmailAvailable} from './db';
 import * as loveLetter from './loveLetter';
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
@@ -52,21 +52,31 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  done(null, db.users[id]);
+  getUser({id})
+  .then(user => {
+    done(null, user);
+  })
+  .catch(error => {
+    done(error);
+  });
 });
 
 passport.use(new LocalStrategy({
     session: false
   },
   (username, password, done) => {
-    const user = _.findWhere(db.users, {name: username});
+    getUser({name: username})
+    .then(user => {
+      if (!user) {
+        return done(null, false);
+      }
 
-    if (!user) {
-      return done(null, false);
-    }
-
-    bcrypt.compare(password, user.password, (err, res) => {
-      return done(null, res && user);
+      bcrypt.compare(password, user.password, (err, res) => {
+        return done(null, res && user);
+      });
+    })
+    .catch(err => {
+      return done(err);
     });
   }
 ));
@@ -74,46 +84,71 @@ passport.use(new LocalStrategy({
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
+function checkUsernameAvailability(req, res, next) {
+  res.errors = res.errors || {};
+  const {username} = req.body;
+
+  isNameAvailable(username)
+  .then(available => {
+    if (!available) {
+      res.errors.username = 'USERNAME_TAKEN';
+    }
+    next();
+  })
+  .catch(err => res.status(500).send());
+}
+
+function checkEmailAvailability(req, res, next) {
+  res.errors = res.errors || {};
+  const {email} = req.body;
+
+  isEmailAvailable(email)
+  .then(available => {
+    if (!available) {
+      res.errors.email = 'EMAIL_TAKEN';
+    }
+    next();
+  })
+  .catch(err => res.status(500).send());
+}
+
+app.use('/register',
+  checkUsernameAvailability,
+  checkEmailAvailability
+);
+
 app.post('/register',
   (req, res) => {
     const {email, username, password} = req.body;
-    const emailTaken = _.findWhere(db.users, {email});
-    const usernameTaken = _.findWhere(db.users, {name: username});
-
-    const errors = {};
-    if (emailTaken) {
-      errors.email = 'EMAIL_TAKEN';
-    }
-    if (usernameTaken) {
-      errors.username = 'USERNAME_TAKEN';
-    }
-
-    if (!_.isEmpty(errors)) {
-      res.status(403).json(errors);
+    if (!_.isEmpty(res.errors)) {
+      res.status(403).json(res.errors);
     } else {
-      const userId = shortid.generate();
       bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(password, salt, (err, hash) => {
           const avatar = crypto.createHash('md5').update(email).digest('hex');
-          db.users[userId] = {
-            id: userId,
+
+          createUser({
             name: username,
             email,
             password: hash,
             avatar
-          };
+          })
+          .then(user => {
+            jwt.sign({id: user.id}, secret, {expiresIn: '7d'}, token => {
+              res.cookie('token', token, {
+                httpOnly: true,
+                expires: getCookieExpirationDate()
+              });
 
-          jwt.sign({id: userId}, secret, {expiresIn: '7d'}, token => {
-            res.cookie('token', token, {
-              httpOnly: true,
-              expires: getCookieExpirationDate()
+              res.status(200).json({
+                id: user.id,
+                name: user.name,
+                avatar: user.avatar
+              });
             });
-            const user = {
-              id: userId,
-              name: username,
-              avatar
-            };
-            res.status(200).json(user);
+          })
+          .catch(err => {
+            res.status(500).send();
           });
         });
       });
@@ -164,7 +199,7 @@ app.post('/logout',
 );
 
 app.use(cookieParser());
-const parseJwtCookie = expressJwt({
+const getUserIdFromJwtCookie = expressJwt({
   secret,
   credentialsRequired: false,
   getToken(req) {
@@ -172,16 +207,16 @@ const parseJwtCookie = expressJwt({
   }
 });
 
-function getUserFromJwt(req, res, next) {
+function getUserFromUserId(req, res, next) {
   if (req.user && req.user.id) {
-    getUser(req.user.id)
-      .then(user => {
-        req.user = user;
-      })
-      .catch(error => {
-        delete req.user;
-      })
-      .then(() => next());
+    getUser({id: req.user.id})
+    .then(user => {
+      req.user = user;
+    })
+    .catch(error => {
+      delete req.user;
+    })
+    .then(() => next());
   } else {
     delete req.user;
     next();
@@ -206,8 +241,8 @@ function setInitialState(req, res, next) {
 }
 
 app.get('*',
-  parseJwtCookie,
-  getUserFromJwt,
+  getUserIdFromJwtCookie,
+  getUserFromUserId,
   refreshJwtCookie,
   setInitialState,
   (req, res) => respondRenderedApp(req, res)
@@ -258,34 +293,35 @@ io.on('connection', socket => {
         socket.emit('LOG_IN_FAILURE', 'AUTHENTICATION_FAILURE');
       } else {
         const userId = decoded.id;
-        const user = db.users[userId];
+        getUser({id: userId})
+        .then(user => {
+          if (!user) {
+            socket.emit('LOG_IN_FAILURE', 'AUTHENTICATION_FAILURE');
+          } else {
+            socket.user = _.pick(user, ['id', 'name', 'avatar']);
+            users[user.id] = socket.user;
+            userSockets[user.id] = _.union(userSockets[user.id], [socket]);
 
-        if (!user) {
-          socket.emit('LOG_IN_FAILURE', 'AUTHENTICATION_FAILURE');
-        } else {
-          socket.user = _.pick(user, ['id', 'name', 'avatar']);
-          users[user.id] = socket.user;
-          userSockets[user.id] = _.union(userSockets[user.id], [socket]);
-
-          const myGames = _.pick(games, game => _.contains(game.players, user.id));
-          _.forEach(myGames, (game, gameId) => {
-            socket.join(gameId);
-            socket.broadcast.to(gameId).emit('PLAYER_RECONNECTED', {
-              game: {id: gameId},
-              user: {id: user.id}
+            const myGames = _.pick(games, game => _.contains(game.players, user.id));
+            _.forEach(myGames, (game, gameId) => {
+              socket.join(gameId);
+              socket.broadcast.to(gameId).emit('PLAYER_RECONNECTED', {
+                game: {id: gameId},
+                user: {id: user.id}
+              });
             });
-          });
 
-          const myGamesInProgress = _.pick(myGames, game => game.status === 'IN_PROGRESS');
-          _.forEach(myGamesInProgress, (game, gameId) => {
-            socket.emit('UPDATE_GAME_STATE', {
-              game: {
-                id: gameId,
-                state: loveLetter.asVisibleBy(game.state, user.id)
-              }
+            const myGamesInProgress = _.pick(myGames, game => game.status === 'IN_PROGRESS');
+            _.forEach(myGamesInProgress, (game, gameId) => {
+              socket.emit('UPDATE_GAME_STATE', {
+                game: {
+                  id: gameId,
+                  state: loveLetter.asVisibleBy(game.state, user.id)
+                }
+              });
             });
-          });
-        }
+          }
+        });
       }
     });
   }
