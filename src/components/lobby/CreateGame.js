@@ -3,10 +3,6 @@ import {Alert, Button, IncrementInput, LinkContainer, Panel} from '../common';
 import PlayerList from '../game/PlayerList';
 import _ from 'lodash';
 
-if (process.env.APP_ENV === 'browser') {
-  require('../../stylesheets/create-game.scss');
-}
-
 const inc = x => x + 1;
 const dec = y => y - 1;
 

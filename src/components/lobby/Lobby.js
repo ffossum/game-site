@@ -2,10 +2,6 @@ import React from 'react';
 import {Button, LinkContainer, Panel} from '../common';
 import GameList from './GameList';
 
-if (process.env.APP_ENV === 'browser') {
-  require('../../stylesheets/lobby.scss');
-}
-
 export default class Lobby extends React.Component {
   render() {
     const {games, loggedIn} = this.props;

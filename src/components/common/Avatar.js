@@ -4,10 +4,6 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as usersActions from '../../actions/usersActions';
 
-if (process.env.APP_ENV === 'browser') {
-  require('../../stylesheets/common/avatar.scss');
-}
-
 function getPixels(size) {
   switch(size) {
     case 'S': return 24;

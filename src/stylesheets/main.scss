@@ -30,3 +30,14 @@ body {
   background: -webkit-linear-gradient(to left, #DAE2F8 , #D6A4A4);
   background: linear-gradient(to left, #DAE2F8 , #D6A4A4);
 }
+
+@import 'common/avatar';
+@import 'common/increment-input';
+@import 'common/username';
+
+@import 'chat';
+@import 'create-game';
+@import 'game';
+@import 'lobby';
+@import 'nav';
+@import 'player-list';

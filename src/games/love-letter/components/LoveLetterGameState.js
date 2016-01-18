@@ -17,10 +17,6 @@ import ScoreIcon from './ScoreIcon';
 import classnames from 'classnames';
 import messageComponents from './messageComponents';
 
-if (process.env.APP_ENV === 'browser') {
-  require('../stylesheets/love-letter.scss');
-}
-
 export default class LoveLetterGameState extends React.Component {
   render() {
     const {game, login, playCard, closeGameModal} = this.props;

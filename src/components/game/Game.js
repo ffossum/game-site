@@ -7,10 +7,6 @@ import PlayerList from './PlayerList';
 import * as status from '../../constants/GameStatus';
 import LoveLetterContainer from '../../games/love-letter/containers/LoveLetterContainer';
 
-if (process.env.APP_ENV === 'browser') {
-  require('../../stylesheets/game.scss');
-}
-
 export default class Game extends React.Component {
   render() {
     const userId = this.props.login.id;

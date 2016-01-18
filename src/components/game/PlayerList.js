@@ -3,10 +3,6 @@ import {FalcorAvatar, OptionalPlayerAvatar, RequiredPlayerAvatar, FalcorUsername
 import _ from 'lodash';
 import {CREATED} from '../../constants/GameStatus';
 
-if (process.env.APP_ENV === 'browser') {
-  require('../../stylesheets/playerList.scss');
-}
-
 export default class PlayerList extends React.Component {
   render() {
     const {game} = this.props;

@@ -1,6 +1,5 @@
 var path = require('path');
 var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   devtool: 'eval',
@@ -38,8 +37,7 @@ module.exports = {
       'process.env': {
         'APP_ENV': JSON.stringify('browser')
       }
-    }),
-    new ExtractTextPlugin("[name].css")
+    })
   ],
   module: {
     loaders: [
@@ -68,7 +66,7 @@ module.exports = {
       {
         test: /\.scss$/,
         exclude: /(node_modules|bower_components)/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+        loader: 'style!css!sass?sourceMap',
       }
     ]
   }

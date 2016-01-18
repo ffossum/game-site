@@ -5,10 +5,6 @@ import _ from 'lodash';
 import MiniCard from './MiniCard';
 import ScoreIcon from './ScoreIcon';
 
-if (process.env.APP_ENV === 'browser') {
-  require('../stylesheets/round-summary.scss');
-}
-
 export default class RoundSummary extends React.Component {
   constructor(props) {
     super(props);

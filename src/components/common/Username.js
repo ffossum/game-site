@@ -3,10 +3,6 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as usersActions from '../../actions/usersActions';
 
-if (process.env.APP_ENV === 'browser') {
-  require('../../stylesheets/common/username.scss');
-}
-
 export default class Username extends React.Component {
   render() {
     return <span className={'display-username-common'}>{this.props.name}</span>;

@@ -6,7 +6,9 @@ import store from './store/store';
 import history from './history';
 import routes from './serverRoutes';
 
-import './stylesheets/main.scss';
+if (process.env.APP_ENV === 'browser') {
+  require('./stylesheets/main.scss');
+}
 
 ReactDOM.render((
   <Provider store={store}>
