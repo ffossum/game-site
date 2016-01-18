@@ -5,10 +5,10 @@ import {
   Alert,
   Panel,
   WaitingIcon,
-  Spinner,
-  FalcorUsername,
-  FalcorAvatar
+  Spinner
 } from '../../../components/common/';
+import AvatarContainer from '../../../containers/AvatarContainer';
+import UsernameContainer from '../../../containers/UsernameContainer';
 import RoundSummary from './RoundSummary';
 import Hand from './Hand';
 import MiniCard from './MiniCard';
@@ -45,7 +45,7 @@ export default class LoveLetterGameState extends React.Component {
         const id = playerState.id;
         return (
           <Panel key={id} className={classnames({'player-state': true, 'eliminated': _.isEmpty(playerState.hand)})}>
-            <FalcorAvatar userId={id} size='S'/> <FalcorUsername userId={id} />
+            <AvatarContainer userId={id} size='S'/> <UsernameContainer userId={id} />
             {game.state.toAct === id ? <span className='waiting-icon'><WaitingIcon /></span> : null}
             <div>
               <hr />

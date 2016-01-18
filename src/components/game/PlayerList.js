@@ -1,5 +1,7 @@
 import React from 'react';
-import {FalcorAvatar, OptionalPlayerAvatar, RequiredPlayerAvatar, FalcorUsername} from '../common';
+import {OptionalPlayerAvatar, RequiredPlayerAvatar} from '../common';
+import AvatarContainer from '../../containers/AvatarContainer';
+import UsernameContainer from '../../containers/UsernameContainer';
 import _ from 'lodash';
 import {CREATED} from '../../constants/GameStatus';
 
@@ -11,9 +13,9 @@ export default class PlayerList extends React.Component {
       const isHost = this.props.game.host === id;
       return (
         <div className='player-list-item' key={id}>
-          <div className='player-avatar'><FalcorAvatar userId={id} size='S' /></div>
+          <div className='player-avatar'><AvatarContainer userId={id} size='S' /></div>
           <div className='player-name-container'>
-            <div className='player-name'><FalcorUsername userId={id} /></div>
+            <div className='player-name'><UsernameContainer userId={id} /></div>
             <div className='player-description'>{isHost ? 'Host' : null}</div>
           </div>
         </div>

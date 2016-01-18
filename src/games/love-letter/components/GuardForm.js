@@ -4,7 +4,7 @@ import {map} from 'lodash';
 import ProtectedIcon from './ProtectedIcon';
 import {cards} from '../constants/cards';
 import cardTexts from '../constants/cardTexts';
-import {FalcorUsername} from '../../../components/common';
+import UsernameContainer from '../../../containers/UsernameContainer';
 
 const guardOptions = [
   cards.PRIEST,
@@ -58,7 +58,7 @@ export default class GuardForm extends React.Component {
                   key={'target-' + targetId}
                   disabled={targetState.protected}
                   onClick={onTargetClicked} >
-                  <ProtectedIcon protect={targetState.protected} /> <FalcorUsername userId={targetId} />
+                  <ProtectedIcon protect={targetState.protected} /> <UsernameContainer userId={targetId} />
                 </Button>
               );
             })

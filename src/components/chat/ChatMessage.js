@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {FalcorUsername} from '../common/';
+import UsernameContainer from '../../containers/UsernameContainer';
 import commonMessageComponents from './commonMessageComponents';
 
 class ChatMessage extends React.Component {
@@ -9,7 +9,7 @@ class ChatMessage extends React.Component {
     if (message.user) {
       return (
         <div className="chat-message">
-          <FalcorUsername userId={message.user} />: {message.text}
+          <UsernameContainer userId={message.user} />: {message.text}
         </div>
       );
     }

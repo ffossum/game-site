@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {ButtonGroup, Button} from 'react-bootstrap';
 import {map} from 'lodash';
 import ProtectedIcon from './ProtectedIcon';
-import {FalcorUsername} from '../../../components/common';
+import UsernameContainer from '../../../containers/UsernameContainer';
 
 export default class GuardForm extends React.Component {
   render() {
@@ -23,7 +23,7 @@ export default class GuardForm extends React.Component {
                   key={'target-' + targetId}
                   disabled={targetState.protected}
                   onClick={onTargetClicked} >
-                  <ProtectedIcon protect={targetState.protected} /> <FalcorUsername userId={targetId} />
+                  <ProtectedIcon protect={targetState.protected} /> <UsernameContainer userId={targetId} />
                 </Button>
               );
             })

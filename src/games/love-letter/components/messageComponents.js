@@ -1,13 +1,13 @@
 import React from 'react';
-import {FalcorUsername} from '../../../components/common';
+import UsernameContainer from '../../../containers/UsernameContainer';
 import * as messageKeys from '../constants/messageKeys';
 import {cards} from '../constants/cards';
 import cardTexts from '../constants/cardTexts';
 
 export default {
   [messageKeys.GUARD_CORRECT]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
-    const Target = <FalcorUsername userId={args[1]} />;
+    const User = <UsernameContainer userId={args[0]} />;
+    const Target = <UsernameContainer userId={args[1]} />;
     const card = args[2];
     return (
       <div>
@@ -18,8 +18,8 @@ export default {
     );
   },
   [messageKeys.GUARD_WRONG]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
-    const Target = <FalcorUsername userId={args[1]} />;
+    const User = <UsernameContainer userId={args[0]} />;
+    const Target = <UsernameContainer userId={args[1]} />;
     const card = args[2];
     return (
       <div>
@@ -30,8 +30,8 @@ export default {
     );
   },
   [messageKeys.USED_PRIEST]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
-    const Target = <FalcorUsername userId={args[1]} />;
+    const User = <UsernameContainer userId={args[0]} />;
+    const Target = <UsernameContainer userId={args[1]} />;
     return (
       <div>
         <div>{User} {`plays ${cardTexts[cards.PRIEST].title}.`}</div>
@@ -40,15 +40,15 @@ export default {
     );
   },
   [messageKeys.HAS_CARD]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
+    const User = <UsernameContainer userId={args[0]} />;
     const card = args[1];
     return (
       <div>{User} {`has a ${cardTexts[card].title}.`}</div>
     );
   },
   [messageKeys.BARON_SUCCESS]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
-    const Target = <FalcorUsername userId={args[1]} />;
+    const User = <UsernameContainer userId={args[0]} />;
+    const Target = <UsernameContainer userId={args[1]} />;
     return (
       <div>
         <div>{User} {`plays ${cardTexts[cards.BARON].title}.`}</div>
@@ -58,8 +58,8 @@ export default {
     );
   },
   [messageKeys.BARON_FAIL]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
-    const Target = <FalcorUsername userId={args[1]} />;
+    const User = <UsernameContainer userId={args[0]} />;
+    const Target = <UsernameContainer userId={args[1]} />;
     return (
       <div>
         <div>{User} {`plays ${cardTexts[cards.BARON].title}.`}</div>
@@ -69,8 +69,8 @@ export default {
     );
   },
   [messageKeys.BARON_DRAW]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
-    const Target = <FalcorUsername userId={args[1]} />;
+    const User = <UsernameContainer userId={args[0]} />;
+    const Target = <UsernameContainer userId={args[1]} />;
     return (
       <div>
         <div>{User} {`plays ${cardTexts[cards.BARON].title}.`}</div>
@@ -80,7 +80,7 @@ export default {
     );
   },
   [messageKeys.USED_HANDMAIDEN]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
+    const User = <UsernameContainer userId={args[0]} />;
     return (
       <div>
         <div>{User} {`plays ${cardTexts[cards.HANDMAIDEN].title}`}</div>
@@ -89,8 +89,8 @@ export default {
     );
   },
   [messageKeys.USED_PRINCE]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
-    const Target = <FalcorUsername userId={args[1]} />;
+    const User = <UsernameContainer userId={args[0]} />;
+    const Target = <UsernameContainer userId={args[1]} />;
     return (
       <div>
         <div>{User} {`plays ${cardTexts[cards.PRINCE].title}.`}</div>
@@ -99,8 +99,8 @@ export default {
     );
   },
   [messageKeys.USED_PRINCE_ON_PRINCESS]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
-    const Target = <FalcorUsername userId={args[1]} />;
+    const User = <UsernameContainer userId={args[0]} />;
+    const Target = <UsernameContainer userId={args[1]} />;
     return (
       <div>
         <div>{User} {`plays ${cardTexts[cards.PRINCE].title}.`}</div>
@@ -109,7 +109,7 @@ export default {
     );
   },
   [messageKeys.DREW_DISCARD]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
+    const User = <UsernameContainer userId={args[0]} />;
     return (
       <div>
         {'There were no cards in the deck, so'} {User} {'instead drew the card discarded at the beginning of the round.'}
@@ -117,8 +117,8 @@ export default {
     );
   },
   [messageKeys.USED_KING]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
-    const Target = <FalcorUsername userId={args[1]} />;
+    const User = <UsernameContainer userId={args[0]} />;
+    const Target = <UsernameContainer userId={args[1]} />;
     return (
       <div>
         <div>{User} {`plays ${cardTexts[cards.KING].title}.`}</div>
@@ -127,19 +127,19 @@ export default {
     );
   },
   [messageKeys.USED_COUNTESS]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
+    const User = <UsernameContainer userId={args[0]} />;
     return (
       <div>{User} {`plays ${cardTexts[cards.COUNTESS].title}.`}</div>
     );
   },
   [messageKeys.USED_PRINCESS]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
+    const User = <UsernameContainer userId={args[0]} />;
     return (
       <div>{User} {`plays ${cardTexts[cards.PRINCESS].title} and is eliminated.`}</div>
     );
   },
   [messageKeys.NO_EFFECT]: ({args}) => {
-    const User = <FalcorUsername userId={args[0]} />;
+    const User = <UsernameContainer userId={args[0]} />;
     const card = args[1];
     return (
       <div>

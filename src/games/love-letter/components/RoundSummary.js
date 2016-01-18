@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Button, Modal, Table} from 'react-bootstrap';
-import {FalcorUsername} from '../../../components/common';
+import UsernameContainer from '../../../containers/UsernameContainer';
 import _ from 'lodash';
 import MiniCard from './MiniCard';
 import ScoreIcon from './ScoreIcon';
@@ -20,7 +20,7 @@ export default class RoundSummary extends React.Component {
 
     const modalBody = showModal ?
       <Modal.Body>
-        <h3><FalcorUsername userId={game.modal.args.winner} /> wins the round!</h3>
+        <h3><UsernameContainer userId={game.modal.args.winner} /> wins the round!</h3>
         <Table className="love-letter-round-summary-table">
           <thead>
             <tr>
@@ -36,7 +36,7 @@ export default class RoundSummary extends React.Component {
                 const winner = game.modal.args.winner === playerId;
                 return (
                   <tr key={playerId}>
-                    <td><FalcorUsername userId={playerId} /></td>
+                    <td><UsernameContainer userId={playerId} /></td>
                     <td><ScoreIcon /> {winner ? <b>{playerState.score + 1}</b> : playerState.score}</td>
                     <td>
                       {

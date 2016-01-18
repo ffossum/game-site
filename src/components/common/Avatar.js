@@ -1,8 +1,5 @@
 import React, {PropTypes} from 'react';
 import {Image as BsImage} from 'react-bootstrap';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as usersActions from '../../actions/usersActions';
 
 function getPixels(size) {
   switch(size) {
@@ -26,36 +23,6 @@ export default class Avatar extends React.Component {
     return <BsImage circle src={`http://www.gravatar.com/avatar/${hash}?d=retro&s=${pixels}`} />;
   }
 };
-
-function getUserAvatar(users, userId) {
-  const user = users[userId];
-  return user && user.avatar;
-}
-
-class AvatarContainer extends React.Component {
-  componentDidMount() {
-    const {users, userId, fetchUserData} = this.props;
-    const avatar = getUserAvatar(users, userId);
-
-    if (!avatar) {
-      fetchUserData(userId);
-    }
-  }
-  render() {
-    const {users, userId, size} = this.props;
-    const avatar = getUserAvatar(users, userId);
-
-    if (avatar) {
-      return <Avatar hash={avatar} size={size}/>;
-    }
-    return null;
-  }
-}
-
-export const FalcorAvatar = connect(
-  state => ({users: state.users}),
-  dispatch => bindActionCreators(usersActions, dispatch)
-)(AvatarContainer);
 
 export class RequiredPlayerAvatar extends React.Component {
   render() {
