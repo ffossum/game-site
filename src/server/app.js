@@ -14,8 +14,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import expressJwt from 'express-jwt';
 import {secret} from './config';
-import graphQLHTTP from 'express-graphql';
-import {Schema} from './graphql/schema';
 import falcorExpress from 'falcor-express';
 import falcorRouter from './falcor/falcorRouter';
 import {match, RouterContext} from 'react-router';
@@ -39,13 +37,6 @@ app.use(express.static('public'));
 app.use(favicon(path.join('public','static','meeple.png')));
 
 app.use('/model.json', falcorExpress.dataSourceRoute((req, res) => falcorRouter));
-
-const graphQLOptions = {schema: Schema};
-if (process.env.NODE_ENV !== 'production') {
-  graphQLOptions.graphiql = true;
-  graphQLOptions.pretty = true;
-}
-app.use('/graphql', graphQLHTTP(graphQLOptions));
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
