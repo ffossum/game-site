@@ -7,6 +7,9 @@ export default function gameState(state = initialState, action) {
     case types.UPDATE_GAME_STATE:
       return action.payload.game.state;
 
+    case types.LOG_OUT:
+      return initialState;
+
     default:
       return state;
   }
