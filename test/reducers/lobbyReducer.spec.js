@@ -27,6 +27,53 @@ describe('lobby reducer', () => {
     });
   });
 
+  it("updates empty lobby with new list", () => {
+    const previousState = {};
+
+    const action = actions.updateGames({
+      'game1': {
+        host: 'player1'
+      },
+      'game2': {
+        host: 'player2'
+      }
+    });
+
+    const state = reducer(previousState, action);
+
+    expect(state.game1.host).to.equal('player1');
+    expect(state.game2.host).to.equal('player2');
+  });
+
+  it("merges old lobby with new games list", () => {
+    const previousState = {
+      'game1': {
+        host: 'player1',
+        state: 'game state'
+      },
+      'game2': {
+        host: 'player2',
+        players: ['player1', 'player2']
+      }
+    };
+
+    const action = actions.updateGames({
+      'game1': {
+        host: 'player1'
+      },
+      'game2': {
+        host: 'player2',
+        players: ['player2']
+      }
+    });
+
+    const state = reducer(previousState, action);
+
+    expect(state.game1.state).to.equal('game state');
+    expect(state.game2.host).to.equal('player2');
+    expect(state.game2.players).to.deep.equal(['player2']);
+  });
+
   it('handles game creation success', () => {
     const previousState = {
       'game 1': {

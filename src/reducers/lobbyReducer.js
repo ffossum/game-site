@@ -1,15 +1,24 @@
 import * as types from '../constants/ActionTypes';
 import gameReducer from './game';
-import {mapValues} from 'lodash';
+import {mapValues, pick} from 'lodash';
+import {updateGame} from '../actions/lobbyActions';
 
 const initialState = {};
 
 export default function games(state = initialState, action) {
   switch (action.type) {
 
-    case types.UPDATE_GAMES:
-      return action.payload;
+    case types.UPDATE_GAMES: {
+      const existingGames = pick(state, (game, gameId) => action.payload[gameId]);
+      const newGames = pick(action.payload, (game, gameId) => !state[gameId]);
 
+      return {
+        ...mapValues(existingGames, (game, gameId) => {
+          return gameReducer(game, updateGame(action.payload[gameId]));
+        }),
+        ...newGames
+      };
+    }
     case types.GAME_CREATED:
     case types.LEAVE_GAME_SUCCESS:
     case types.CREATE_GAME_SUCCESS:

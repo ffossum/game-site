@@ -34,6 +34,13 @@ export function updateGames(payload) {
   };
 };
 
+export function updateGame(payload) {
+  return {
+    type: types.UPDATE_GAME,
+    payload
+  };
+}
+
 export function joinGame(gameId) {
   return {
     type: types.JOIN_GAME_REQUEST,
