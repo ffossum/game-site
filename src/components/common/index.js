@@ -8,5 +8,6 @@ export {default as LinkContainer} from './LinkContainer';
 export {default as Modal} from './Modal';
 export {default as Panel} from './Panel';
 export {default as Spinner} from './Spinner';
+export {default as Table} from './Table';
 export {default as Username} from './Username';
 export {default as WaitingIcon} from './WaitingIcon';

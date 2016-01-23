@@ -1,10 +1,7 @@
 .lobby-game-list {
   margin-top: 2rem;
-}
-.lobby-game-list-entry {
-  button {
-    width: 100%;
-    text-align: left;
+
+  .game-buttons {
+    text-align: right;
   }
-  margin-bottom: 0.5rem;
 }

@@ -9,10 +9,7 @@ class LobbyContainer extends React.Component {
   render() {
     return (
       <DocumentTitle title='Game Lobby'>
-        <Lobby
-          players={this.props.players}
-          games={this.props.games}
-          loggedIn={this.props.login.loggedIn} />
+        <Lobby {...this.props} />
       </DocumentTitle>
     );
   }

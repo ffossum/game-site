@@ -54,7 +54,10 @@ export function joinGame(gameId) {
 export function joinGameSuccess(payload) {
   return {
     type: types.JOIN_GAME_SUCCESS,
-    payload
+    payload,
+    meta: {
+      goTo: `/game/${payload.id}`
+    }
   };
 }
 

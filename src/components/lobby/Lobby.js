@@ -4,7 +4,8 @@ import GameList from './GameList';
 
 export default class Lobby extends React.Component {
   render() {
-    const {games, loggedIn} = this.props;
+    const {games, login, joinGame} = this.props;
+    const {loggedIn} = login;
 
     return (
       <div className="container">
@@ -17,7 +18,7 @@ export default class Lobby extends React.Component {
               <Button>Create game</Button>
             </LinkContainer>
           </div>
-          <GameList games={games} />
+          <GameList login={login} games={games} joinGame={joinGame}/>
         </Panel>
       </div>
     );
