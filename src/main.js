@@ -1,28 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {Router} from 'react-router';
-import store from './store/store';
+import {match, Router} from 'react-router';
 import history from './history';
-import routes from './serverRoutes';
+import routes from './routes';
 
-if (process.env.APP_ENV === 'browser') {
-  require('./stylesheets/main.scss');
-}
+import './stylesheets/main.scss';
 
-ReactDOM.render((
-  <Provider store={store}>
-    <Router history={history}>
-      {routes}
-    </Router>
-  </Provider>
-), document.getElementById('root'));
+const {pathname, search, hash} = window.location;
+const location = `${pathname}${search}${hash}`;
 
-if (__DEVELOPMENT__) {
-  const DevTools = require('./DevTools').default;
+match({routes, location}, () => {
+  const store = require('./store/store').default;
+
   ReactDOM.render((
     <Provider store={store}>
-      <DevTools />
+      <Router history={history}>
+        {routes}
+      </Router>
     </Provider>
-  ), document.getElementById('dev-tools'));
-}
+  ), document.getElementById('root'));
+
+  if (__DEVELOPMENT__) {
+    const DevTools = require('./DevTools').default;
+    ReactDOM.render((
+      <Provider store={store}>
+        <DevTools />
+      </Provider>
+    ), document.getElementById('dev-tools'));
+  }
+});

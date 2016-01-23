@@ -1,3 +1,8 @@
+// polyfill webpack require.ensure for server side rendering
+if (typeof require.ensure !== 'function') {
+  require.ensure = (d, c) => c(require);
+}
+
 import React from 'react';
 import {Route, IndexRoute} from 'react-router';
 import App from './components/App';
@@ -16,30 +21,30 @@ export default (
 
 function getFrontPage(location, cb) {
   require.ensure([], require => {
-    cb(null, require('./components/FrontPage'));
+    cb(null, require('./components/FrontPage').default);
   });
 }
 
 function getLobby(location, cb) {
   require.ensure([], require => {
-    cb(null, require('./containers/LobbyContainer'));
+    cb(null, require('./containers/LobbyContainer').default);
   });
 }
 
 function getCreateGame(location, cb) {
   require.ensure([], require => {
-    cb(null, require('./containers/CreateGameContainer'));
+    cb(null, require('./containers/CreateGameContainer').default);
   });
 }
 
 function getGame(location, cb) {
   require.ensure([], require => {
-    cb(null, require('./containers/GameContainer'));
+    cb(null, require('./containers/GameContainer').default);
   });
 }
 
 function getAbout(location, cb) {
   require.ensure([], require => {
-    cb(null, require('./components/About'));
+    cb(null, require('./components/About').default);
   });
 }

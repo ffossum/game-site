@@ -19,7 +19,7 @@ import falcorRouter from './falcor/falcorRouter';
 import {match, RouterContext} from 'react-router';
 import React from 'react';
 import {renderToString} from 'react-dom/server';
-import routes from '../serverRoutes';
+import routes from '../routes';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from '../reducers';
